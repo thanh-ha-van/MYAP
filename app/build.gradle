@@ -1,9 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'keystore1'
+            keyPassword '123456'
+        }
+        debug {
+            keyAlias 'keystore1'
+            keyPassword '123456'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
-
     defaultConfig {
         applicationId "com.example.havan.mysecondmapsproject"
         minSdkVersion 15
@@ -17,10 +26,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        free {
+            minSdkVersion 17
+            signingConfig signingConfigs.release
+        }
+        paid {
+            signingConfig signingConfigs.release
+            minSdkVersion 17
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.google.android.gms:play-services:8.1.0'
