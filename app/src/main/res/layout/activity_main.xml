@@ -20,29 +20,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_setting"
-        android:id="@+id/button_setting"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/accent_material_light"
-        android:theme="@style/AppTheme" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_share"
-        android:id="@+id/button_share"
-        android:layout_alignBottom="@+id/button_setting"
-        android:layout_toRightOf="@+id/button_setting"
-        android:layout_toEndOf="@+id/button_setting"
-        android:textColor="@color/accent_material_light"
-        android:theme="@style/AppTheme" />
+    <ListView
+        android:id="@+id/maps_app_activity_left_drawer"
+        style="@style/drawer_listView_style"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/colorPrimary"
+        android:choiceMode="singleChoice"
+        android:divider="@color/colorAccent"
+        android:dividerHeight="1px"/>
 
 </RelativeLayout>

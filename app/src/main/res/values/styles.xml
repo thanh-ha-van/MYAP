@@ -7,5 +7,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <!-- navigation drawer styles -->
+    <style name="listView_style" parent="@android:style/Widget.ListView">
+        <item name="android:listSelector">@drawable/list_selector_light</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:dividerHeight">@dimen/listview_divider_height</item>
+        <item name="android:divider">@drawable/horizontal_divider</item>
+        <item name="android:drawSelectorOnTop">false</item>
+    </style>
 
+    <style name="drawer_listView_style" parent="@style/listView_style">
+        <item name="android:divider">@drawable/drawer_horizontal_divider</item>
+    </style>
 </resources>
