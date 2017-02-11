@@ -12,7 +12,9 @@ Editted the second time by me. <br/>
 ##EDITTED AGAIN WILL ALL SYNTAX MD
 ## NEW UPDATE
 ```diff
-- I've re-create this project with nativebar and new layout, interface. The souce code still from the master branch. So you with see a little much diffrences betweeen master and course1. 
+I've re-create this project with nativebar and new layout, interface.
+The souce code still from the master branch. So you with see a little 
+much diffrences betweeen master and course1.
 ```
 ###COMMENT
 - [ ] Use style map with JSON
