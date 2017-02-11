@@ -4,6 +4,14 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
+    signingConfigs {
+        config {
+            keyAlias 'keystore1'
+            keyPassword '123456'
+            storeFile file('E:/assignment/app/keystore/release.jks')
+            storePassword 'thanh2011'
+        }
+    }
     defaultConfig {
         applicationId "com.example.havan.mytrafficmap"
         minSdkVersion 17
@@ -15,6 +23,22 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+        }
+    }
+    productFlavors {
+        Free {
+            applicationId 'com.example.havan.mytrafficmap.free'
+            signingConfig signingConfigs.config
+            minSdkVersion 17
+            targetSdkVersion 25
+        }
+        Paid {
+            applicationId 'com.example.havan.mytrafficmap.paid'
+            minSdkVersion 17
+            signingConfig signingConfigs.config
+            targetSdkVersion 25
         }
     }
 }
