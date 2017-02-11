@@ -73,31 +73,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
         // get the button with ID
-        Button buttonSetting = (Button) this.findViewById(R.id.button_setting);
-        // set the event clink on button
-        buttonSetting.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                // intend carry info to setting activity.
-                Intent myIntent = new Intent(MainActivity.this, SettingActivity.class);
-
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
-        Button buttonShare = (Button) this.findViewById(R.id.button_share);
-        buttonShare.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent myIntent = new Intent(MainActivity.this, ShareActivity.class);
-
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
-
     }
 
     private void onMyMapReady(GoogleMap googleMap) {
