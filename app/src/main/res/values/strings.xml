@@ -2,4 +2,6 @@
     <string name="app_name">TrafficMap</string>
     <string name="btn_setting">Setting</string>
     <string name="btn_share">Share</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

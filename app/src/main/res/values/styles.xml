@@ -31,4 +31,8 @@
     <style name="drawer_listView_style" parent="@style/listView_style">
         <item name="android:divider">@drawable/drawer_horizontal_divider</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
