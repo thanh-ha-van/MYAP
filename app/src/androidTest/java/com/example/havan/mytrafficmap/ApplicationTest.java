@@ -1,4 +1,4 @@
-package com.example.havan.mysecondmapsproject;
+package com.example.havan.mytrafficmap;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

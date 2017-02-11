@@ -1,5 +1,4 @@
 <resources>
-
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     </style>
@@ -7,32 +6,22 @@
     <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
     </style>
-
-    <!-- Application theme. -->
+    AppBaseTheme
+    <!-- Base application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- material colors -->
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
-        <item name="android:textColor">@color/colorTextSecondary</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- navigation drawer styles -->
-    <style name="listView_style" parent="@android:style/Widget.ListView">
-        <item name="android:listSelector">@drawable/list_selector_light</item>
-        <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:dividerHeight">@dimen/listview_divider_height</item>
-        <item name="android:divider">@drawable/horizontal_divider</item>
-        <item name="android:drawSelectorOnTop">false</item>
-    </style>
-
-    <style name="drawer_listView_style" parent="@style/listView_style">
-        <item name="android:divider">@drawable/drawer_horizontal_divider</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

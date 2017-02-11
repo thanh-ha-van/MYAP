@@ -1,29 +1,9 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- list view -->
-    <dimen name="listview_selected_bar_width">5dp</dimen>
-    <dimen name="listview_divider_height">1dp</dimen>
-    <!-- horizontal divider -->
-    <dimen name="horizontal_divider_left">5dp</dimen>
-    <dimen name="horizontal_divider_right">5dp</dimen>
-    <dimen name="horizontal_divider_width">1dp</dimen>
-    <dimen name="horizontal_divider_height">1dp</dimen>
-    <dimen name="horizontal_divider_padding_top">2dp</dimen>
-    <dimen name="horizontal_divider_padding_bottom">2dp</dimen>
-    <dimen name="vertical_divider_width">1dp</dimen>
-    <dimen name="vertical_divider_top">2dp</dimen>
-    <dimen name="vertical_divider_bottom">3dp</dimen>
-
-    <!-- <dimen name="drawer_width">340dp</dimen> -->
-    <dimen name="drawer_width">320dp</dimen>
-    <dimen name="drawer_horizontal_divider_left">48dp</dimen>
-    <dimen name="drawer_imageview_size">32dp</dimen>
-    <dimen name="drawer_listview_padding_right">5dp</dimen>
-    <dimen name="drawer_header_height">32dp</dimen>
-    <dimen name="drawer_header_text_size">15sp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>
-
-

@@ -1,4 +1,4 @@
-package com.example.havan.mysecondmapsproject;
+package com.example.havan.mytrafficmap;
 
 import org.junit.Test;
 
