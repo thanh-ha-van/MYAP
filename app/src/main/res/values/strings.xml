@@ -7,4 +7,8 @@
     <string name="server_client_id">945104725933-vh1vr0ht6e3j6kpsrknb407gki63q49s.apps.googleusercontent.com</string>
     <string name="search_title">Search:...</string>
     <string name="search_hint">Search:...</string>
+    <string name="share">Share</string>
+    <string name="settings">Setting</string>
+    <string name="map_style">Style</string>
+    <string name="sign_in">Sign in</string>
 </resources>
