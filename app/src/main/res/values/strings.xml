@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">MyTrafficMap</string>
+    <string name="app_name">I MAP</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="my_name">Ha Van Thanh</string>
     <string name="action_settings">Settings</string>
     <string name="server_client_id">945104725933-vh1vr0ht6e3j6kpsrknb407gki63q49s.apps.googleusercontent.com</string>
+    <string name="search_title">Search:...</string>
+    <string name="search_hint">Search:...</string>
 </resources>
