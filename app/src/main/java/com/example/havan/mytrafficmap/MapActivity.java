@@ -23,40 +23,40 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 
-public class MapActivity extends AppCompatActivity {
 
+public class MapActivity extends AppCompatActivity
+        implements
+        OnMyLocationButtonClickListener,
+        LocationListener {
 
     private GoogleMap myMap;
     private ProgressDialog myProgress;
 
     private static final String MYTAG = "MYTAG";
 
-    // Mã yêu cầu uhỏi người dùng cho phép xem vị trí hiện tại của họ (***).
-    // Giá trị mã 8bit (value < 256).
+    // The code for user permisson of location
     public static final int REQUEST_ID_ACCESS_COURSE_FINE_LOCATION = 100;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Tạo Progress Bar
         myProgress = new ProgressDialog(this);
         myProgress.setTitle("Map Loading ...");
         myProgress.setMessage("Please wait...");
         myProgress.setCancelable(true);
 
-        // Hiển thị Progress Bar
+        // Show Progress Bar
         myProgress.show();
 
 
         SupportMapFragment mapFragment
-                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
 
 
-        // Sét đặt sự kiện thời điểm GoogleMap đã sẵn sàng.
+        // Set the event that map is ready
         mapFragment.getMapAsync(new OnMapReadyCallback() {
 
             @Override
@@ -64,36 +64,38 @@ public class MapActivity extends AppCompatActivity {
                 onMyMapReady(googleMap);
             }
         });
-
     }
 
     private void onMyMapReady(GoogleMap googleMap) {
 
-        // Lấy đối tượng Google Map ra:
+        // Get the google map object
         myMap = googleMap;
 
-        // Thiết lập sự kiện đã tải Map thành công
+
+        // set the event that map is loaded.
         myMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
 
             @Override
             public void onMapLoaded() {
 
-                // Đã tải thành công thì tắt Dialog Progress đi
+                // turn of the dialog
                 myProgress.dismiss();
 
-                // Hiển thị vị trí người dùng.
+                // show user's location
                 askPermissionsAndShowMyLocation();
             }
         });
         myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         myMap.getUiSettings().setZoomControlsEnabled(true);
+        //myMap.setMyLocationEnabled(true);
+        myMap.setTrafficEnabled(true); // show traffic
     }
 
 
     private void askPermissionsAndShowMyLocation() {
 
 
-        // Với API >= 23, bạn phải hỏi người dùng cho phép xem vị trí của họ.
+        // ask user for location permisson
         if (Build.VERSION.SDK_INT >= 23) {
             int accessCoarsePermission
                     = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -104,11 +106,11 @@ public class MapActivity extends AppCompatActivity {
             if (accessCoarsePermission != PackageManager.PERMISSION_GRANTED
                     || accessFinePermission != PackageManager.PERMISSION_GRANTED) {
 
-                // Các quyền cần người dùng cho phép.
+                // Permissons needed
                 String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION};
 
-                // Hiển thị một Dialog hỏi người dùng cho phép các quyền trên.
+                // Show a dialog for above permisson
                 ActivityCompat.requestPermissions(this, permissions,
                         REQUEST_ID_ACCESS_COURSE_FINE_LOCATION);
 
@@ -116,12 +118,11 @@ public class MapActivity extends AppCompatActivity {
             }
         }
 
-        // Hiển thị vị trí hiện thời trên bản đồ.
+        // show the current location
         this.showMyLocation();
     }
 
-
-    // Khi người dùng trả lời yêu cầu cấp quyền (cho phép hoặc từ chối).
+    // when user accept or deny
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -132,17 +133,17 @@ public class MapActivity extends AppCompatActivity {
             case REQUEST_ID_ACCESS_COURSE_FINE_LOCATION: {
 
 
-                // Chú ý: Nếu yêu cầu bị bỏ qua, mảng kết quả là rỗng.
+                // Note: when the request is ignore. the result is null
                 if (grantResults.length > 1
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
                     Toast.makeText(this, "Permission granted!", Toast.LENGTH_LONG).show();
 
-                    // Hiển thị vị trí hiện thời trên bản đồ.
+                    // show the current location
                     this.showMyLocation();
                 }
-                // Hủy bỏ hoặc từ chối.
+                // cancel or deny
                 else {
                     Toast.makeText(this, "Permission denied!", Toast.LENGTH_LONG).show();
                 }
@@ -151,15 +152,14 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
-    // Tìm một nhà cung cấp vị trị hiện thời đang được mở.
+    // Find a locationProvider
     private String getEnabledLocationProvider() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 
-        // Tiêu chí để tìm một nhà cung cấp vị trí.
+        // criteria forr locationProvider
         Criteria criteria = new Criteria();
 
-        // Tìm một nhà cung vị trí hiện thời tốt nhất theo tiêu chí trên.
         // ==> "gps", "network",...
         String bestProvider = locationManager.getBestProvider(criteria, true);
 
@@ -173,7 +173,7 @@ public class MapActivity extends AppCompatActivity {
         return bestProvider;
     }
 
-    // Chỉ gọi phương thức này khi đã có quyền xem vị trí người dùng.
+    // Only call this method when have user permisson
     private void showMyLocation() {
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -192,17 +192,17 @@ public class MapActivity extends AppCompatActivity {
         Location myLocation = null;
         try {
 
-            // Đoạn code nay cần người dùng cho phép (Hỏi ở trên ***).
+            // Need user permisson (above)
             locationManager.requestLocationUpdates(
                     locationProvider,
                     MIN_TIME_BW_UPDATES,
                     MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
 
-            // Lấy ra vị trí.
+            // get the location
             myLocation = locationManager
                     .getLastKnownLocation(locationProvider);
         }
-        // Với Android API >= 23 phải catch SecurityException.
+        // Android API >= 23 have to catch SecurityException.
         catch (SecurityException e) {
             Toast.makeText(this, "Show My Location Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             Log.e(MYTAG, "Show My Location Error:" + e.getMessage());
@@ -223,7 +223,7 @@ public class MapActivity extends AppCompatActivity {
                     .build();                   // Creates a CameraPosition from the builder
             myMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-            // Thêm Marker cho Map:
+            // TAdd Marker into Map:
             MarkerOptions option = new MarkerOptions();
             option.title("My Location");
             option.snippet("....");
@@ -238,5 +238,31 @@ public class MapActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 
 }
