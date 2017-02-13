@@ -9,4 +9,5 @@
     <dimen name="button_elevation">4dp</dimen>
     <dimen name="nav_header_left">10dp</dimen>
     <dimen name="nav_header_bottom">10dp</dimen>
+    <dimen name="search_view_inset">10dp</dimen>
 </resources>

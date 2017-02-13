@@ -11,4 +11,10 @@
     <string name="settings">Setting</string>
     <string name="map_style">Style</string>
     <string name="sign_in">Sign in</string>
+    <string name="style_label_retro">Retro</string>
+    <string name="style_label_night">night</string>
+    <string name="style_label_gray_scale">Gray scale</string>
+    <string name="style_label_default">Default</string>
+    <string name="style_set_to">Style set to: %1$s</string>
+
 </resources>
