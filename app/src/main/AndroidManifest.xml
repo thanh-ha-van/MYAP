@@ -41,7 +41,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StyleMap"></activity>
+        <activity android:name=".StyleMap" />
+        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>

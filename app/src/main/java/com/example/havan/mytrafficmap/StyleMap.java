@@ -2,24 +2,18 @@ package com.example.havan.mytrafficmap;
 
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -27,7 +21,8 @@ import java.util.List;
  */
 public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap = null;
+    final Global myMap = (Global) getApplicationContext();
+    private GoogleMap myCurrentMap = null;
 
     private static final String TAG = StyleMap.class.getSimpleName();
 
@@ -59,6 +54,7 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
+        myMap.setMyMap(myCurrentMap);
     }
 
     @Override
@@ -70,9 +66,7 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap map) {
-        mMap = map;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SYDNEY, 14));
-        setSelectedStyle();
+        myCurrentMap = map;
     }
 
     @Override
@@ -83,47 +77,13 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_style_choose) {
-            showStylesDialog();
+        if (item.getItemId() == R.id.nav_style) {
+            setSelectedStyle();
         }
         return true;
     }
 
-    /**
-     * Shows a dialog listing the styles to choose from, and applies the selected
-     * style when chosen.
-     */
-    private void showStylesDialog() {
-        // mStyleIds stores each style's resource ID, and we extract the names here, rather
-        // than using an XML array resource which AlertDialog.Builder.setItems() can also
-        // accept. We do this since using an array resource would mean we would not have
-        // constant values we can switch/case on, when choosing which style to apply.
-        List<String> styleNames = new ArrayList<>();
-        for (int style : mStyleIds) {
-            styleNames.add(getString(style));
-        }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.map_style));
-        builder.setItems(styleNames.toArray(new CharSequence[styleNames.size()]),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mSelectedStyleId = mStyleIds[which];
-                        String msg = getString(R.string.style_set_to, getString(mSelectedStyleId));
-                        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, msg);
-                        setSelectedStyle();
-                    }
-                });
-        builder.show();
-    }
-
-    /**
-     * Creates a {@link MapStyleOptions} object via loadRawResourceStyle() (or via the
-     * constructor with a JSON String), then sets it on the {@link GoogleMap} instance,
-     * via the setMapStyle() method.
-     */
     private void setSelectedStyle() {
         MapStyleOptions style;
         switch (mSelectedStyleId) {
@@ -165,7 +125,8 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
             default:
                 return;
         }
-        mMap.setMapStyle(style);
+        myCurrentMap.setMapStyle(style);
+        myMap.setMyMap(myCurrentMap);
     }
 
 }
