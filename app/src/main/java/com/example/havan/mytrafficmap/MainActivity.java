@@ -1,12 +1,6 @@
 package com.example.havan.mytrafficmap;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-
-import android.location.LocationListener;
-
 import android.os.Bundle;
-
 import android.view.MenuInflater;
 
 import android.support.design.widget.NavigationView;
@@ -18,24 +12,37 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MapStyleOptions;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-
+    public GoogleMap myMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
+        SupportMapFragment mapFragment
+                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+
+        // Set the event that map is ready
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                onMyMapReady(googleMap);
+            }
+        });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -47,7 +54,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+    private void onMyMapReady(GoogleMap googleMap) {
 
+        myMap = googleMap;
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -85,7 +96,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_style) {
-            startActivity(new Intent(this, StyleMap.class));
+        } else if (id == R.id.style_default) {
+            // do nothing
+        } else if (id == R.id.style_gray_scale) {
+            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle( this, R.raw.mapstyle_grayscale));
+
+        } else if (id == R.id.style_night) {
+            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle( this, R.raw.mapstyle_night));
+
+        } else if (id == R.id.style_retro) {
+            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle( this, R.raw.mapstyle_retro));
 
         } else if (id == R.id.nav_share) {
         }
@@ -94,5 +114,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }

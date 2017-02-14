@@ -28,8 +28,7 @@ import android.widget.Toast;
 
 public class MapActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener, LocationListener {
 
-    final Global myMap = (Global) getApplicationContext();
-    GoogleMap myCurrentMap;
+    private GoogleMap myCurrentMap;
     private  ProgressDialog myProgress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +58,13 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMyLoca
         myCurrentMap.getUiSettings().setZoomControlsEnabled(true);
         myCurrentMap.setMyLocationEnabled(true);
         myCurrentMap.setTrafficEnabled(true); // show traffic
-        //myMap.setMyMap(myCurrentMap);
+
     }
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //
+
         switch (requestCode) {
             case Global.REQUEST_ID_ACCESS_COURSE_FINE_LOCATION: {
 

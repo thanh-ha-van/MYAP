@@ -9,7 +9,7 @@
     <string name="search_hint">Search:...</string>
     <string name="share">Share</string>
     <string name="settings">Setting</string>
-    <string name="map_style">Style</string>
+    <string name="map_style">CHOOSE MAP STYLE</string>
     <string name="sign_in">Sign in</string>
     <string name="style_label_retro">Retro</string>
     <string name="style_label_night">night</string>

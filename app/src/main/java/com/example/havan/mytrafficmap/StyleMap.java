@@ -6,22 +6,17 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
 
-/**
- * This shows how to style a map with JSON.
- */
+
 public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
 
-    final Global myMap = (Global) getApplicationContext();
     private GoogleMap myCurrentMap = null;
 
     private static final String TAG = StyleMap.class.getSimpleName();
@@ -31,17 +26,6 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
     // Stores the ID of the currently selected style, so that we can re-apply it when
     // the activity restores state, for example when the device changes orientation.
     private int mSelectedStyleId = R.string.map_style;
-
-    // These are simply the string resource IDs for each of the style names. We use them
-    // as identifiers when choosing which style to apply.
-    private int mStyleIds[] = {
-            R.string.style_label_retro,
-            R.string.style_label_night,
-            R.string.style_label_gray_scale,
-            R.string.style_label_default,
-    };
-
-    private static final LatLng SYDNEY = new LatLng(-33.8688, 151.2093);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +38,6 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
-        myMap.setMyMap(myCurrentMap);
     }
 
     @Override
@@ -69,11 +52,6 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
         myCurrentMap = map;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.styled_map, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -126,7 +104,6 @@ public class StyleMap extends AppCompatActivity implements OnMapReadyCallback {
                 return;
         }
         myCurrentMap.setMapStyle(style);
-        myMap.setMyMap(myCurrentMap);
     }
 
 }
