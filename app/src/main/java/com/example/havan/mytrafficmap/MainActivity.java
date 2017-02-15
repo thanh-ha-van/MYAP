@@ -17,10 +17,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public GoogleMap myMap;
+    private  GoogleMap myMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,8 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setTitle(null);
 
         SupportMapFragment mapFragment
-                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
+                = (SupportMapFragment) getSupportFragmentManager().
+                findFragmentById(R.id.map_fragment);
 
         // Set the event that map is ready
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -47,18 +47,21 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
     private void onMyMapReady(GoogleMap googleMap) {
 
         myMap = googleMap;
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -85,11 +88,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    public boolean onNavigationItemSelected (MenuItem item) {
+        int id = item.getItemId(); // Handle navigation view item clicks here.
 
         if (id == R.id.nav_sign_in) {
             // Handle the camera action
@@ -99,13 +100,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.style_default) {
             // do nothing
         } else if (id == R.id.style_gray_scale) {
-            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle( this, R.raw.mapstyle_grayscale));
+            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_grayscale));
 
         } else if (id == R.id.style_night) {
-            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle( this, R.raw.mapstyle_night));
+            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_night));
 
         } else if (id == R.id.style_retro) {
-            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle( this, R.raw.mapstyle_retro));
+            myMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_retro));
 
         } else if (id == R.id.nav_share) {
         }
@@ -114,6 +118,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }
