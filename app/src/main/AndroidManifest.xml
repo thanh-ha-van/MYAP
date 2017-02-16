@@ -28,6 +28,9 @@
             android:name="android.app.default_searchable"
             android:value=".MainActivity" />
         <meta-data
+            android:name="com.google.android.maps.v4.API_KEY"
+            android:value="AIzaSyDqVPquyTOi_2txy4WZUhCKxyPc7-VpFeY" />
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqVPquyTOi_2txy4WZUhCKxyPc7-VpFeY" />
 
@@ -41,8 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StyleMap" />
-        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>
