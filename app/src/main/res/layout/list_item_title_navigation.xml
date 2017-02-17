@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="20dp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:layout_toRightOf="@id/imgIcon"/>
  
 </RelativeLayout>
