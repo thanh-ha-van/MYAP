@@ -7,7 +7,6 @@
             android:icon="@drawable/ic_person2"
             android:title="@string/sign_in" />
     </group>
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_setting"
