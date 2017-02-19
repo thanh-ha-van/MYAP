@@ -195,13 +195,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         navSpinner.add(new SpinnerItem(value[3], R.drawable.bar));
         navSpinner.add(new SpinnerItem(value[4], R.drawable.cafe));
         navSpinner.add(new SpinnerItem(value[5], R.drawable.church));
-        navSpinner.add(new SpinnerItem(value[7], R.drawable.food));
-        navSpinner.add(new SpinnerItem(value[8], R.drawable.hospital));
-        navSpinner.add(new SpinnerItem(value[9], R.drawable.hotel));
-        navSpinner.add(new SpinnerItem(value[10], R.drawable.library));
-        navSpinner.add(new SpinnerItem(value[13], R.drawable.police));
-        navSpinner.add(new SpinnerItem(value[15], R.drawable.supermarket));
-        navSpinner.add(new SpinnerItem(value[16], R.drawable.theater));
+        navSpinner.add(new SpinnerItem(value[6], R.drawable.food));
+        navSpinner.add(new SpinnerItem(value[7], R.drawable.hospital));
+        navSpinner.add(new SpinnerItem(value[8], R.drawable.hotel));
+        navSpinner.add(new SpinnerItem(value[9], R.drawable.library));
+        navSpinner.add(new SpinnerItem(value[10], R.drawable.police));
+        navSpinner.add(new SpinnerItem(value[11], R.drawable.supermarket));
+        navSpinner.add(new SpinnerItem(value[12], R.drawable.theater));
     }
     
     private void loadMap ()
