@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@drawable/abc_ic_search"
+        android:showAsAction="always"
+        android:actionViewClass="android.widget.SearchView" />
 
-      <item
-        android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always"
-        android:titleCondensed="@string/search_title"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        android:title="@string/search_title"/>
-
+    <item   android:id="@+id/direc"
+        android:title="Direction"
+        android:icon="@drawable/ic_directions"
+        android:showAsAction="always" />
+    
 </menu>

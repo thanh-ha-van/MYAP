@@ -25,15 +25,11 @@
         <item >Bar</item>
         <item >Cafe</item>
         <item >Church</item>
-        <item >Coffee</item>
         <item >Food</item>
         <item >Hospital</item>
         <item >Hotel</item>
         <item >Library</item>
-        <item >Museum</item>
-        <item >Pizza</item>
         <item >Police</item>
-        <item >Restaurant</item>
         <item >Supermarket</item>
         <item >Theatre</item>
     </string-array>
@@ -45,15 +41,11 @@
         <item >bar</item>
         <item >cafe</item>
         <item >church</item>
-        <item >cafe</item>
         <item >food</item>
         <item >hospital</item>
         <item >hotel</item>
         <item >library</item>
-        <item >museum</item>
-        <item >bakery</item>
         <item >police</item>
-        <item >restaurant</item>
         <item >supermarket</item>
         <item >theatre</item>
     </string-array>
