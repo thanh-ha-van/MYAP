@@ -6,11 +6,11 @@ import java.util.List;
 
 import com.google.api.client.util.Key;
 
-public class Places implements Serializable{
+public class Places implements Serializable {
 
-	@Key
+    @Key
     public String status;
- 
+
     @Key
     public List<Place> results;
 

@@ -14,15 +14,24 @@ import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
 public class GooglePlaces {
-	
-	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+
+    private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+
     private static final String API_KEY = "AIzaSyAPir-D44kZWvmsOJEkCK6jtQC4RyQiqDE";
-    private static final String PLACES_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/search/json?";
-    private static final String PLACES_TEXT_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/search/json?";
-    private static final String PLACES_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
+
+    private static final String PLACES_SEARCH_URL
+            = "https://maps.googleapis.com/maps/api/place/search/json?";
+
+    private static final String PLACES_TEXT_SEARCH_URL
+            = "https://maps.googleapis.com/maps/api/place/search/json?";
+
+    private static final String PLACES_DETAILS_URL
+            = "https://maps.googleapis.com/maps/api/place/details/json?";
  
     private double latitude;
+
     private double longitude;
+
     private double radius;
     
     public Places search(double latitude, double longitude, double radius, String types)
@@ -41,9 +50,9 @@ public class GooglePlaces {
             request.getUrl().put("location", latitude + "," + longitude);
             request.getUrl().put("radius", radius); // in meters
             request.getUrl().put("sensor", "false");
-            if(types != null)
+            if (types != null) {
                 request.getUrl().put("types", types);
- 
+            }
             Places list = request.execute().parseAs(Places.class);
             // Check log cat for places response status
             Log.d("Places Status", "" + list.status);

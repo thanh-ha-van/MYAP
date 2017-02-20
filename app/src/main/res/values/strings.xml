@@ -16,6 +16,7 @@
     <string name="style_label_gray_scale">Gray scale</string>
     <string name="style_label_default">Default</string>
     <string name="style_set_to">Style set to: %1$s</string>
+    <string name="api_key"></string>
     <!-- items of sliding menu -->
     <string-array name="items">
         <item >Airport</item>

@@ -21,7 +21,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
   
        private ArrayList<OverlayItem> mapOverlays = new ArrayList<OverlayItem>();
   
-       private Context context;
+       private Context conText;
   
        public AddItemizedOverlay(Drawable defaultMarker) {
             super(boundCenterBottom(defaultMarker));
@@ -29,12 +29,11 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
   
        public AddItemizedOverlay(Drawable defaultMarker, Context context) {
             this(defaultMarker);
-            this.context = context;
+            this.conText = context;
        }
         
        @Override
-       public boolean onTouchEvent(MotionEvent event, MapView mapView)
-       {   
+       public boolean onTouchEvent(MotionEvent event, MapView mapView) {
   
            if (event.getAction() == 1) {
                GeoPoint geopoint = mapView.getProjection().fromPixels(
@@ -62,7 +61,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
        @Override
        protected boolean onTap(int index) {
          OverlayItem item = mapOverlays.get(index);
-         AlertDialog.Builder dialog = new AlertDialog.Builder(this.context);
+         AlertDialog.Builder dialog = new AlertDialog.Builder(this.conText);
          dialog.setTitle(item.getTitle());
          dialog.setMessage(item.getSnippet());
          dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -77,8 +76,7 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
           mapOverlays.add(overlay);
        }
         
-       public void populateNow(){
-           this.populate();
-       }
+       public void populateNow() {
+           this.populate(); }
   
     }

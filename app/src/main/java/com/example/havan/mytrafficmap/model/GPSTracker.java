@@ -12,42 +12,47 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 
+public class GPSTracker extends Service implements LocationListener {
 
-public class GPSTracker extends Service implements LocationListener{
-	
-	private final Context mContext;
-    boolean isGPSEnabled = false;
-    boolean canGetLocation = false;
-    boolean isNetworkEnabled = false;
-    Location location = null;
-    double latitude; 
-    double longitude; 
- 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; 
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; 
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+
     protected LocationManager locationManager;
+
+    private final Context mContext;
+
+    private boolean isGpsEnabled = false;
+
+    private boolean canGetLocation = false;
+
+    private boolean isNetworkEnabled = false;
+
+    private Location location = null;
+
+    private double latitude;
+
+    private double longitude;
     
-    public GPSTracker(Context context)
-    {
-    	this.mContext = context ;
-    	getLocation();
+    public GPSTracker(Context context) {
+        this.mContext = context ;
+        getLocation();
     }
     
-    private Location getLocation()
-    {
-    	try {
+    private Location getLocation() {
+        try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
  
             // getting GPS status
-            isGPSEnabled = locationManager
+            isGpsEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
  
             // getting network status
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
  
-            if (!isGPSEnabled && !isNetworkEnabled) {
+            if (!isGpsEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
                 this.canGetLocation = true;
@@ -67,7 +72,7 @@ public class GPSTracker extends Service implements LocationListener{
                     }
                 }
                 // if GPS Enabled get lat/long using GPS Services
-                if (isGPSEnabled) {
+                if (isGpsEnabled) {
                     if (location == null) {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
@@ -92,7 +97,7 @@ public class GPSTracker extends Service implements LocationListener{
         return location;
     }
     
-    public void stopUsingGPS() {
+    public void stopUsingGps() {
         if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
         }
@@ -152,36 +157,30 @@ public class GPSTracker extends Service implements LocationListener{
         alertDialog.show();
     }
 
-	@Override
-	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onLocationChanged(Location location) {
+        // TODO Auto-generated method stub
+        }
 
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
+        }
 
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+        }
 
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+        }
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

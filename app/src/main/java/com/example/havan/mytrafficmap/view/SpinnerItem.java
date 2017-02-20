@@ -1,20 +1,21 @@
 package com.example.havan.mytrafficmap.view;
 
 public class SpinnerItem {
-	
-	private String title;
+
+    private String title;
+
     private int icon;
-     
-    public SpinnerItem(String title, int icon){
+
+    public SpinnerItem(String title, int icon) {
         this.title = title;
         this.icon = icon;
     }
-     
-    public String getTitle(){
-        return this.title;      
+
+    public String getTitle() {
+        return this.title;
     }
-     
-    public int getIcon(){
+
+    public int getIcon() {
         return this.icon;
     }
 
