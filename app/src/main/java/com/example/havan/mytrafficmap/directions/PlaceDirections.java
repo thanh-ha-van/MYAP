@@ -3,7 +3,6 @@ package com.example.havan.mytrafficmap.directions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
@@ -25,34 +24,27 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 public class PlaceDirections {
 
-    private AlertDialogManager alert = new AlertDialogManager();
+    AlertDialogManager alert = new AlertDialogManager();
+    private String url ;
+    private Context context ;
+    ProgressDialog pDialog ;
+    GoogleMap googleMap ;
+    LatLng from ;
+    LatLng to ;
+    byte typeWay ;
 
-    private String url;
-
-    private Context context;
-
-    private ProgressDialog pDialog;
-
-    private GoogleMap googleMap;
-
-    private LatLng from;
-
-    private LatLng to;
-
-    byte typeWay;
-
-    public PlaceDirections(Context context, GoogleMap googleMap,
-                           LatLng from, LatLng to, byte typeWay) {
-        this.context = context;
-        this.googleMap = googleMap;
-        this.from = from;
-        this.to = to;
-        this.typeWay = typeWay;
+    public PlaceDirections (Context context ,GoogleMap googleMap  , LatLng from , LatLng to , byte typeWay)
+    {
+        this.context = context ;
+        this.googleMap = googleMap ;
+        this.from = from ;
+        this.to = to ;
+        this.typeWay = typeWay ;
 
         pDialog = new ProgressDialog(context);
-        url = getMapsApiDirectionsUrl();
-        this.googleMap.clear();
-        LoadDirections directions = new LoadDirections();
+        url = getMapsApiDirectionsUrl() ;
+        this.googleMap.clear() ;
+        LoadDirections directions = new LoadDirections() ;
         directions.execute(url);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(from,
                 14));
@@ -60,24 +52,28 @@ public class PlaceDirections {
 
     }
 
-    private String getMapsApiDirectionsUrl() {
+    private String getMapsApiDirectionsUrl()
+    {
 
         // add more mode here
         String waypoints =
                 "origin=" + this.from.latitude + "," + this.from.longitude
                         + "&" +
-                        "sDestination=" + to.latitude + "," + to.longitude;
-        String routerType = "mode=driving";
+                        "destination=" + to.latitude + "," + to.longitude ;
+        String routerType  ;
+
+        routerType = "mode=driving" ;
 
         String sensor = "sensor=false";
-        String params = waypoints + "&" + sensor + "&" + routerType;
+        String params = waypoints + "&" + sensor + "&" + routerType ;
         String output = "json";
         String url = "https://maps.googleapis.com/maps/api/directions/"
                 + output + "?" + params;
         return url;
     }
 
-    private void addMarkers() {
+    private void addMarkers()
+    {
         if (googleMap != null) {
             googleMap.addMarker(new MarkerOptions().position(from)
                     .title("Me")
@@ -90,7 +86,17 @@ public class PlaceDirections {
         }
     }
 
-    private class LoadDirections extends AsyncTask<String, Void, String> {
+    private class LoadDirections extends AsyncTask<String, Void, String>
+    {
+//		@Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            pDialog = new ProgressDialog(context);
+//            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading Directions..."));
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
+//        }
 
         @Override
         protected String doInBackground(String... url) {
@@ -112,8 +118,7 @@ public class PlaceDirections {
         }
     }
 
-    private class ParserTask extends AsyncTask<String,
-            Integer, List<List<HashMap<String, String>>>> {
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(
@@ -155,15 +160,17 @@ public class PlaceDirections {
 
                 polyLineOptions.addAll(points);
                 polyLineOptions.width(10);
-                polyLineOptions.color(Color.GREEN);
+                polyLineOptions.color(Color.BLUE);
             }
-            if (polyLineOptions == null) {
+            if (polyLineOptions == null){
+//					alert.showAlertDialog(context, "No way",
+//	                        "Dont have way for this", false);
 
-
-                Toast toast = Toast.makeText(context,
-                        "Dont have way for this type", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, "Dont have way for this", Toast.LENGTH_SHORT);
                 toast.show();
-            } else googleMap.addPolyline(polyLineOptions);
+            }
+            else
+                googleMap.addPolyline(polyLineOptions);
         }
 
     }
