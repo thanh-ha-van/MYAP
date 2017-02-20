@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -34,17 +35,25 @@ import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 import static com.example.havan.mytrafficmap.R.id.map;
 
 public class MainActivity extends FragmentActivity
         implements ActionBar.OnNavigationListener, LocationListener {
+
+    private AutoCompleteTextView destination;
+    @InjectView(R.id.search)
+
+    private PlaceAutoCompleteAdapter mAdapter;
 
     // main variable
     private static String sKeyReference = "reference";
