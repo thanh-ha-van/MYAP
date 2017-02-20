@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'android-apt'
 android {
     compileSdkVersion 'Google Inc.:Google APIs:24'
     buildToolsVersion "25.0.0"
@@ -53,4 +53,14 @@ dependencies {
     compile 'com.google.api-client:google-api-client-android:1.22.0'
     compile 'com.google.http-client:google-http-client-gson:1.22.0'
     compile 'com.google.code.gson:gson:2.4'
+    apt "org.androidannotations:androidannotations:4.0.0"
+    compile "org.androidannotations:androidannotations-api:4.0.0"
+
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0]?.processResources?.manifestFile
+        resourcePackageName 'com.example.havan.mytrafficmap'
+    }
 }
