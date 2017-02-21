@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -35,25 +34,22 @@ import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.MapStyleOptions;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-import static com.example.havan.mytrafficmap.R.id.map;
-
 public class MainActivity extends FragmentActivity
         implements ActionBar.OnNavigationListener, LocationListener {
 
-    private AutoCompleteTextView destination;
-    @InjectView(R.id.search)
-
-    private PlaceAutoCompleteAdapter mAdapter;
 
     // main variable
     private static String sKeyReference = "reference";
@@ -143,6 +139,7 @@ public class MainActivity extends FragmentActivity
 
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -199,17 +196,35 @@ public class MainActivity extends FragmentActivity
     }
 
     private void loadMap() {
-        if (mMap != null) {
-            return;
-        }
-        mMap = ((SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(map)).getMap();
-        if (mMap == null) {
-            return;
-        }
+
+
+        SupportMapFragment mapFragment
+                = (SupportMapFragment)
+                getSupportFragmentManager().findFragmentById(R.id.map);
+
+
+        // Set the event that map is ready
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                onMyMapReady(googleMap);
+            }
+        });
+
+    }
+
+    private void onMyMapReady(GoogleMap googleMap) {
+
+        // Get the google map object
+        mMap = googleMap;
+
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setTrafficEnabled(true); // show traffic
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
-
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                this, R.raw.mapstyle_night));
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -222,7 +237,9 @@ public class MainActivity extends FragmentActivity
                 return false;
             }
         });
+
     }
+
 
     private void getcurrentLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -469,5 +486,6 @@ public class MainActivity extends FragmentActivity
         super.onResume();
         loadMap();
     }
+
 
 }

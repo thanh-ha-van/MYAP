@@ -48,10 +48,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
-    compile 'com.google.android.gms:play-services-maps:8.4.0'
-    compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.google.api-client:google-api-client-android:1.22.0'
-    compile 'com.google.http-client:google-http-client-gson:1.22.0'
     compile 'com.google.code.gson:gson:2.4'
     apt "org.androidannotations:androidannotations:4.0.0"
     compile "org.androidannotations:androidannotations-api:4.0.0"
