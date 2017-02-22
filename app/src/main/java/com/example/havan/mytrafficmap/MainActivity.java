@@ -43,10 +43,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
-
 public class MainActivity extends FragmentActivity
         implements ActionBar.OnNavigationListener, LocationListener {
 
@@ -424,6 +420,11 @@ public class MainActivity extends FragmentActivity
                                 , mMap, from, des, way);
                     }
                 }
+                return true;
+            }
+            case R.id.action_settings: {
+                alert.showAlertDialog(this, "GG",
+                        "GG end fast pls", false);
                 return true;
             }
             default:
