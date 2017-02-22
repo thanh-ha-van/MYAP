@@ -34,7 +34,7 @@ import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.MapFragment;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -98,6 +98,7 @@ public class MainActivity extends FragmentActivity
             = new ArrayList<HashMap<String, String>>();
 
     private PlaceDirections directions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +167,7 @@ public class MainActivity extends FragmentActivity
         addBar();
         adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
         actionBar.setListNavigationCallbacks(adapter, this);
-        //actionBar.setIcon(R.mipmap.ic_launcher);
+        actionBar.setIcon(R.mipmap.ic_launcher);
     }
 
     private String[] getValue() {
@@ -219,7 +220,7 @@ public class MainActivity extends FragmentActivity
         // Get the google map object
         mMap = googleMap;
 
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+        //mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setTrafficEnabled(true); // show traffic
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
