@@ -2,8 +2,9 @@
 
 <resources>
 
-    <style name="Theme.Bar" parent="@style/Theme.AppCompat.Light">
-
+    <style name="Theme.Bar"  parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
 </resources>

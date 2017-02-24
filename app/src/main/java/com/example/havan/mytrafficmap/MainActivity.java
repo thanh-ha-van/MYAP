@@ -6,8 +6,8 @@ import java.util.HashMap;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -28,6 +30,7 @@ import com.example.havan.mytrafficmap.model.Place;
 import com.example.havan.mytrafficmap.model.Places;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
+
 import com.example.havan.mytrafficmap.view.SpinnerItem;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,11 +45,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+
+@EActivity(R.layout.maps)
 public class MainActivity extends FragmentActivity
         implements ActionBar.OnNavigationListener, LocationListener {
 
-
-    private com.lapism.searchview.SearchView mSearchView;
+    //new one
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
+    String[] osArray = {
+            "Setting",
+            "Share",
+            "GG ez",
+            "OS X",
+            "Linux" };
     // main variable
     private static String sKeyReference = "reference";
 
@@ -95,16 +109,16 @@ public class MainActivity extends FragmentActivity
 
     private PlaceDirections directions;
 
+    private static String TAG = MainActivity.class.getSimpleName();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.maps);
+    @AfterViews
+    public void afterViews () {
+
 
         // init UI
         initUI();
 
-        // check internet 
+        // check internet
         detector = new ConnectionDetector(this.getApplicationContext());
         isInternet = detector.isConnectingToInternet();
         if (!isInternet) {
@@ -115,7 +129,7 @@ public class MainActivity extends FragmentActivity
             return;
         }
 
-        // check able of gps 
+        // check able of gps
         gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
             Log.d("Your Location", "latitude:" + gps.getLatitude()
@@ -133,10 +147,7 @@ public class MainActivity extends FragmentActivity
         }
 
         handleIntent(getIntent());
-
     }
-
-
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -155,7 +166,15 @@ public class MainActivity extends FragmentActivity
     }
 
     private void initUI() {
+
+        mDrawerList = (ListView)findViewById(R.id.navList);
+
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
         actionBar = getActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorPrimary)));
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         value = getValue();
@@ -397,11 +416,6 @@ public class MainActivity extends FragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.search: {
-                mSearchView.open(true, item);
-                return true;
-            }
 
             case R.id.direc: {
                 // get type way
