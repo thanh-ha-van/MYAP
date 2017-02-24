@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -47,6 +46,7 @@ public class MainActivity extends FragmentActivity
         implements ActionBar.OnNavigationListener, LocationListener {
 
 
+    private com.lapism.searchview.SearchView mSearchView;
     // main variable
     private static String sKeyReference = "reference";
 
@@ -389,13 +389,6 @@ public class MainActivity extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
 
         return super.onCreateOptionsMenu(menu);
 
@@ -404,6 +397,12 @@ public class MainActivity extends FragmentActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.search: {
+                mSearchView.open(true, item);
+                return true;
+            }
+
             case R.id.direc: {
                 // get type way
                 byte way = Utils.sKeyWay;
