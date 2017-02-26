@@ -14,7 +14,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -45,22 +54,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.maps)
-public class MainActivity extends FragmentActivity
-        implements ActionBar.OnNavigationListener, LocationListener {
+public class MainActivity extends AppCompatActivity
+        implements ActionBar.OnNavigationListener, NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
-    //new one
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
-    String[] osArray = {
-            "Setting",
-            "Share",
-            "GG ez",
-            "OS X",
-            "Linux" };
     // main variable
     private static String sKeyReference = "reference";
 
@@ -114,7 +115,6 @@ public class MainActivity extends FragmentActivity
     @AfterViews
     public void afterViews () {
 
-
         // init UI
         initUI();
 
@@ -167,11 +167,37 @@ public class MainActivity extends FragmentActivity
 
     private void initUI() {
 
-        mDrawerList = (ListView)findViewById(R.id.navList);
+        /*
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
 
+        ItemData itemsData[] = { new ItemData("Help",R.drawable.atm),
+                new ItemData("Delete",R.drawable.atm),
+                new ItemData("Cloud",R.drawable.atm),
+                new ItemData("Favorite",R.drawable.atm),
+                new ItemData("Like",R.drawable.atm),
+                new ItemData("Rating",R.drawable.atm)};
+
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        MyAdapter mAdapter = new MyAdapter(itemsData);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        */
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_LIST);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        value = getValue();
+        compare = getValue1();
+        addBar();
+        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
+         /*
         actionBar = getActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.colorPrimary)));
@@ -183,8 +209,18 @@ public class MainActivity extends FragmentActivity
         adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
         actionBar.setListNavigationCallbacks(adapter, this);
         actionBar.setIcon(R.mipmap.ic_launcher);
+        */
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
     private String[] getValue() {
         return getResources().getStringArray(R.array.items);
     }
@@ -457,6 +493,37 @@ public class MainActivity extends FragmentActivity
         }
         return true;
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected (MenuItem item) {
+        int id = item.getItemId(); // Handle navigation view item clicks here.
+
+        if (id == R.id.nav_sign_in) {
+            // Handle the camera action
+        } else if (id == R.id.nav_setting) {
+
+        } else if (id == R.id.nav_style) {
+        } else if (id == R.id.style_default) {
+            mMap.setMapStyle(null);
+        } else if (id == R.id.style_gray_scale) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_grayscale));
+
+        } else if (id == R.id.style_night) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_night));
+
+        } else if (id == R.id.style_retro) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_retro));
+
+        } else if (id == R.id.nav_share) {
+        }
+// will be write later
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
