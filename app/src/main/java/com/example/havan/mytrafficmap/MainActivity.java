@@ -2,11 +2,15 @@ package com.example.havan.mytrafficmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.ActionBar;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,22 +18,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -37,6 +35,9 @@ import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.model.GooglePlaces;
 import com.example.havan.mytrafficmap.model.Place;
 import com.example.havan.mytrafficmap.model.Places;
+import com.example.havan.mytrafficmap.slidelist.FB_Fragment;
+import com.example.havan.mytrafficmap.slidelist.GP_Fragment;
+import com.example.havan.mytrafficmap.slidelist.TB_Fragment;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
 
@@ -54,13 +55,29 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
-import org.androidannotations.annotations.AfterInject;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
-        implements ActionBar.OnNavigationListener, NavigationView.OnNavigationItemSelectedListener, LocationListener {
+        implements ActionBar.OnNavigationListener,  LocationListener {
+
+
+    // new one
+    public String[] menutitles;
+     TypedArray menuIcons;
+
+    // nav drawer title
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private List<RowItem> rowItems;
+    private CustomAdapter adapter1;
 
     // main variable
     private static String sKeyReference = "reference";
@@ -69,7 +86,7 @@ public class MainActivity extends AppCompatActivity
     //MapView m;
 
     //ui
-    private ActionBar actionBar;
+    private android.support.v7.app.ActionBar actionBar;
 
     private ArrayList<SpinnerItem> navSpinner;
 
@@ -167,60 +184,89 @@ public class MainActivity extends AppCompatActivity
 
     private void initUI() {
 
-        /*
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
+        mTitle = mDrawerTitle = getTitle();
 
-        ItemData itemsData[] = { new ItemData("Help",R.drawable.atm),
-                new ItemData("Delete",R.drawable.atm),
-                new ItemData("Cloud",R.drawable.atm),
-                new ItemData("Favorite",R.drawable.atm),
-                new ItemData("Like",R.drawable.atm),
-                new ItemData("Rating",R.drawable.atm)};
+        menutitles = getResources().getStringArray(R.array.titles);
+        menuIcons = getResources().obtainTypedArray(R.array.icons);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.slider_list);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        MyAdapter mAdapter = new MyAdapter(itemsData);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        rowItems = new ArrayList<RowItem>();
 
-        */
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
-        getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_LIST);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        value = getValue();
-        compare = getValue1();
-        addBar();
-        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
-         /*
-        actionBar = getActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.colorPrimary)));
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        value = getValue();
-        compare = getValue1();
-        addBar();
-        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
-        actionBar.setListNavigationCallbacks(adapter, this);
-        actionBar.setIcon(R.mipmap.ic_launcher);
-        */
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        for (int i = 0; i < menutitles.length; i++) {
+            RowItem items = new RowItem(menutitles[i], menuIcons.getResourceId(
+                    i, -1));
+            rowItems.add(items);
         }
+
+        menuIcons.recycle();
+
+        adapter1 = new CustomAdapter(getApplicationContext(), rowItems);
+
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new SlideitemListener());
+
+        // enabling action bar app icon and behaving it as toggle button
+
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_earth, // nav menu toggle icon
+                R.string.app_name, // nav drawer open - description for
+                // accessibility
+                R.string.app_name // nav drawer close - description for
+                // accessibility
+        ) {
+            public void onDrawerClosed(View view) {
+                getSupportActionBar().setTitle(mTitle);
+                // calling onPrepareOptionsMenu() to show action bar icons
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(mDrawerTitle);
+                // calling onPrepareOptionsMenu() to hide action bar icons
+                invalidateOptionsMenu();
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        ///////////////////////////////
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorPrimary)));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        actionBar = getSupportActionBar();
+
+        value = getValue();
+        compare = getValue1();
+
+        addBar();
+
+        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
+        getSupportActionBar().setListNavigationCallbacks(adapter, new android.support.v7.app.ActionBar.OnNavigationListener() {
+            @Override
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                // Action to be taken after selecting a spinner item
+                // dua list marker = rong
+                if (itemPosition > 0) {
+                    mMap.clear();
+                    Utils.sKeyPlace = compare[itemPosition];
+                    new LoadPlaces().execute();
+                    itemPosition = -1;
+                }
+                return true;
+            }
+        });
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
     }
+
     private String[] getValue() {
         return getResources().getStringArray(R.array.items);
     }
@@ -249,11 +295,9 @@ public class MainActivity extends AppCompatActivity
 
     private void loadMap() {
 
-
         SupportMapFragment mapFragment
                 = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
-
 
         // Set the event that map is ready
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -376,7 +420,7 @@ public class MainActivity extends AppCompatActivity
                         loadMap();
                         getcurrentLocation();
 
-                        // draw my position 
+                        // draw my position
                         mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lon))
                                 .title("Me")
@@ -432,14 +476,42 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void sendInfo(Marker marker) {
-        String strInfo = marker.getTitle() + "\n" + marker.getSnippet();
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, strInfo);
-        shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, "Send via !"));
+
+    class SlideitemListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            updateDisplay(position);
+        }
+
     }
 
+    private void updateDisplay(int position) {
+        Fragment fragment = null;
+        switch (position) {
+            case 0:
+                fragment = new FB_Fragment();
+                break;
+            case 1:
+                fragment = new GP_Fragment();
+                break;
+            case 2:
+                fragment = new TB_Fragment();
+                break;
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+
+            setTitle(menutitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -451,6 +523,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
 
             case R.id.direc: {
@@ -496,37 +571,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected (MenuItem item) {
-        int id = item.getItemId(); // Handle navigation view item clicks here.
-
-        if (id == R.id.nav_sign_in) {
-            // Handle the camera action
-        } else if (id == R.id.nav_setting) {
-
-        } else if (id == R.id.nav_style) {
-        } else if (id == R.id.style_default) {
-            mMap.setMapStyle(null);
-        } else if (id == R.id.style_gray_scale) {
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.mapstyle_grayscale));
-
-        } else if (id == R.id.style_night) {
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.mapstyle_night));
-
-        } else if (id == R.id.style_retro) {
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.mapstyle_retro));
-
-        } else if (id == R.id.nav_share) {
-        }
-// will be write later
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         // TODO Auto-generated method stub
 
@@ -569,5 +613,39 @@ public class MainActivity extends AppCompatActivity
         loadMap();
     }
 
+    /***
+     * Called when invalidateOptionsMenu() is triggered
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // if nav drawer is opened, hide the action items
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
 
 }

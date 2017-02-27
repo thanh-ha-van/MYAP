@@ -3,7 +3,7 @@
 
     </style>
 
-    <style name="CustomDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+    <style name="CustomDialog" parent="@android:style/Theme.Holo.Dialog">
         <item name="android:windowNoTitle">false</item>
     </style>
     AppBaseTheme
