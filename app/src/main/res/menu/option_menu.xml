@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/search"
         android:title="@string/search_title"
         android:icon="@drawable/ic_search"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:actionViewClass="android.widget.SearchView" />
 
 
     <item   android:id="@+id/direc"
-        android:title="Direction"
+        android:title="@string/direction"
         android:icon="@drawable/ic_directions"
-        android:showAsAction="always" />
+        app:showAsAction="always" />
 
     <item
+        android:title="@string/settings"
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
-        android:showAsAction="always"/>
+        app:showAsAction="always"/>
 </menu>

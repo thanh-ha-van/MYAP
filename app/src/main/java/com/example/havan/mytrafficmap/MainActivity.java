@@ -2,15 +2,12 @@ package com.example.havan.mytrafficmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -18,8 +15,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
@@ -29,24 +27,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.model.GooglePlaces;
 import com.example.havan.mytrafficmap.model.Place;
 import com.example.havan.mytrafficmap.model.Places;
-import com.example.havan.mytrafficmap.slidelist.FB_Fragment;
-import com.example.havan.mytrafficmap.slidelist.GP_Fragment;
-import com.example.havan.mytrafficmap.slidelist.TB_Fragment;
+
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
-
+import com.example.havan.mytrafficmap.view.ListAdapter;
 import com.example.havan.mytrafficmap.view.SpinnerItem;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -61,23 +58,34 @@ import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
-        implements ActionBar.OnNavigationListener,  LocationListener {
+        implements ActionBar.OnNavigationListener, LocationListener {
 
 
-    // new one
-    public String[] menutitles;
-     TypedArray menuIcons;
-
-    // nav drawer title
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
 
-    private List<RowItem> rowItems;
-    private CustomAdapter adapter1;
+    public String ListItemsName[] = new String[]{
+            "ONE",
+            "TWO",
+            "THREE",
+            "FOUR",
+            "FIVE",
+            "SIX",
+            "SEVEN"
+    };
+    public Integer ImageName[] = {
+            R.drawable.ic_earth,
+            R.drawable.ic_earth,
+            R.drawable.ic_earth,
+            R.drawable.ic_earth,
+            R.drawable.ic_earth,
+            R.drawable.ic_earth,
+            R.drawable.ic_earth,
+    };
+    public ListView listView;
+    public ListAdapter listAdapter;
+
 
     // main variable
     private static String sKeyReference = "reference";
@@ -130,7 +138,7 @@ public class MainActivity extends AppCompatActivity
     private static String TAG = MainActivity.class.getSimpleName();
 
     @AfterViews
-    public void afterViews () {
+    public void afterViews() {
 
         // init UI
         initUI();
@@ -165,6 +173,7 @@ public class MainActivity extends AppCompatActivity
 
         handleIntent(getIntent());
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -185,52 +194,40 @@ public class MainActivity extends AppCompatActivity
     private void initUI() {
 
 
-        mTitle = mDrawerTitle = getTitle();
-
-        menutitles = getResources().getStringArray(R.array.titles);
-        menuIcons = getResources().obtainTypedArray(R.array.icons);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.slider_list);
-
-        rowItems = new ArrayList<RowItem>();
-
-        for (int i = 0; i < menutitles.length; i++) {
-            RowItem items = new RowItem(menutitles[i], menuIcons.getResourceId(
-                    i, -1));
-            rowItems.add(items);
-        }
-
-        menuIcons.recycle();
-
-        adapter1 = new CustomAdapter(getApplicationContext(), rowItems);
-
-        mDrawerList.setAdapter(adapter);
-        mDrawerList.setOnItemClickListener(new SlideitemListener());
-
-        // enabling action bar app icon and behaving it as toggle button
-
-
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mActivityTitle = getTitle().toString();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_earth, // nav menu toggle icon
-                R.string.app_name, // nav drawer open - description for
-                // accessibility
-                R.string.app_name // nav drawer close - description for
-                // accessibility
-        ) {
-            public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                invalidateOptionsMenu();
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                invalidateOptionsMenu();
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        ////////////////
+        listView = (ListView)findViewById(R.id.listView1);
+
+        listAdapter = new ListAdapter(MainActivity.this , ListItemsName, ImageName);
+
+        listView.setAdapter(listAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), ListItemsName[position], Toast.LENGTH_LONG).show();
+            }
+        });
 
         ///////////////////////////////
 
@@ -249,20 +246,21 @@ public class MainActivity extends AppCompatActivity
         addBar();
 
         adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
-        getSupportActionBar().setListNavigationCallbacks(adapter, new android.support.v7.app.ActionBar.OnNavigationListener() {
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                // Action to be taken after selecting a spinner item
-                // dua list marker = rong
-                if (itemPosition > 0) {
-                    mMap.clear();
-                    Utils.sKeyPlace = compare[itemPosition];
-                    new LoadPlaces().execute();
-                    itemPosition = -1;
-                }
-                return true;
-            }
-        });
+        getSupportActionBar().setListNavigationCallbacks(adapter,
+                new android.support.v7.app.ActionBar.OnNavigationListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                        // Action to be taken after selecting a spinner item
+                        // dua list marker = rong
+                        if (itemPosition > 0) {
+                            mMap.clear();
+                            Utils.sKeyPlace = compare[itemPosition];
+                            new LoadPlaces().execute();
+                            itemPosition = -1;
+                        }
+                        return true;
+                    }
+                });
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
     }
@@ -477,41 +475,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    class SlideitemListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            updateDisplay(position);
-        }
 
-    }
-
-    private void updateDisplay(int position) {
-        Fragment fragment = null;
-        switch (position) {
-            case 0:
-                fragment = new FB_Fragment();
-                break;
-            case 1:
-                fragment = new GP_Fragment();
-                break;
-            case 2:
-                fragment = new TB_Fragment();
-                break;
-            default:
-                break;
-        }
-
-        if (fragment != null) {
-
-            setTitle(menutitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
-        }
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -523,6 +487,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -612,40 +577,24 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         loadMap();
     }
-
-    /***
-     * Called when invalidateOptionsMenu() is triggered
-     */
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
     }
 
 }

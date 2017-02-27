@@ -9,6 +9,7 @@
     <string name="search_hint">Search:...</string>
     <string name="share">Share</string>
     <string name="settings">Setting</string>
+    <string name="direction">Direction</string>
     <string name="map_style">CHOOSE MAP STYLE</string>
     <string name="sign_in">Sign in</string>
     <string name="style_label_retro">Retro</string>
@@ -17,6 +18,8 @@
     <string name="style_label_default">Default</string>
     <string name="style_set_to">Style set to: %1$s</string>
     <string name="api_key">AIzaSyAPS6Wag9PVxxOxXfWuMdA9kZwKdsLkI2k</string>
+    <string name="drawer_open">Menu open</string>
+    <string name="drawer_close">Menu close</string>
 
 
     <!-- items of sliding menu -->
