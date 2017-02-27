@@ -66,21 +66,20 @@ public class MainActivity extends AppCompatActivity
     private String mActivityTitle;
 
     public String ListItemsName[] = new String[]{
-            "ONE",
-            "TWO",
-            "THREE",
-            "FOUR",
-            "FIVE",
-            "SIX",
-            "SEVEN"
+            "Log in",
+            "Your Location",
+            "Favorite place",
+            "Map style",
+            "Show option",
+            "Share",
     };
     public Integer ImageName[] = {
-            R.drawable.ic_earth,
-            R.drawable.ic_earth,
-            R.drawable.ic_earth,
-            R.drawable.ic_earth,
-            R.drawable.ic_earth,
-            R.drawable.ic_earth,
+            R.drawable.ic_person,
+            R.drawable.pin1,
+            R.drawable.pin2,
+            R.drawable.ic_style,
+            R.drawable.ic_menu_manage,
+            R.drawable.ic_menu_share,
             R.drawable.ic_earth,
     };
     public ListView listView;
@@ -317,8 +316,8 @@ public class MainActivity extends AppCompatActivity
         mMap.setTrafficEnabled(true); // show traffic
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
-        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                this, R.raw.mapstyle_night));
+        //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+        //        this, R.raw.mapstyle_night));
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -424,7 +423,7 @@ public class MainActivity extends AppCompatActivity
                                 .title("Me")
                                 .snippet("Local of me")
                                 .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.direction_marker)));
+                                        .fromResource(R.drawable.pin2)));
 
                         if (listPlace.results != null) {
                             // loop through all the places
@@ -437,7 +436,7 @@ public class MainActivity extends AppCompatActivity
                                         .title(place.name)
                                         .snippet(place.vicinity)
                                         .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.maps)));
+                                                .fromResource(R.drawable.pin1)));
 
                                 listMaker.add(marker);
                             }
