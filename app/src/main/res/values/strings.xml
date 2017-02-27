@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">T-Map</string>
+    <string name="app_name">My Traffic Map</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="my_name">Ha Van Thanh</string>
+    <string name="my_name">Ha Van Thanh - University of Information Technology</string>
     <string name="server_client_id">945104725933-vh1vr0ht6e3j6kpsrknb407gki63q49s.apps.googleusercontent.com</string>
     <string name="search_title">Search:...</string>
     <string name="search_hint">Search:...</string>

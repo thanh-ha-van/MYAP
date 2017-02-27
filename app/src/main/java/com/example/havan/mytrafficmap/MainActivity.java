@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -58,32 +59,14 @@ import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
-        implements ActionBar.OnNavigationListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ActionBar.OnNavigationListener, LocationListener {
 
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
 
-    public String ListItemsName[] = new String[]{
-            "Log in",
-            "Your Location",
-            "Favorite place",
-            "Map style",
-            "Show option",
-            "Share",
-    };
-    public Integer ImageName[] = {
-            R.drawable.ic_person,
-            R.drawable.pin1,
-            R.drawable.pin2,
-            R.drawable.ic_style,
-            R.drawable.ic_menu_manage,
-            R.drawable.ic_menu_share,
-            R.drawable.ic_earth,
-    };
-    public ListView listView;
-    public ListAdapter listAdapter;
+
 
 
     // main variable
@@ -192,7 +175,6 @@ public class MainActivity extends AppCompatActivity
 
     private void initUI() {
 
-
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -212,21 +194,11 @@ public class MainActivity extends AppCompatActivity
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        ////////////////
-        listView = (ListView)findViewById(R.id.listView1);
-
-        listAdapter = new ListAdapter(MainActivity.this , ListItemsName, ImageName);
-
-        listView.setAdapter(listAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), ListItemsName[position], Toast.LENGTH_LONG).show();
-            }
-        });
 
         ///////////////////////////////
 
@@ -473,7 +445,36 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public boolean onNavigationItemSelected (MenuItem item) {
+        int id = item.getItemId(); // Handle navigation view item clicks here.
 
+        if (id == R.id.nav_sign_in) {
+            // Handle the camera action
+        } else if (id == R.id.nav_setting) {
+
+        } else if (id == R.id.nav_style) {
+        } else if (id == R.id.style_default) {
+            // do nothing
+        } else if (id == R.id.style_gray_scale) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_grayscale));
+
+        } else if (id == R.id.style_night) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_night));
+
+        } else if (id == R.id.style_retro) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_retro));
+
+        } else if (id == R.id.nav_share) {
+        }
+// will be write later
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
