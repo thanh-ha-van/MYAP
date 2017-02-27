@@ -8,18 +8,25 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -34,7 +41,7 @@ import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.MapFragment;
+
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -43,13 +50,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
-public class MainActivity extends FragmentActivity
-        implements ActionBar.OnNavigationListener, LocationListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, ActionBar.OnNavigationListener, LocationListener {
 
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
 
     // main variable
     private static String sKeyReference = "reference";
@@ -58,7 +65,7 @@ public class MainActivity extends FragmentActivity
     //MapView m;
 
     //ui
-    private ActionBar actionBar;
+    private android.support.v7.app.ActionBar actionBar;
 
     private ArrayList<SpinnerItem> navSpinner;
 
@@ -158,15 +165,64 @@ public class MainActivity extends FragmentActivity
     }
 
     private void initUI() {
-        actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mActivityTitle = getTitle().toString();
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorPrimary)));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        actionBar = getSupportActionBar();
+
         value = getValue();
         compare = getValue1();
+
         addBar();
+
         adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
-        actionBar.setListNavigationCallbacks(adapter, this);
-        //actionBar.setIcon(R.mipmap.ic_launcher);
+        getSupportActionBar().setListNavigationCallbacks(adapter,
+                new android.support.v7.app.ActionBar.OnNavigationListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                        // Action to be taken after selecting a spinner item
+                        // dua list marker = rong
+                        if (itemPosition > 0) {
+                            mMap.clear();
+                            Utils.sKeyPlace = compare[itemPosition];
+                            new LoadPlaces().execute();
+                            itemPosition = -1;
+                        }
+                        return true;
+                    }
+                });
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
     }
 
     private String[] getValue() {
@@ -379,7 +435,46 @@ public class MainActivity extends FragmentActivity
 
         }
     }
+    @Override
+    public boolean onNavigationItemSelected (MenuItem item) {
+        int id = item.getItemId(); // Handle navigation view item clicks here.
 
+        if (id == R.id.nav_sign_in) {
+            // Handle the camera action
+        } else if (id == R.id.nav_setting) {
+
+        } else if (id == R.id.nav_style) {
+        } else if (id == R.id.style_default) {
+            // do nothing
+        } else if (id == R.id.style_gray_scale) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_grayscale));
+
+        } else if (id == R.id.style_night) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_night));
+
+        } else if (id == R.id.style_retro) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.mapstyle_retro));
+
+        } else if (id == R.id.nav_share) {
+        }
+// will be write later
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
     private void sendInfo(Marker marker) {
         String strInfo = marker.getTitle() + "\n" + marker.getSnippet();
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -392,14 +487,6 @@ public class MainActivity extends FragmentActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
         return super.onCreateOptionsMenu(menu);
 
     }

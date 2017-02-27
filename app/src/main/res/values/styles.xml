@@ -1,5 +1,5 @@
 <resources>
-    <style name="AppBaseTheme" parent="Theme.Bar">
+    <style name="Theme.Bar" parent="@style/Theme.AppCompat.Light">
 
     </style>
 
@@ -8,7 +8,7 @@
     </style>
     AppBaseTheme
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="Theme.Bar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -20,8 +20,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="Theme.Bar" />
+    <style name="AppTheme.AppBarOverlay" parent="@style/Theme.AppCompat.Light" />
 
-    <style name="AppTheme.PopupOverlay" parent="Theme.Bar" />
+    <style name="AppTheme.PopupOverlay" parent="style/Theme.AppCompat.Light" />
 
 </resources>

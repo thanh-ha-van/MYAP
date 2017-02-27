@@ -17,6 +17,8 @@
     <string name="style_label_default">Default</string>
     <string name="style_set_to">Style set to: %1$s</string>
     <string name="api_key">AIzaSyAPS6Wag9PVxxOxXfWuMdA9kZwKdsLkI2k</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 
 
     <!-- items of sliding menu -->
