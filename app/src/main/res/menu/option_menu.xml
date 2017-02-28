@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item android:id="@+id/search"
         android:title="@string/search_title"
         android:icon="@drawable/ic_search"
@@ -14,9 +15,4 @@
         android:icon="@drawable/ic_directions"
         app:showAsAction="always" />
 
-    <item
-        android:title="@string/settings"
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings"
-        app:showAsAction="always"/>
 </menu>

@@ -3,7 +3,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="my_name">Ha Van Thanh - University of Information Technology</string>
+    <string name="my_name">University of Information Technology</string>
     <string name="server_client_id">945104725933-vh1vr0ht6e3j6kpsrknb407gki63q49s.apps.googleusercontent.com</string>
     <string name="search_title">Search:...</string>
     <string name="search_hint">Search:...</string>
@@ -11,7 +11,7 @@
     <string name="settings">Setting</string>
     <string name="direction">Direction</string>
     <string name="map_style">CHOOSE MAP STYLE</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in">LOG IN</string>
     <string name="style_label_retro">Retro</string>
     <string name="style_label_night">night</string>
     <string name="style_label_gray_scale">Gray scale</string>
@@ -20,6 +20,9 @@
     <string name="api_key">AIzaSyAPS6Wag9PVxxOxXfWuMdA9kZwKdsLkI2k</string>
     <string name="drawer_open">Menu open</string>
     <string name="drawer_close">Menu close</string>
+    <string name="view_option">VIEW OPTION</string>
+    <string name="fav_place">FAVORITE PLACES</string>
+    <string name="share_app">SHARE</string>
 
 
     <!-- items of sliding menu -->
@@ -54,16 +57,19 @@
         <item>supermarket</item>
         <item>theatre</item>
     </string-array>
+    <string name="title_activity_login">Sign in</string>
 
-    <string-array name="titles">
-        <item>Facebook</item>
-        <item>Google-Plus</item>
-        <item>TutorialsBuzz</item>
-    </string-array>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 
-    <array name="icons">
-        <item>@drawable/ic_menu_gallery</item>
-        <item>@drawable/ic_menu_gallery</item>
-        <item>@drawable/ic_menu_gallery</item>
-    </array>
 </resources>

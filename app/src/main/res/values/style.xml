@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle" tools:ignore="NewApi">@style/MyActionBar</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+
+
+    </style>
+
+    <!-- ActionBar style -->
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+
+        <item name="android:background">#b3000000</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/colorPrimary</item>
+    </style>
+
+    <!-- Style for the navigation drawer icon -->
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/cardview_light_background</item>
+    </style>
+</resources>

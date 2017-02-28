@@ -204,8 +204,6 @@ public class MainActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.colorPrimary)));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
@@ -246,6 +244,7 @@ public class MainActivity extends AppCompatActivity
 
     private void addBar() {
         // Spinner title navigation data
+
         navSpinner = new ArrayList<SpinnerItem>();
         navSpinner.add(new SpinnerItem(value[0], R.drawable.airport));
         navSpinner.add(new SpinnerItem(value[1], R.drawable.atm));
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity
         navSpinner.add(new SpinnerItem(value[9], R.drawable.library));
         navSpinner.add(new SpinnerItem(value[10], R.drawable.police));
         navSpinner.add(new SpinnerItem(value[11], R.drawable.supermarket));
-        navSpinner.add(new SpinnerItem(value[12], R.drawable.theater));
+        navSpinner.add(new SpinnerItem(value[12], R.drawable.ic_movie));
     }
 
     private void loadMap() {
@@ -284,12 +283,10 @@ public class MainActivity extends AppCompatActivity
         // Get the google map object
         mMap = googleMap;
 
-        //mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setTrafficEnabled(true); // show traffic
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
-        //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-        //        this, R.raw.mapstyle_night));
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -450,25 +447,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
         if (id == R.id.nav_sign_in) {
-            // Handle the camera action
-        } else if (id == R.id.nav_setting) {
+            // sign in activity
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.map_style) {
+            // choose map style
+        } else if (id == R.id.view_option) {
+            // view option activity
+        } else if (id == R.id.fav_place) {
+            // list of fav place activity
+        } else if (id == R.id.share) {
+            //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+              //      this, R.raw.mapstyle_grayscale));
+            //share activity
 
-        } else if (id == R.id.nav_style) {
-        } else if (id == R.id.style_default) {
-            // do nothing
-        } else if (id == R.id.style_gray_scale) {
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.mapstyle_grayscale));
-
-        } else if (id == R.id.style_night) {
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.mapstyle_night));
-
-        } else if (id == R.id.style_retro) {
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.mapstyle_retro));
-
-        } else if (id == R.id.nav_share) {
         }
 // will be write later
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -511,11 +503,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 return true;
             }
-            case R.id.action_settings: {
-                alert.showAlertDialog(this, "GG",
-                        "GG end fast pls", false);
-                return true;
-            }
+
             default:
                 return super.onOptionsItemSelected(item);
         }
