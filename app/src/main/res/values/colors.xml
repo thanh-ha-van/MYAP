@@ -5,4 +5,5 @@
     <color name="colorAccent">#EEEEEE</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#566258</color>
 </resources>

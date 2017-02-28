@@ -56,6 +56,7 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:4.0.0"
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.lapism:searchview:4.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
 }
 
 apt {

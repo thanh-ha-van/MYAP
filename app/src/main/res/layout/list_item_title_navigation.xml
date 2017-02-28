@@ -19,8 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="20dp"
+        android:textAppearance="@style/TextAppearance.FontPath"
         android:textColor="#FFFFFF"
         android:textAllCaps="true"
-        android:layout_toRightOf="@id/imgIcon"/>
+        android:layout_toEndOf="@id/imgIcon"/>
  
 </RelativeLayout>

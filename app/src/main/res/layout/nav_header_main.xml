@@ -26,7 +26,7 @@
         android:paddingLeft="@dimen/nav_header_left"
         android:paddingBottom="@dimen/nav_header_bottom"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.FontPath" />
 
     <TextView
         android:id="@+id/textView"
@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/nav_header_left"
         android:paddingBottom="@dimen/nav_header_bottom"
+        android:textAppearance="@style/TextAppearance.FontPath"
         android:text="@string/my_name" />
 
 </LinearLayout>

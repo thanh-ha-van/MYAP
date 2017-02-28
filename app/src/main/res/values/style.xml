@@ -7,10 +7,13 @@
         <item name="actionBarStyle">@style/MyActionBar</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-
+        <item name="fontPath">font/SVN-Aguda Bold.otf</item>
 
     </style>
-
+    <style name="TextAppearance.FontPath" parent="android:TextAppearance">
+        <!-- Custom Attr-->
+        <item name="fontPath">font/SVN-Aguda Bold.otf</item>
+    </style>
     <!-- ActionBar style -->
     <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
 

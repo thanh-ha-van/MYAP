@@ -6,6 +6,7 @@ import java.util.HashMap;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -57,6 +58,9 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionBar.OnNavigationListener, LocationListener {
@@ -65,8 +69,6 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
-
-
 
 
     // main variable
@@ -121,6 +123,12 @@ public class MainActivity extends AppCompatActivity
 
     @AfterViews
     public void afterViews() {
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("font/SVN-Aguda Bold.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
 
         // init UI
         initUI();
@@ -475,6 +483,11 @@ public class MainActivity extends AppCompatActivity
 
         return super.onCreateOptionsMenu(menu);
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override

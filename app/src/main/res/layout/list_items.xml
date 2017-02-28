@@ -20,6 +20,6 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/white"
         android:textAllCaps="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="@style/TextAppearance.FontPath" />
 
 </RelativeLayout>
