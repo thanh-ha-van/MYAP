@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#618C8C</color>
-    <color name="colorPrimaryDark">#2D7DAA</color>
+    <color name="colorPrimary">#283E4E</color>
+    <color name="colorPrimaryDark">#365461</color>
+    <color name="dra">#3D515F</color>
+    <color name="dra2">#50626F</color>
     <color name="colorAccent">#EEEEEE</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="white">#FFFFFF</color>
-    <color name="black">#566258</color>
+    <color name="black">#D8D8D8</color>
+
 </resources>

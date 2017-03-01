@@ -64,7 +64,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity"></activity>
+
+        <activity android:name=".MapStyle"
+            android:label="Map style"
+            android:theme="@style/AppTheme">
+            ></activity>
     </application>
 
 </manifest>

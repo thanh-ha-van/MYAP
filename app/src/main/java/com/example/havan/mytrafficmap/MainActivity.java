@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     //MapView m;
 
     //ui
-    private android.support.v7.app.ActionBar actionBar;
+    public android.support.v7.app.ActionBar actionBar;
 
     private ArrayList<SpinnerItem> navSpinner;
 
@@ -110,25 +111,42 @@ public class MainActivity extends AppCompatActivity
 
     private ProgressDialog pDialog;
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
 
     private ArrayList<Marker> listMaker;
 
     private ArrayList<HashMap<String, String>> placesListItems
             = new ArrayList<HashMap<String, String>>();
 
-    private PlaceDirections directions;
+    public PlaceDirections directions;
 
     private static String TAG = MainActivity.class.getSimpleName();
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     @AfterViews
     public void afterViews() {
+
+
+        pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = pref.edit();
+        // check if first run
+        if (pref.getBoolean("firstrun", true)) {
+            editor.putBoolean("firstrun",false);
+            editor.putBoolean("show_traffic", true);
+            editor.putString("map_style", "normal");
+            editor.commit();
+        }
+
+        //boolean showTraffic= pref.getBoolean("show_traffic", true);
+        //String mapStyle=pref.getString("map_style", "normal");
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
 
         // init UI
         initUI();
@@ -290,11 +308,10 @@ public class MainActivity extends AppCompatActivity
 
         // Get the google map object
         mMap = googleMap;
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setTrafficEnabled(true); // show traffic
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
+        setMyMapStyle();
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -310,6 +327,39 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void setMyMapStyle ()
+    {
+        String mapStyle=pref.getString("map_style", null);
+        switch (mapStyle){
+            case "normal":
+                mMap.setMapStyle(null);
+                break;
+            case "night":
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.mapstyle_night));
+                break;
+            case "retro":
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.mapstyle_retro));
+                break;
+
+            case "dark":
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.mapstyle_dark));
+                break;
+            case "silver":
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.mapstyle_silver));
+                break;
+            case "aubergine":
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                        this, R.raw.mapstyle_aubergine));
+                break;
+            default:
+                mMap.setMapStyle(null);
+        }
+
+    }
 
     private void getcurrentLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -459,15 +509,14 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (id == R.id.map_style) {
+            Intent i = new Intent(MainActivity.this, MapStyle.class);
+            startActivity(i);
             // choose map style
         } else if (id == R.id.view_option) {
             // view option activity
         } else if (id == R.id.fav_place) {
             // list of fav place activity
         } else if (id == R.id.share) {
-            //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-              //      this, R.raw.mapstyle_grayscale));
-            //share activity
 
         }
 // will be write later
@@ -577,6 +626,7 @@ public class MainActivity extends AppCompatActivity
         // TODO Auto-generated method stub
         super.onResume();
         loadMap();
+
     }
     @Override
     public void onBackPressed() {
