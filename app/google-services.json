@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "945104725933",
+    "project_id": "my-app-143818"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945104725933:android:764fa2c272239f70",
+        "android_client_info": {
+          "package_name": "com.example.havan.mytrafficmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945104725933-vf1n97cafgmok4edjlodna2ti98jltqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.havan.mytrafficmap",
+            "certificate_hash": "5f6268dba790951bb81370cac882f0b0498ea66d"
+          }
+        },
+        {
+          "client_id": "945104725933-vh1vr0ht6e3j6kpsrknb407gki63q49s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPS6Wag9PVxxOxXfWuMdA9kZwKdsLkI2k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
