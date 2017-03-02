@@ -31,15 +31,15 @@ public class PlaceDirections {
 
     private Context context;
 
-    ProgressDialog pDialog;
+    private ProgressDialog pDialog;
 
-    GoogleMap googleMap;
+    private GoogleMap googleMap;
 
-    LatLng from;
+    private LatLng from;
 
-    LatLng to;
+    private LatLng to;
 
-    byte typeWay;
+    private byte typeWay;
 
     public PlaceDirections(Context context,
                            GoogleMap googleMap, LatLng from, LatLng to, byte typeWay) {
@@ -93,15 +93,6 @@ public class PlaceDirections {
     }
 
     private class LoadDirections extends AsyncTask<String, Void, String> {
-//		@Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            pDialog = new ProgressDialog(context);
-//            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading Directions..."));
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(false);
-//            pDialog.show();
-//        }
 
         @Override
         protected String doInBackground(String... url) {
@@ -170,7 +161,8 @@ public class PlaceDirections {
             }
             if (polyLineOptions == null) {
 
-                Toast toast = Toast.makeText(context, "Dont have way for this", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context,
+                        "Don't have way for this", Toast.LENGTH_SHORT);
                 toast.show();
             } else googleMap.addPolyline(polyLineOptions);
         }

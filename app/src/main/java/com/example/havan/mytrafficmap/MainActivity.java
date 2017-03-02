@@ -375,6 +375,7 @@ public class MainActivity extends AppCompatActivity
         locationManager.requestLocationUpdates(provider, 20000, 0, this);
     }
 
+
     class LoadPlaces extends AsyncTask<String, String, String> {
 
         /**
@@ -541,6 +542,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         switch (item.getItemId()) {
+
 
             case R.id.direc: {
                 // get type way

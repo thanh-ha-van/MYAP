@@ -35,6 +35,7 @@
         android:paddingLeft="@dimen/nav_header_left"
         android:paddingBottom="@dimen/nav_header_bottom"
         android:textAppearance="@style/TextAppearance.FontPath"
+        android:textSize="13sp"
         android:text="@string/my_name" />
 
 </LinearLayout>

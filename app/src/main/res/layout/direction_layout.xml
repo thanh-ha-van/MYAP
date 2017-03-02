@@ -6,6 +6,4 @@
     android:background="@android:color/transparent"
     android:padding="10dp"
     >
-
-
 </LinearLayout>
