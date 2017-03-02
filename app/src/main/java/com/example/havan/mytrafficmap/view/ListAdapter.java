@@ -12,31 +12,36 @@ import com.example.havan.mytrafficmap.R;
 
 public class ListAdapter extends ArrayAdapter<String> {
 
-	 private final Activity Context;
-	 private final String[] ListItemsName;
-	 private final Integer[] ImageName;
-	
-	public ListAdapter(Activity context, String[] content,
-					   Integer[] ImageName) {
+    private final Activity context;
 
-		 super(context, R.layout.list_items, content);
-	        // TODO Auto-generated constructor stub
-	 
-	        this.Context = context;
-	        this.ListItemsName = content;
-	        this.ImageName = ImageName;
-	}
-	public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = Context.getLayoutInflater();
-        View ListViewSingle = inflater.inflate(R.layout.list_items, null, true);
- 
-        TextView ListViewItems = (TextView) ListViewSingle.findViewById(R.id.textView1);
-        ImageView ListViewImage = (ImageView) ListViewSingle.findViewById(R.id.imageView1);
- 
-        ListViewItems.setText(ListItemsName[position]);
-        ListViewImage.setImageResource(ImageName[position]);
-        return ListViewSingle;
- 
-    };
-	
-	}
+    private final String[] listItemsName;
+
+    private final Integer[] imageName;
+
+    public ListAdapter(Activity context, String[] content,
+                       Integer[] ImageName) {
+
+        super(context, R.layout.list_items, content);
+        // TODO Auto-generated constructor stub
+
+        this.context = context;
+        this.listItemsName = content;
+        this.imageName = ImageName;
+    }
+
+    public View getView(int position, View view, ViewGroup parent) {
+        LayoutInflater inflater = context.getLayoutInflater();
+        View listViewSingle = inflater.inflate(R.layout.list_items, null, true);
+
+        TextView listViewItems = (TextView) listViewSingle.findViewById(R.id.textView1);
+        ImageView listViewImage = (ImageView) listViewSingle.findViewById(R.id.imageView1);
+
+        listViewItems.setText(listItemsName[position]);
+        listViewImage.setImageResource(imageName[position]);
+        return listViewSingle;
+
+    }
+
+    ;
+
+}

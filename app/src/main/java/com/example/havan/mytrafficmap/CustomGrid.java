@@ -4,7 +4,6 @@ package com.example.havan.mytrafficmap;
  * Created by NTT on 3/1/2017.
  */
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomGrid extends BaseAdapter{
+public class CustomGrid extends BaseAdapter {
+
     private Context mContext;
+
     private final String[] web;
-    private final int[] Imageid;
+
+    private final int[] imageId;
 
     public CustomGrid(Context c,String[] web,int[] Imageid ) {
         mContext = c;
-        this.Imageid = Imageid;
+        this.imageId = Imageid;
         this.web = web;
     }
 
@@ -56,7 +58,7 @@ public class CustomGrid extends BaseAdapter{
             TextView textView = (TextView) grid.findViewById(R.id.grid_text);
             ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
             textView.setText(web[position]);
-            imageView.setImageResource(Imageid[position]);
+            imageView.setImageResource(imageId[position]);
         } else {
             grid = (View) convertView;
         }

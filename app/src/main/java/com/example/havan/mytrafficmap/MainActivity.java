@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,9 +27,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -40,7 +36,6 @@ import com.example.havan.mytrafficmap.model.Places;
 
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
-import com.example.havan.mytrafficmap.view.ListAdapter;
 import com.example.havan.mytrafficmap.view.SpinnerItem;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 
@@ -55,31 +50,34 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ActionBar.OnNavigationListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ActionBar.OnNavigationListener, LocationListener {
 
+    public PlaceDirections directions;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
-    private String mActivityTitle;
-
-
-    // main variable
-    private static String sKeyReference = "reference";
-
-    private static String sKeyName = "name";
-    //MapView m;
+    public GoogleMap mMap;
 
     //ui
     public android.support.v7.app.ActionBar actionBar;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    @ViewById(R.id.nav_view)
+    private NavigationView navigationView;
+
+    @ViewById(R.id.drawer_layout)
+    private DrawerLayout mDrawerLayout;
+
+    private String mActivityTitle;
 
     private ArrayList<SpinnerItem> navSpinner;
 
@@ -111,18 +109,22 @@ public class MainActivity extends AppCompatActivity
 
     private ProgressDialog pDialog;
 
-    public GoogleMap mMap;
-
     private ArrayList<Marker> listMaker;
 
     private ArrayList<HashMap<String, String>> placesListItems
             = new ArrayList<HashMap<String, String>>();
 
-    public PlaceDirections directions;
+    private SharedPreferences pref;
+
+    private SharedPreferences.Editor editor;
+
+    // main variable
+    private static String sKeyReference = "reference";
+
+    private static String sKeyName = "name";
+    //MapView m;
 
     private static String TAG = MainActivity.class.getSimpleName();
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
 
     @AfterViews
     public void afterViews() {
@@ -138,8 +140,6 @@ public class MainActivity extends AppCompatActivity
             editor.commit();
         }
 
-        //boolean showTraffic= pref.getBoolean("show_traffic", true);
-        //String mapStyle=pref.getString("map_style", "normal");
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
@@ -147,9 +147,8 @@ public class MainActivity extends AppCompatActivity
                 .build()
         );
 
-
         // init UI
-        initUI();
+        initUi();
 
         // check internet
         detector = new ConnectionDetector(this.getApplicationContext());
@@ -199,9 +198,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void initUI() {
+    private void initUi() {
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
@@ -221,7 +219,6 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -327,10 +324,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void setMyMapStyle ()
-    {
-        String mapStyle=pref.getString("map_style", null);
-        switch (mapStyle){
+    public void setMyMapStyle () {
+        String mapStyle = pref.getString("map_style", null);
+        switch (mapStyle) {
             case "normal":
                 mMap.setMapStyle(null);
                 break;
@@ -509,7 +505,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (id == R.id.map_style) {
-            Intent i = new Intent(MainActivity.this, MapStyle.class);
+            Intent i = new Intent(MainActivity.this, MapStyle_.class);
             startActivity(i);
             // choose map style
         } else if (id == R.id.view_option) {
@@ -519,9 +515,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.share) {
 
         }
-// will be write later
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -628,6 +623,7 @@ public class MainActivity extends AppCompatActivity
         loadMap();
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -637,11 +633,13 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

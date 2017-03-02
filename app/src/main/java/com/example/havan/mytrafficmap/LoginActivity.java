@@ -1,22 +1,14 @@
 package com.example.havan.mytrafficmap;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -26,12 +18,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     private static final String TAG = "LoginActivity";
+
     private static final int REQUEST_SIGNUP = 0;
 
     @InjectView(R.id.input_email) EditText _emailText;
+
     @InjectView(R.id.input_password) EditText _passwordText;
+
     @InjectView(R.id.btn_login) Button _loginButton;
 
     @Override
@@ -61,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
+        if (!valiDate()) {
             onLoginFailed();
             return;
         }
@@ -90,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                 }, 3000);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
@@ -108,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
             super.onBackPressed();
     }
+
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         finish();
@@ -119,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setEnabled(true);
     }
 
-    public boolean validate() {
+    public boolean valiDate() {
         boolean valid = true;
 
         String email = _emailText.getText().toString();
@@ -141,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
