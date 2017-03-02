@@ -7,34 +7,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.content.Intent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.WindowFeature;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+@WindowFeature(Window.FEATURE_NO_TITLE)
+@EActivity(R.layout.activity_login)
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
     private static final int REQUEST_SIGNUP = 0;
 
-    @InjectView(R.id.input_email) EditText _emailText;
+    @ViewById(R.id.input_email)
+    EditText _emailText;
 
-    @InjectView(R.id.input_password) EditText _passwordText;
+    @ViewById(R.id.input_password)
+    EditText _passwordText;
 
-    @InjectView(R.id.btn_login) Button _loginButton;
+    @ViewById(R.id.btn_login)
+    Button _loginButton;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    @AfterViews
+    public void AfterViews() {
 
-
-        ButterKnife.inject(this);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
@@ -48,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-
 
     }
 
@@ -99,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-            super.onBackPressed();
+        super.onBackPressed();
     }
 
     public void onLoginSuccess() {

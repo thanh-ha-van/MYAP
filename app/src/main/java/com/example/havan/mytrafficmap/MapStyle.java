@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -11,15 +12,17 @@ import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.WindowFeature;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+@WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_map_style)
 public class MapStyle extends AppCompatActivity  {
 
     @ViewById(R.id.grid)
-    private GridView gridView;
+    GridView gridView;
 
     private SharedPreferences pref;
 

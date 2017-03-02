@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
 
     @ViewById(R.id.nav_view)
-    private NavigationView navigationView;
+    NavigationView navigationView;
 
     @ViewById(R.id.drawer_layout)
-    private DrawerLayout mDrawerLayout;
+    DrawerLayout mDrawerLayout;
 
     private String mActivityTitle;
 
@@ -502,7 +502,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_sign_in) {
             // sign in activity
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity_.class);
             startActivity(intent);
         } else if (id == R.id.map_style) {
             Intent i = new Intent(MainActivity.this, MapStyle_.class);

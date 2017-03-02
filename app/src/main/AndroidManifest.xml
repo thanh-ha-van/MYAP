@@ -63,7 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity_" />
 
         <activity android:name=".MapStyle_"
             android:label="Map style"
