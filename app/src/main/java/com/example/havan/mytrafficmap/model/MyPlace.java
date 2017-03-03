@@ -1,10 +1,15 @@
 package com.example.havan.mytrafficmap.model;
 
-import java.io.Serializable;
+/**
+ * Created by NTT on 3/3/2017.
+ */
 
 import com.google.api.client.util.Key;
 
-public class Place implements Serializable {
+import java.io.Serializable;
+
+
+public class MyPlace implements Serializable {
 
     @Key
     public String id;

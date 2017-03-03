@@ -34,7 +34,7 @@ public class GooglePlaces {
 
     private double radius;
     
-    public Places search(double latitude, double longitude, double radius, String types)
+    public MyPlaces search(double latitude, double longitude, double radius, String types)
             throws Exception {
  
         this.latitude = latitude;
@@ -53,7 +53,7 @@ public class GooglePlaces {
             if (types != null) {
                 request.getUrl().put("types", types);
             }
-            Places list = request.execute().parseAs(Places.class);
+            MyPlaces list = request.execute().parseAs(MyPlaces.class);
             // Check log cat for places response status
             Log.d("Places Status", "" + list.status);
             return list;

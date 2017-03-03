@@ -7,7 +7,7 @@ import com.google.api.client.util.Key;
 public class PlaceDetails implements Serializable {
 
     @Key
-    public Place result;
+    public MyPlace result;
 
     @Override
     public String toString() {

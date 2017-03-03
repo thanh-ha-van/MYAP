@@ -6,8 +6,9 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:gravity="center"
+    android:alpha="0.8"
     android:weightSum="1"
-    android:background="@color/white">
+    android:background="@color/transparent">
 
     <TextView
         android:id="@+id/pointsText"

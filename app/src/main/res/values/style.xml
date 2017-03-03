@@ -28,4 +28,23 @@
         <item name="spinBars">true</item>
         <item name="color">@color/cardview_light_background</item>
     </style>
+
+    <style name="ToggleSwitchTheme" parent="ThemeOverlay.AppCompat.Light">
+
+        <item name="android:textColor">@color/colorPrimary</item>
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#337D86</item>
+
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:switchMinWidth">80dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textAllCaps">true</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/colorPrimary</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/colorPrimary</item>
+    </style>
 </resources>

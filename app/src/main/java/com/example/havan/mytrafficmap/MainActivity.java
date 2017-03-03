@@ -28,11 +28,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.model.GooglePlaces;
-import com.example.havan.mytrafficmap.model.Place;
-import com.example.havan.mytrafficmap.model.Places;
+import com.example.havan.mytrafficmap.model.MyPlaces;
+import com.example.havan.mytrafficmap.model.MyPlace;
 
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
@@ -49,6 +50,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MapStyleOptions;
+
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity
 
     private GooglePlaces googlePlaces;
 
-    private Places listPlace;
+    private MyPlaces listPlace;
 
     private double lat;
 
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity
     //MapView m;
 
     private static String TAG = MainActivity.class.getSimpleName();
+
 
     @AfterViews
     public void afterViews() {
@@ -257,6 +260,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     private String[] getValue() {
         return getResources().getStringArray(R.array.items);
     }
@@ -305,10 +309,10 @@ public class MainActivity extends AppCompatActivity
 
         // Get the google map object
         mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         setMyMapStyle();
+        setViewOption();
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -322,6 +326,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    public void setViewOption () {
+
+        mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
+        mMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
     }
 
     public void setMyMapStyle () {
@@ -425,7 +435,7 @@ public class MainActivity extends AppCompatActivity
                         // Successfully got places details
                         if (listPlace.results != null) {
                             // loop through each place
-                            for (Place p : listPlace.results) {
+                            for (MyPlace p : listPlace.results) {
                                 HashMap<String, String> map = new HashMap<String, String>();
 
                                 // Place reference won't display in listview - it will be hidden
@@ -451,7 +461,7 @@ public class MainActivity extends AppCompatActivity
 
                         if (listPlace.results != null) {
                             // loop through all the places
-                            for (Place place : listPlace.results) {
+                            for (MyPlace place : listPlace.results) {
                                 latTmp = place.geometry.location.lat; // latitude
                                 lonTmp = place.geometry.location.lng; // longitude
 
@@ -499,6 +509,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected (MenuItem item) {
+
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
         if (id == R.id.nav_sign_in) {
@@ -510,6 +521,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
             // choose map style
         } else if (id == R.id.view_option) {
+            startActivity(new Intent(MainActivity.this, ViewOption_.class));
             // view option activity
         } else if (id == R.id.fav_place) {
             // list of fav place activity
@@ -520,6 +532,7 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -581,6 +594,7 @@ public class MainActivity extends AppCompatActivity
         return true;
 
     }
+
 
     @Override
     public void onLocationChanged(Location location) {
