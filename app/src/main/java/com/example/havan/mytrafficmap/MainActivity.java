@@ -1,7 +1,9 @@
 package com.example.havan.mytrafficmap;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
@@ -10,7 +12,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -67,6 +72,10 @@ public class MainActivity extends AppCompatActivity
     public PlaceDirections directions;
 
     public GoogleMap mMap;
+
+    private LatLng latLng;
+    private Marker marker;
+    Geocoder geocoder;
 
     //ui
     public android.support.v7.app.ActionBar actionBar;
@@ -325,6 +334,27 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+        // Setting a click event handler for the map
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+
+
+                if (marker != null)
+                    marker.remove();
+
+                //place marker where user just clicked
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(point)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin1_small)));
+
+                    Utils.sDestination = point;
+                    Utils.sTrDestination = marker.getTitle();
+                    Utils.sTrSnippet = marker.getSnippet();
+
+            }
+        });
 
     }
 
@@ -457,7 +487,7 @@ public class MainActivity extends AppCompatActivity
                                 .title("Me")
                                 .snippet("Local of me")
                                 .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.pin2)));
+                                        .fromResource(R.drawable.pin2_small)));
 
                         if (listPlace.results != null) {
                             // loop through all the places
@@ -470,34 +500,26 @@ public class MainActivity extends AppCompatActivity
                                         .title(place.name)
                                         .snippet(place.vicinity)
                                         .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.pin1)));
+                                                .fromResource(R.drawable.pin1_small)));
 
                                 listMaker.add(marker);
                             }
                         }
                     } else if (status.equals("ZERO_RESULTS")) {
                         // Zero results found
-                        alert.showAlertDialog(MainActivity.this, "Near Places",
+                        alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry no places found. Try to change the types of places",
                                 false);
                     } else if (status.equals("UNKNOWN_ERROR")) {
-                        alert.showAlertDialog(MainActivity.this, "Places Error",
+                        alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry unknown error occured.",
                                 false);
-                    } else if (status.equals("OVER_QUERY_LIMIT")) {
-                        alert.showAlertDialog(MainActivity.this, "Places Error",
-                                "Sorry query limit to google places is reached",
-                                false);
                     } else if (status.equals("REQUEST_DENIED")) {
-                        alert.showAlertDialog(MainActivity.this, "Places Error",
+                        alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry error occured. Request is denied",
                                 false);
-                    } else if (status.equals("INVALID_REQUEST")) {
-                        alert.showAlertDialog(MainActivity.this, "Places Error",
-                                "Sorry error occured. Invalid Request",
-                                false);
                     } else {
-                        alert.showAlertDialog(MainActivity.this, "Places Error",
+                        alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry error occured.",
                                 false);
                     }
@@ -506,6 +528,7 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+
 
     @Override
     public boolean onNavigationItemSelected (MenuItem item) {

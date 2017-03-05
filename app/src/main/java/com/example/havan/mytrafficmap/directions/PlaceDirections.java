@@ -84,11 +84,11 @@ public class PlaceDirections {
             googleMap.addMarker(new MarkerOptions().position(from)
                     .title("Me")
                     .snippet("Local of me")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin2)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin2_small)));
             googleMap.addMarker(new MarkerOptions().position(to)
                     .title(Utils.sTrDestination)
                     .snippet(Utils.sTrSnippet)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin1)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin1_small)));
         }
     }
 
