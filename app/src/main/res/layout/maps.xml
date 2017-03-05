@@ -9,6 +9,7 @@
 	app:itemTextColor="@color/colorPrimary"
 	tools:context="com.example.havan.mytrafficmap.MainActivity">
 
+
 	<fragment android:name="com.example.havan.mytrafficmap.MainActivity"
         android:id="@+id/map"
         android:layout_weight="1"

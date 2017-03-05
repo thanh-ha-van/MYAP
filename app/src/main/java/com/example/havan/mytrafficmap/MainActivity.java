@@ -3,16 +3,15 @@ package com.example.havan.mytrafficmap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void handleIntent(Intent intent) {
+
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
 
@@ -551,6 +552,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.share) {
 
         }
+        else if (id == R.id.about) {
+            startActivity(new Intent(MainActivity.this, About_.class));
+        }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -579,6 +583,9 @@ public class MainActivity extends AppCompatActivity
         }
         switch (item.getItemId()) {
 
+            case R.id.search:
+                // start a new search activity
+                return true;
 
             case R.id.direc: {
                 // get type way

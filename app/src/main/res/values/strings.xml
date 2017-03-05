@@ -24,6 +24,9 @@
     <string name="fav_place">FAVORITE PLACES</string>
     <string name="share_app">SHARE</string>
     <string name="choose_style">Choose your map style</string>
+    <string name="about_app">This is a map that help you find nearby places
+    and show you the direction to that places...</string>
+     <string name="about">ABOUT</string>
 
 
     <!-- items of sliding menu -->
@@ -72,7 +75,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="title_activity_view_option">View Option</string>
 
 
