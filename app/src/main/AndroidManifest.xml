@@ -69,7 +69,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity_"></activity>
+        <activity android:name=".SearchActivity_" />
+        <activity android:name=".FavListActivity"></activity>
     </application>
 
 </manifest>
