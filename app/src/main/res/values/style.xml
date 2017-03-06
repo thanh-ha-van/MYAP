@@ -8,6 +8,7 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="fontPath">font/SVN-Aguda Bold.otf</item>
+        <item name="android:listSelector">#00ff00</item>
 
     </style>
     <style name="TextAppearance.FontPath" parent="android:TextAppearance">

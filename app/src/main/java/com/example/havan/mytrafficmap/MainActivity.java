@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +30,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -73,10 +71,7 @@ public class MainActivity extends AppCompatActivity
 
     public GoogleMap mMap;
 
-    private LatLng latLng;
     private Marker marker;
-    Geocoder geocoder;
-
     //ui
     public android.support.v7.app.ActionBar actionBar;
 
@@ -176,8 +171,7 @@ public class MainActivity extends AppCompatActivity
         // check able of gps
         gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
-            Log.d("Your Location", "latitude:" + gps.getLatitude()
-                    + ", longitude: " + gps.getLongitude());
+
             lat = gps.getLatitude();
             lon = gps.getLongitude();
 
@@ -349,6 +343,7 @@ public class MainActivity extends AppCompatActivity
                 marker = mMap.addMarker(new MarkerOptions()
                         .position(point)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin1_small)));
+
 
                     Utils.sDestination = point;
                     Utils.sTrDestination = marker.getTitle();

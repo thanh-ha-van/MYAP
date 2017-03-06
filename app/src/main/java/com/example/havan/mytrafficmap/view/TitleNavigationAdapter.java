@@ -56,7 +56,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
         txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
 
         imgIcon.setImageResource(spinnerNavItem.get(position).getIcon());
-        imgIcon.setVisibility(View.GONE);
+        imgIcon.setVisibility(View.VISIBLE);
         txtTitle.setText(spinnerNavItem.get(position).getTitle());
         return convertView;
     }
