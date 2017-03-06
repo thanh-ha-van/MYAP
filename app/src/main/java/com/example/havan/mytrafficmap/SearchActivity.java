@@ -1,8 +1,10 @@
 package com.example.havan.mytrafficmap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -27,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.WindowFeature;
 
@@ -37,11 +41,19 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends AppCompatActivity  implements GoogleApiClient.OnConnectionFailedListener {
 
+
+    private AlertDialogManager alert = new AlertDialogManager();
+
     protected GoogleApiClient mGoogleApiClient;
 
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView mAutocompleteView;
+
+    // data sending back to main activity.
+    private String placeId = null;
+    private LatLng latLng;
+    public String placeName = null;
 
     private TextView mPlaceDetailsText;
 
@@ -112,20 +124,38 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
             final CharSequence primaryText = item.getPrimaryText(null);
 
 
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
-
         }
     };
 
+    @Click(R.id.direction)
+    void directionClicked() {
+
+        if (latLng != null) {
+
+
+            // put the String to pass back into an Intent and close this activity
+            Intent intent = new Intent();
+            intent.putExtra("lat", latLng.latitude);
+            intent.putExtra("lon", latLng.longitude);
+            intent.putExtra("address", placeName);
+            setResult(RESULT_OK, intent);
+            finish();
+            onBackPressed();
+        }
+        else {
+            Toast.makeText(this, " NULL "
+                 , Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Click(R.id.addtofavorite)
+    void favClicked() {
+
+
+    }
 
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
@@ -143,7 +173,8 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
             mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
                     place.getId(), place.getAddress(), place.getPhoneNumber(),
                     place.getWebsiteUri()));
-
+            latLng = place.getLatLng();
+            placeName = place.getName().toString();
             // Display the third party attributions if set.
             final CharSequence thirdPartyAttribution = places.getAttributions();
             if (thirdPartyAttribution == null) {

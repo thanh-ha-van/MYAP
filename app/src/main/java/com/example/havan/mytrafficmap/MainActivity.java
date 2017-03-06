@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -109,9 +110,15 @@ public class MainActivity extends AppCompatActivity
 
     private double lon;
 
+    private double lat1;
+
+    private double lon1;
+
     private double latTmp;
 
     private double lonTmp;
+
+    private LatLng currentDirec;
 
     private ProgressDialog pDialog;
 
@@ -129,6 +136,7 @@ public class MainActivity extends AppCompatActivity
 
     private static String sKeyName = "name";
     //MapView m;
+    private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
 
     private static String TAG = MainActivity.class.getSimpleName();
 
@@ -488,7 +496,8 @@ public class MainActivity extends AppCompatActivity
                                 .icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.pin2_small)));
                         CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(new LatLng(lat, lon))             // Sets the center of the map to location user
+                                .target(new LatLng(lat, lon))
+                                // Sets the center of the map to location user
                                 .zoom(15)                   // Sets the zoom
                                 .bearing(90)                // Sets the orientation of the camera to east
                                 .tilt(40)                   // Sets the tilt of the camera to 30 degrees
@@ -589,8 +598,8 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.search:
-                // start a new search activity
-                startActivity(new Intent(MainActivity.this, SearchActivity_.class));
+                Intent intent = new Intent(this, SearchActivity_.class);
+                startActivityForResult(intent, SECOND_ACTIVITY_RESULT_CODE);
                 return true;
 
             case R.id.direc: {
@@ -602,7 +611,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (des == null) {
                         alert.showAlertDialog(this, "Place empty",
-                                "Please choice sDestination place", false);
+                                "Please choice destination place", false);
                     } else {
                         LatLng from = new LatLng(lat, lon);
                         directions = new PlaceDirections(getApplicationContext()
@@ -617,6 +626,38 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    // This method is called when the second activity finishes
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check that it is the SecondActivity with an OK result
+        if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                lat1 = data.getDoubleExtra("lat", 10);
+                lon1 = data.getDoubleExtra("lon", 10);
+                String address = data.getStringExtra("address");
+
+                // draw destination
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat1, lon1))
+                        .title(address)
+                        .snippet("Your current destination")
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.pin1_small)));
+
+
+                Utils.sDestination =new LatLng(lat1, lon1);
+                LatLng des = Utils.sDestination;
+                byte way = 2;
+                LatLng from = new LatLng(lat, lon);
+                directions = new PlaceDirections(getApplicationContext()
+                        , mMap, from, des, way);
+
+            }
+        }
+    }
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         // Action to be taken after selecting a spinner item

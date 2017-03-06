@@ -27,7 +27,7 @@ public class SplashActivity extends Activity {
 
     //Constants
     private static final int GO_AHEAD = 1;
-    private static final long MAX_TIME = 1000L;
+    private static final long MAX_TIME = 1500L;
 
 
     @AfterViews
