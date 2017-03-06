@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="@color/white"
+            android:textColorHint="@color/colorPrimary"
             >
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
@@ -43,14 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="@color/white">
+            android:textColorHint="@color/colorPrimary">
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:hint="Password"
-                android:textColorHint="@color/white"/>
+                android:textColorHint="@color/colorPrimary"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:textColor="@color/white"
             android:padding="12dp"
             android:text="Login"/>

@@ -5,8 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="my_name">University of Information Technology</string>
     <string name="server_client_id">945104725933-vh1vr0ht6e3j6kpsrknb407gki63q49s.apps.googleusercontent.com</string>
-    <string name="search_title">Search:...</string>
-    <string name="search_hint">Search:...</string>
+    <string name="search_title">Search...</string>
+    <string name="search_hint">Search...</string>
     <string name="share">Share</string>
     <string name="settings">Setting</string>
     <string name="direction">Direction</string>
@@ -27,6 +27,13 @@
     <string name="about_app">This is a map that help you find nearby places
     and show you the direction to that places...</string>
     <string name="about">ABOUT</string>
+    <string name="autocomplete_hint">Enter place name or address</string>
+    <string name="selected_place">Place detail:</string>
+    <string name="clear_text">Clear Text</string>
+
+    <!-- getString(String, Object...) does not support HTML tags directly, they need to be encoded first.
+    Original string: <b>%1$s</b><br/><i>Place Id: %2$s</i><br/>Address: %3$s<br/>Phone: %4$s<br/>Website: %5$s-->
+    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
 
 
     <!-- items of sliding menu -->

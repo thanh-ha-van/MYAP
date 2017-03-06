@@ -1,22 +1,21 @@
 package com.example.havan.mytrafficmap;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.location.Criteria;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -25,11 +24,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -49,6 +48,7 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -196,8 +196,9 @@ public class MainActivity extends AppCompatActivity
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            // testing
+            Toast.makeText(this, "No location provider enabled!", Toast.LENGTH_LONG).show();
             String query = intent.getStringExtra(SearchManager.QUERY);
-
             mMap.clear();
             Utils.sKeyPlace = query;
             new LoadPlaces().execute();
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity
                 });
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
+
     }
 
 
@@ -317,6 +319,7 @@ public class MainActivity extends AppCompatActivity
         mMap.setMyLocationEnabled(true);
         setMyMapStyle();
         setViewOption();
+        // Need user permisson (above)
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -339,11 +342,10 @@ public class MainActivity extends AppCompatActivity
                 if (marker != null)
                     marker.remove();
 
-                //place marker where user just clicked
                 marker = mMap.addMarker(new MarkerOptions()
+                        .title(getCompleteAddressString(point.latitude, point.longitude).toString())
                         .position(point)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin1_small)));
-
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin3_small)));
 
                     Utils.sDestination = point;
                     Utils.sTrDestination = marker.getTitle();
@@ -354,6 +356,25 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("; ");
+                }
+                strAdd = strReturnedAddress.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strAdd;
+    }
     public void setViewOption () {
 
         mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
@@ -393,23 +414,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void getcurrentLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Getting Current Location
-        Location location = locationManager.getLastKnownLocation(provider);
-
-        if (location != null) {
-            onLocationChanged(location);
-        }
-        locationManager.requestLocationUpdates(provider, 20000, 0, this);
-    }
 
 
     class LoadPlaces extends AsyncTask<String, String, String> {
@@ -475,7 +479,6 @@ public class MainActivity extends AppCompatActivity
                             }
                         }
                         loadMap();
-                        getcurrentLocation();
 
                         // draw my position
                         mMap.addMarker(new MarkerOptions()
@@ -484,6 +487,13 @@ public class MainActivity extends AppCompatActivity
                                 .snippet("Local of me")
                                 .icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.pin2_small)));
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(new LatLng(lat, lon))             // Sets the center of the map to location user
+                                .zoom(15)                   // Sets the zoom
+                                .bearing(90)                // Sets the orientation of the camera to east
+                                .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                                .build();                   // Creates a CameraPosition from the builder
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         if (listPlace.results != null) {
                             // loop through all the places
@@ -580,6 +590,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.search:
                 // start a new search activity
+                startActivity(new Intent(MainActivity.this, SearchActivity_.class));
                 return true;
 
             case R.id.direc: {

@@ -60,6 +60,7 @@ public class PlaceDirections {
 
     }
 
+
     private String getMapsApiDirectionsUrl() {
 
         // add more mode here

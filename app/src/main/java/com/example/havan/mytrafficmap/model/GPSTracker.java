@@ -33,25 +33,29 @@ public class GPSTracker extends Service implements LocationListener {
     private double latitude;
 
     private double longitude;
-    
+
     public GPSTracker(Context context) {
         this.mContext = context ;
         getLocation();
     }
-    
+
     private Location getLocation() {
+
+
         try {
+
+
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
- 
+
             // getting GPS status
             isGpsEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
- 
+
             // getting network status
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
- 
+
             if (!isGpsEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
@@ -71,13 +75,28 @@ public class GPSTracker extends Service implements LocationListener {
                         }
                     }
                 }
+
+
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGpsEnabled) {
                     if (location == null) {
                         locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                                LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
+                                    @Override
+                                    public void onStatusChanged(String provider,
+                                                                int status, Bundle extras) {
+                                    }
+                                    @Override
+                                    public void onProviderEnabled(String provider) {
+                                    }
+                                    @Override
+                                    public void onProviderDisabled(String provider) {
+                                    }
+                                    @Override
+                                    public void onLocationChanged(final Location location) {
+                                    }
+                                });
                         //Log.d("GPS", "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager
@@ -93,10 +112,10 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
- 
+
         return location;
     }
-    
+
     public void stopUsingGps() {
         if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
