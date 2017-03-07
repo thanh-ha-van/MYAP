@@ -658,6 +658,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         // Action to be taken after selecting a spinner item
