@@ -563,8 +563,9 @@ public class MainActivity extends AppCompatActivity
             // view option activity
         } else if (id == R.id.fav_place) {
             // list of fav place activity
+            startActivity(new Intent(MainActivity.this, FavListActivity_.class));
         } else if (id == R.id.share) {
-
+            startActivity(new Intent(MainActivity.this, ShareActivity_.class));
         }
         else if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, About_.class));

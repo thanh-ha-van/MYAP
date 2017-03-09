@@ -70,7 +70,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity_" />
-        <activity android:name=".FavListActivity"></activity>
+        <activity android:name=".FavListActivity_" />
+        <activity android:name=".ShareActivity_"></activity>
     </application>
 
 </manifest>
