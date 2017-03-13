@@ -13,6 +13,7 @@ import java.util.List;
  * Created by NTT on 3/13/2017.
  */
 
+// handle the favorite list.
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version

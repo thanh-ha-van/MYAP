@@ -1,10 +1,11 @@
 package com.example.havan.mytrafficmap.SQLite;
 
-import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by HaVan on 3/9/2017.
  */
+
+// class define a place to save in database and show in app.
 public class DataModel {
 
     private int id;
