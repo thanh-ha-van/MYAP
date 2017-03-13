@@ -71,7 +71,8 @@
         </activity>
         <activity android:name=".SearchActivity_" />
         <activity android:name=".FavListActivity_" />
-        <activity android:name=".ShareActivity_"></activity>
+        <activity android:name=".ShareActivity_" />
+        <activity android:name=".NetworkActivity"></activity>
     </application>
 
 </manifest>

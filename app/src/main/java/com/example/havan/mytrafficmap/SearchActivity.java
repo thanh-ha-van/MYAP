@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -14,10 +13,14 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
+import com.example.havan.mytrafficmap.view.CustomAdapter;
+import com.example.havan.mytrafficmap.SQLite.DataModel;
+import com.example.havan.mytrafficmap.view.PlaceAutocompleteAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -34,12 +37,14 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.WindowFeature;
 
+import java.util.ArrayList;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_search)
-public class SearchActivity extends AppCompatActivity  implements GoogleApiClient.OnConnectionFailedListener {
+public class SearchActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     private AlertDialogManager alert = new AlertDialogManager();
@@ -54,7 +59,7 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
     private String placeId = null;
     private LatLng latLng;
     public String placeName = null;
-
+    public String placeAddress = null;
     private TextView mPlaceDetailsText;
 
     private TextView mPlaceDetailsAttribution;
@@ -66,6 +71,10 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
 
+
+    ArrayList<DataModel> dataModels;
+    ListView listView;
+    private static CustomAdapter adapter;
 
     @AfterViews
     public void afterViews() {
@@ -144,15 +153,16 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
             setResult(RESULT_OK, intent);
             finish();
             onBackPressed();
-        }
-        else {
+        } else {
             Toast.makeText(this, " NULL "
-                 , Toast.LENGTH_SHORT).show();
+                    , Toast.LENGTH_SHORT).show();
         }
     }
 
     @Click(R.id.addtofavorite)
     void favClicked() {
+
+
 
 
     }
@@ -175,6 +185,7 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
                     place.getWebsiteUri()));
             latLng = place.getLatLng();
             placeName = place.getName().toString();
+            placeAddress = place.getAddress().toString();
             // Display the third party attributions if set.
             final CharSequence thirdPartyAttribution = places.getAttributions();
             if (thirdPartyAttribution == null) {
@@ -201,7 +212,7 @@ public class SearchActivity extends AppCompatActivity  implements GoogleApiClien
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
         Toast.makeText(this,
-                "Could not connect to Google API Client: Error " + connectionResult.getErrorCode(),
+                "Could not connect to Google API Client: " + connectionResult.getErrorCode(),
                 Toast.LENGTH_SHORT).show();
     }
 

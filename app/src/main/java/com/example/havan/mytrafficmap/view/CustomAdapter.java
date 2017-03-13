@@ -4,8 +4,6 @@ package com.example.havan.mytrafficmap.view;
  * Created by HaVan on 3/9/2017.
  */
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.havan.mytrafficmap.FavListActivity;
 import com.example.havan.mytrafficmap.R;
+import com.example.havan.mytrafficmap.SQLite.DataModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,18 +25,17 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnClickListener {
 
-    private ArrayList<DataModel> dataSet;
+    public List<DataModel> dataSet;
     Context mContext;
 
     // View lookup cache
     private static class ViewHolder {
         TextView txtName;
-        TextView txtType;
-        TextView txtVersion;
+        TextView txtAddress;
         ImageView info;
     }
 
-    public CustomAdapter(ArrayList<DataModel> data, Context context) {
+    public CustomAdapter(List<DataModel> data, Context context) {
         super(context, R.layout.fav_list_single_item, data);
         this.dataSet = data;
         this.mContext=context;
@@ -53,8 +51,8 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
         switch (v.getId())
         {
-            case R.id.item_info:
-                Snackbar.make(v, "Release date " +dataModel.getFeature(), Snackbar.LENGTH_LONG)
+            case R.id.item_direc:
+                Snackbar.make(v, "" , Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
                 break;
         }
@@ -75,9 +73,8 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.fav_list_single_item, parent, false);
             viewHolder.txtName = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.txtType = (TextView) convertView.findViewById(R.id.type);
-            viewHolder.txtVersion = (TextView) convertView.findViewById(R.id.version_number);
-            viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
+            viewHolder.txtAddress = (TextView) convertView.findViewById(R.id.address);
+            viewHolder.info = (ImageView) convertView.findViewById(R.id.item_direc);
 
 
             convertView.setTag(viewHolder);
@@ -86,8 +83,7 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
         }
 
         viewHolder.txtName.setText(dataModel.getName());
-        viewHolder.txtType.setText(dataModel.getType());
-        viewHolder.txtVersion.setText(dataModel.getVersion_number());
+        viewHolder.txtAddress.setText(dataModel.getAddress());
         viewHolder.info.setOnClickListener(this);
         viewHolder.info.setTag(position);
         // Return the completed view to render on screen
