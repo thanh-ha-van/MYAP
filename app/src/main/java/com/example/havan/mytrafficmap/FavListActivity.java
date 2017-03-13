@@ -32,13 +32,8 @@ public class FavListActivity extends AppCompatActivity {
 
         listView=(ListView)findViewById(R.id.list);
 
-        //dataModels= new ArrayList<>();
-        //dataModels.add(new DataModel("KTX khu A DHQG TP HCM", "Khu phố 6, Linh Trung, Thủ Đức, TP HCM", null, null));
-
         DatabaseHandler db = new DatabaseHandler(this);
 
-        db.addPlace(new DataModel("KTX", "GG", "GG"));
-        // Reading all contacts
         final List<DataModel> favPlaces = db.getAllPLaces();
 
 

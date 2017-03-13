@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="22.5dp"
+        android:paddingBottom="22dp"
         android:paddingLeft="11dp"
         android:paddingRight="11dp"
         android:background="#e3e7ed"
@@ -17,10 +18,18 @@
             android:id="@+id/list"
             android:background="@drawable/plate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="413dp"
             android:choiceMode="singleChoice"
             >
         </ListView>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+
+
     </LinearLayout>
+
 </LinearLayout>

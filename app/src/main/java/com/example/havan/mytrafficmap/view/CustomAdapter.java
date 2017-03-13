@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.example.havan.mytrafficmap.R;
 import com.example.havan.mytrafficmap.SQLite.DataModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +22,7 @@ import java.util.List;
  * Created by NTT on 3/7/2017.
  */
 
-public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnClickListener {
+public class CustomAdapter extends ArrayAdapter<DataModel> {
 
     public List<DataModel> dataSet;
     Context mContext;
@@ -43,22 +42,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
     }
 
     @Override
-    public void onClick(View v) {
-
-        int position=(Integer) v.getTag();
-        Object object= getItem(position);
-        DataModel dataModel=(DataModel)object;
-
-        switch (v.getId())
-        {
-            case R.id.item_direc:
-                Snackbar.make(v, "" , Snackbar.LENGTH_LONG)
-                        .setAction("No action", null).show();
-                break;
-        }
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         DataModel dataModel = getItem(position);
@@ -74,7 +57,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
             convertView = inflater.inflate(R.layout.fav_list_single_item, parent, false);
             viewHolder.txtName = (TextView) convertView.findViewById(R.id.name);
             viewHolder.txtAddress = (TextView) convertView.findViewById(R.id.address);
-            viewHolder.info = (ImageView) convertView.findViewById(R.id.item_direc);
 
 
             convertView.setTag(viewHolder);
@@ -84,8 +66,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
 
         viewHolder.txtName.setText(dataModel.getName());
         viewHolder.txtAddress.setText(dataModel.getAddress());
-        viewHolder.info.setOnClickListener(this);
-        viewHolder.info.setTag(position);
         // Return the completed view to render on screen
         return convertView;
     }

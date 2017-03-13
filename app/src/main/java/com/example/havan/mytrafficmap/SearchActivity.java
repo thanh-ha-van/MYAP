@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.havan.mytrafficmap.SQLite.DatabaseHandler;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.CustomAdapter;
 import com.example.havan.mytrafficmap.SQLite.DataModel;
@@ -57,7 +58,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     // data sending back to main activity.
     private String placeId = null;
-    private LatLng latLng;
+    private LatLng latLng = null;
     public String placeName = null;
     public String placeAddress = null;
     private TextView mPlaceDetailsText;
@@ -163,6 +164,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     void favClicked() {
 
 
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        db.addPlace(new DataModel(placeName, placeAddress, placeId));
+        // Reading all contacts
 
 
     }
@@ -183,9 +188,11 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
                     place.getId(), place.getAddress(), place.getPhoneNumber(),
                     place.getWebsiteUri()));
+            placeId = place.getId();
             latLng = place.getLatLng();
             placeName = place.getName().toString();
             placeAddress = place.getAddress().toString();
+
             // Display the third party attributions if set.
             final CharSequence thirdPartyAttribution = places.getAttributions();
             if (thirdPartyAttribution == null) {
