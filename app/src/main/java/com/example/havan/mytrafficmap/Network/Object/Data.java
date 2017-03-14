@@ -1,6 +1,9 @@
 package com.example.havan.mytrafficmap.Network.Object;
 
+import com.google.api.client.util.DateTime;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
 
 /**
  * Created by HaVan on 3/13/2017.

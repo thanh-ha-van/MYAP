@@ -24,9 +24,41 @@
         </ListView>
 
         <RelativeLayout
+            android:paddingTop="5dp"
+            android:background="@drawable/plate"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            >
 
+            <ImageButton
+                android:layout_width="50dp"
+
+                android:src="@drawable/ic_cancel"
+                android:background="@drawable/circle"
+                android:layout_height="50dp"
+                android:id="@+id/delete"
+                android:layout_alignParentBottom="true"
+                android:layout_toStartOf="@+id/show_info"
+                android:layout_marginEnd="20dp" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/show_info"
+                android:src="@drawable/ic_visibility"
+                android:background="@drawable/circle"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/direc"
+                android:src="@drawable/ic_directions_black"
+                android:background="@drawable/circle"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/show_info"
+                android:layout_marginStart="20dp" />
         </RelativeLayout>
 
 

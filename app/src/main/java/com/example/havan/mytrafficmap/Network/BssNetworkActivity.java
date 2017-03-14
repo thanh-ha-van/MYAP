@@ -85,8 +85,16 @@ public class BssNetworkActivity extends AppCompatActivity {
     protected void uiThread(FullData listData) {
 
         for (Data data : listData.getData()) {
-            tvData.append("id: " + data.getId()
-                    + "creatorId:" + data.getCreatorId() + "\n");
+            tvData.append(
+                    "\n"
+                            + "ID: "
+                            + data.getId()
+                            + "\n"
+                            + "DreatorId:"
+                            + data.getCreatorId()
+                            + "\n"
+
+            );
         }
     }
 

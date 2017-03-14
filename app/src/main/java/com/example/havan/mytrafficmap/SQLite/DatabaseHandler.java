@@ -22,10 +22,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "favListManager";
 
-    // Contacts table name
+    //table name
     private static final String TABLE_FAV = "favlist";
 
-    // Contacts Table Columns names
+    //Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_ADDRESS = "address";
@@ -64,7 +64,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * All CRUD(Create, Read, Update, Delete) Operations
      */
 
-    // Adding new contact
+    // Adding new place
     public void addPlace(DataModel dataModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -78,7 +78,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    // Getting single contact
+    // Getting single place
     public DataModel getPlace(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -104,7 +104,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return dataModel;
     }
 
-    // Getting All Contacts
+    // Getting All places
     public List<DataModel> getAllPLaces() {
         List<DataModel> contactList = new ArrayList<DataModel>();
         // Select All Query
@@ -121,16 +121,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 contact.setName(cursor.getString(1));
                 contact.setAddress(cursor.getString(2));
                 contact.setPlaceID(cursor.getString(3));
-                // Adding contact to list
+                // Adding place to list
                 contactList.add(contact);
             } while (cursor.moveToNext());
         }
 
-        // return contact list
+        // return place list
         return contactList;
     }
 
-    // Updating single contact
+    // Updating single place
     public int updatePlaces(DataModel contact) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -144,7 +144,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(contact.getId())});
     }
 
-    // Deleting single contact
+    // Deleting single place
     public void deletePlace(DataModel contact) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_FAV, KEY_ID + " = ?",
@@ -153,7 +153,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    // Getting contacts Count
+    // Getting place Count
     public int getPlaceCout() {
         String countQuery = "SELECT  * FROM " + TABLE_FAV;
         SQLiteDatabase db = this.getReadableDatabase();

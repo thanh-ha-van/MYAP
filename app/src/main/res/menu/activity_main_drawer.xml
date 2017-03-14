@@ -8,7 +8,6 @@
             android:title="@string/sign_in"
             />
         </group>
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/map_style"
