@@ -64,17 +64,19 @@
             android:name=".SplashActivity_"
             android:label="@string/app_name">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".SearchActivity_" />
         <activity android:name=".FavListActivity_" />
         <activity android:name=".ShareActivity_" />
         <activity android:name=".Network.BssNetworkActivity_">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

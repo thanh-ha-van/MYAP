@@ -47,9 +47,6 @@ public class FavListActivity extends AppCompatActivity {
                 .build()
         );
 
-        showInfo.setVisibility(View.GONE);
-        delete.setVisibility(View.GONE);
-        direc.setVisibility(View.GONE);
         listView = (ListView) findViewById(R.id.list);
 
         DatabaseHandler db = new DatabaseHandler(this);
@@ -64,9 +61,7 @@ public class FavListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                showInfo.setVisibility(View.VISIBLE);
-                delete.setVisibility(View.VISIBLE);
-                direc.setVisibility(View.VISIBLE);
+
             }
         });
     }
