@@ -43,7 +43,6 @@ public class AddItemizedOverlay extends ItemizedOverlay<OverlayItem> {
                double lat = geopoint.getLatitudeE6() / 1E6;
                // longitude
                double lon = geopoint.getLongitudeE6() / 1E6;
-               //Toast.makeText(context, "Lat: " + lat + ", Lon: "+lon, Toast.LENGTH_SHORT).show();
            }
            return false;
        } 

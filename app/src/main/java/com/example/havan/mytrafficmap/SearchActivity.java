@@ -1,5 +1,6 @@
 package com.example.havan.mytrafficmap;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -61,9 +63,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     private LatLng latLng = null;
     public String placeName = null;
     public String placeAddress = null;
-    private TextView mPlaceDetailsText;
-
-    private TextView mPlaceDetailsAttribution;
+    private TextView mPlaceDetailsName;
+    private TextView mPlaceDetailsAddress;
+    private TextView mPlaceDetailsPhone;
+    private TextView mPlaceDetailsSite;
 
     private SharedPreferences pref;
 
@@ -84,6 +87,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
+
         );
 
 
@@ -101,8 +105,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
 
         // Retrieve the TextViews that will display details and attributions of the selected place.
-        mPlaceDetailsText = (TextView) findViewById(R.id.place_details);
-        mPlaceDetailsAttribution = (TextView) findViewById(R.id.place_attribution);
+        mPlaceDetailsName = (TextView) findViewById(R.id.tv_place_name);
+        mPlaceDetailsAddress = (TextView) findViewById(R.id.tv_address);
+        mPlaceDetailsPhone = (TextView) findViewById(R.id.tv_phone);
+        mPlaceDetailsSite = (TextView) findViewById(R.id.tv_site);
 
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
@@ -116,6 +122,9 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View v) {
                 mAutocompleteView.setText("");
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
             }
         });
     }
@@ -132,15 +141,16 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
             final CharSequence primaryText = item.getPrimaryText(null);
-
-
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+            InputMethodManager imm = (InputMethodManager) getSystemService(
+                    Activity.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         }
     };
 
-    @Click(R.id.direction)
+    @Click(R.id.btn_direct)
     void directionClicked() {
 
         if (latLng != null) {
@@ -160,7 +170,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    @Click(R.id.addtofavorite)
+    @Click(R.id.btn_add)
     void favClicked() {
 
 
@@ -172,6 +182,13 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     }
 
+    @Click (R.id.btn_phone)
+    void phoneClicked () {
+    }
+
+    @Click (R.id.btn_site)
+    void siteClicked(){
+    }
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
@@ -185,34 +202,27 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             final Place place = places.get(0);
 
             // Format details of the place for display and show it in a TextView.
-            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-                    place.getId(), place.getAddress(), place.getPhoneNumber(),
-                    place.getWebsiteUri()));
+            mPlaceDetailsAddress.setText(place.getAddress().toString());
+            mPlaceDetailsName.setText(place.getName().toString());
+
+            mPlaceDetailsPhone.setText("No phone number");
+            if(place.getPhoneNumber()!=null)
+            mPlaceDetailsPhone.setText(place.getPhoneNumber().toString());
+
+            mPlaceDetailsSite.setText("No website");
+            if (place.getWebsiteUri() != null)
+            mPlaceDetailsSite.setText(place.getWebsiteUri().toString());
+
             placeId = place.getId();
             latLng = place.getLatLng();
             placeName = place.getName().toString();
             placeAddress = place.getAddress().toString();
-
-            // Display the third party attributions if set.
-            final CharSequence thirdPartyAttribution = places.getAttributions();
-            if (thirdPartyAttribution == null) {
-                mPlaceDetailsAttribution.setVisibility(View.GONE);
-            } else {
-                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
-                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
-            }
 
 
             places.release();
         }
     };
 
-    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
-        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
-                websiteUri));
-
-    }
 
 
     @Override

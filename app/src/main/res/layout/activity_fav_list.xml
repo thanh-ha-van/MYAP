@@ -56,7 +56,7 @@
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/direc"
+                android:id="@+id/direct"
                 android:src="@drawable/ic_directions_black"
                 android:background="@drawable/circle"
                 android:layout_marginStart="30dp"

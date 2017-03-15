@@ -131,24 +131,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Updating single place
-    public int updatePlaces(DataModel contact) {
+    public int updatePlaces(DataModel place) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, contact.getName());
-        values.put(KEY_ADDRESS, contact.getAddress());
-        values.put(KEY_PLACE_ID, contact.getPlaceID());
+        values.put(KEY_NAME, place.getName());
+        values.put(KEY_ADDRESS, place.getAddress());
+        values.put(KEY_PLACE_ID, place.getPlaceID());
 
         // updating row
         return db.update(TABLE_FAV, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(contact.getId())});
+                new String[]{String.valueOf(place.getId())});
     }
 
     // Deleting single place
-    public void deletePlace(DataModel contact) {
+    public void deletePlace(DataModel place) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_FAV, KEY_ID + " = ?",
-                new String[]{String.valueOf(contact.getId())});
+                new String[]{String.valueOf(place.getId())});
         db.close();
     }
 

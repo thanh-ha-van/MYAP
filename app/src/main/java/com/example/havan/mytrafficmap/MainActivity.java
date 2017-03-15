@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity
 
     private double lonTmp;
 
-    private LatLng currentDirec;
-
     private ProgressDialog pDialog;
 
     private ArrayList<Marker> listMaker;
@@ -205,7 +203,11 @@ public class MainActivity extends AppCompatActivity
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // testing
-            Toast.makeText(this, "No location provider enabled!", Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                    this,
+                    "No location provider enabled!",
+                    Toast.LENGTH_LONG
+            ).show();
             String query = intent.getStringExtra(SearchManager.QUERY);
             mMap.clear();
             Utils.sKeyPlace = query;
@@ -351,9 +353,12 @@ public class MainActivity extends AppCompatActivity
                     marker.remove();
 
                 marker = mMap.addMarker(new MarkerOptions()
-                        .title(getCompleteAddressString(point.latitude, point.longitude).toString())
+                        .title (getCompleteAddressString (
+                                point.latitude,
+                                point.longitude
+                        ).toString())
                         .position(point)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin3_small)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_red)));
 
                     Utils.sDestination = point;
                     Utils.sTrDestination = marker.getTitle();
@@ -368,13 +373,21 @@ public class MainActivity extends AppCompatActivity
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            List<Address> addresses = geocoder.getFromLocation(
+                    LATITUDE,
+                    LONGITUDE,
+                    1
+            );
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
                 for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("; ");
+                    strReturnedAddress
+                            .append(
+                                    returnedAddress
+                                            .getAddressLine(i)
+                            ).append("; ");
                 }
                 strAdd = strReturnedAddress.toString();
             }
@@ -421,7 +434,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
 
 
     class LoadPlaces extends AsyncTask<String, String, String> {
@@ -494,14 +506,14 @@ public class MainActivity extends AppCompatActivity
                                 .title("Me")
                                 .snippet("Local of me")
                                 .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.pin2_small)));
+                                        .fromResource(R.drawable.blue_pin)));
                         CameraPosition cameraPosition = new CameraPosition.Builder()
                                 .target(new LatLng(lat, lon))
                                 // Sets the center of the map to location user
                                 .zoom(15)                   // Sets the zoom
-                                .bearing(90)                // Sets the orientation of the camera to east
-                                .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                                .build();                   // Creates a CameraPosition from the builder
+                                .bearing(90)                // Sets to east
+                                .tilt(40)                   // Sets to 30 degrees
+                                .build();                   // Creates a CameraPosition
                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         if (listPlace.results != null) {
@@ -515,7 +527,7 @@ public class MainActivity extends AppCompatActivity
                                         .title(place.name)
                                         .snippet(place.vicinity)
                                         .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.pin1_small)));
+                                                .fromResource(R.drawable.pin_red)));
 
                                 listMaker.add(marker);
                             }
@@ -646,7 +658,7 @@ public class MainActivity extends AppCompatActivity
                         .title(address)
                         .snippet("Your current destination")
                         .icon(BitmapDescriptorFactory
-                                .fromResource(R.drawable.pin1_small)));
+                                .fromResource(R.drawable.pin_yellow)));
 
 
                 Utils.sDestination =new LatLng(lat1, lon1);

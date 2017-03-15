@@ -48,7 +48,10 @@ public class TitleNavigationAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                    context.
+                            getSystemService(
+                                    Activity.LAYOUT_INFLATER_SERVICE
+                            );
             convertView = mInflater.inflate(R.layout.list_item_title_navigation, null);
         }
 

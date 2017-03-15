@@ -3,8 +3,10 @@ package com.example.havan.mytrafficmap.view;
 /**
  * Created by HaVan on 3/9/2017.
  */
+
 import android.content.Context;
-import android.support.design.widget.Snackbar;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import java.util.List;
 
 public class CustomAdapter extends ArrayAdapter<DataModel> {
 
+    private LayoutInflater inflater;
     public List<DataModel> dataSet;
     Context mContext;
 
@@ -31,13 +34,15 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
     private static class ViewHolder {
         TextView txtName;
         TextView txtAddress;
-        ImageView info;
+        ImageView imgChoice;
     }
 
     public CustomAdapter(List<DataModel> data, Context context) {
         super(context, R.layout.fav_list_single_item, data);
         this.dataSet = data;
-        this.mContext=context;
+        this.mContext = context;
+        inflater = LayoutInflater.from(context);
+
 
     }
 
@@ -54,19 +59,53 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.fav_list_single_item, parent, false);
-            viewHolder.txtName = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.txtAddress = (TextView) convertView.findViewById(R.id.address);
-
+            convertView = inflater.inflate(
+                    R.layout.fav_list_single_item,
+                    parent,
+                    false
+            );
+            viewHolder.txtName = (TextView)
+                    convertView.findViewById(R.id.name);
+            viewHolder.txtAddress = (TextView)
+                    convertView.findViewById(R.id.address);
+            viewHolder.imgChoice = (ImageView)
+                    convertView.findViewById(R.id.chossing);
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+
+        viewHolder.txtName.setTextColor(
+                dataModel.
+                        isChecked() ?
+                        Color.parseColor("#5A9B97") :
+                        Color.BLACK);
+
+        viewHolder.txtName.setTypeface(null,
+                (dataModel.isChecked() ?
+                        Typeface.BOLD :
+                        Typeface.NORMAL));
+
+        viewHolder.imgChoice.setVisibility(
+                dataModel.isChecked() ?
+                        View.VISIBLE :
+                        View.GONE);
+
         viewHolder.txtName.setText(dataModel.getName());
         viewHolder.txtAddress.setText(dataModel.getAddress());
         // Return the completed view to render on screen
         return convertView;
     }
+
+    public void setCheck(int position) {
+        for (int i = 0; i < getCount(); i++) {
+            getItem(i).setChecked(false);
+
+        }
+        getItem(position).setChecked(true);
+        notifyDataSetChanged();
+    }
+
 }

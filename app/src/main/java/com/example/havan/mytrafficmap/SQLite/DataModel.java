@@ -12,7 +12,7 @@ public class DataModel {
     private String name;
     private String address;
     private String placeID;
-
+    private boolean isChecked;
     public DataModel() {
 
     }
@@ -28,6 +28,14 @@ public class DataModel {
         this.name = name;
         this.address = address;
         this.placeID = placeID;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public int getId() {

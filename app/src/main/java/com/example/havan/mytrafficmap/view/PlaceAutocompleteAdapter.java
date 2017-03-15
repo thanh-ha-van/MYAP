@@ -50,7 +50,11 @@ public class PlaceAutocompleteAdapter
 
     public PlaceAutocompleteAdapter(Context context, GoogleApiClient googleApiClient,
                                     LatLngBounds bounds, AutocompleteFilter filter) {
-        super(context, android.R.layout.simple_expandable_list_item_2, android.R.id.text1);
+        super(
+                context,
+                android.R.layout.simple_expandable_list_item_2,
+                android.R.id.text1
+        );
         mGoogleApiClient = googleApiClient;
         mBounds = bounds;
         mPlaceFilter = filter;
@@ -144,8 +148,12 @@ public class PlaceAutocompleteAdapter
             // contain the results when the query completes.
             PendingResult<AutocompletePredictionBuffer> results =
                     Places.GeoDataApi
-                            .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
-                                    mBounds, mPlaceFilter);
+                            .getAutocompletePredictions(
+                                    mGoogleApiClient,
+                                    constraint.toString(),
+                                    mBounds,
+                                    mPlaceFilter
+                            );
 
             // This method should have been called off the main UI thread. Block and wait for at most 60s
             // for a result from the API.

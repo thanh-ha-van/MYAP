@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="16dp"
     android:paddingTop="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingLeft="11dp"
+    android:id="@+id/main_layout"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:paddingRight="11dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/plate"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="search for place and address"
+            android:padding="10dp"
             android:layout_margin="20dp"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
@@ -24,6 +31,7 @@
 
         <AutoCompleteTextView
             android:id="@+id/autocomplete_places"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -35,70 +43,143 @@
         <Button
             android:id="@+id/button_clear"
             android:textColor="@color/white"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/plate_dark"
             android:layout_width="match_parent"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:text="@string/clear_text"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/selected_place"
-            android:textAllCaps="true"
-           />
-
-        <TextView
-            android:id="@+id/place_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:textColor="@color/colorPrimary"
-            android:text=""
-          />
-
-        <Button
-            android:text="Direct from my place"
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/direction" />
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:background="@drawable/plate">
 
-        <Button
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="Add to favorite list"
+            <TextView
+                android:text="Name..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_place_name"
+                android:gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:paddingLeft="10dp"
+                android:layout_toEndOf="@+id/btn_info"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/btn_address" />
 
-            android:id="@+id/addtofavorite" />
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/ic_name"
+                android:paddingLeft="2dp"
+                android:background="@drawable/circle"
+                android:id="@+id/btn_info"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
 
-        <TextView
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                app:srcCompat="@drawable/ic_address"
+                android:id="@+id/btn_address"
+                android:layout_below="@+id/btn_info"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp" />
 
-            android:id="@+id/place_attribution"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:textColor="@color/colorPrimary"
-            android:text=""
-            android:paddingTop="20dp" />
+            <TextView
+                android:text="Address..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_address"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@+id/btn_address"
+                android:layout_alignTop="@+id/btn_address"
+                android:layout_above="@+id/btn_phone" />
+
+            <TextView
+                android:text="Phone..."
+                android:autoLink="phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_phone"
+                android:layout_alignParentEnd="true"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical"
+                android:layout_toEndOf="@+id/btn_phone"
+                android:layout_alignTop="@+id/btn_phone"
+                android:layout_above="@+id/btn_site" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                app:srcCompat="@drawable/ic_site"
+                android:id="@+id/btn_site"
+                android:layout_below="@+id/btn_phone"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle"
+                app:srcCompat="@drawable/ic_phone"
+                android:id="@+id/btn_phone"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/btn_address"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:text="Website..."
+                android:autoLink="web"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical"
+                android:id="@+id/tv_site"
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@+id/btn_site"
+                android:layout_alignTop="@+id/btn_site"
+                android:layout_above="@+id/relativeLayout2" />
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:layout_below="@+id/btn_site"
+                android:id="@+id/relativeLayout2">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/circle"
+                    app:srcCompat="@drawable/ic_directions_black"
+                    android:id="@+id/btn_direct"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/circle"
+                    app:srcCompat="@drawable/ic_add_location"
+                    android:id="@+id/btn_add"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@+id/btn_direct"
+                    android:layout_marginEnd="20dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
     </LinearLayout>
 
 
