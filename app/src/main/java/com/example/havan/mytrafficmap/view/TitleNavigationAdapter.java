@@ -13,9 +13,11 @@ import android.widget.TextView;
 
 import com.example.havan.mytrafficmap.R;
 
+
 public class TitleNavigationAdapter extends BaseAdapter {
 
     private ImageView imgIcon;
+    private ArrayList<SpinnerItem> navSpinner;
 
     private TextView txtTitle;
 
@@ -23,9 +25,10 @@ public class TitleNavigationAdapter extends BaseAdapter {
 
     private Context context;
 
-    public TitleNavigationAdapter(Context context,
-                                  ArrayList<SpinnerItem> spinnerNavItem) {
-        this.spinnerNavItem = spinnerNavItem;
+    public TitleNavigationAdapter(Context context) {
+
+        addBar();
+        this.spinnerNavItem = navSpinner;
         this.context = context;
     }
 
@@ -46,6 +49,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.
@@ -72,6 +76,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.list_item_title_navigation, null);
         }
 
+
         imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
         txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
 
@@ -80,4 +85,21 @@ public class TitleNavigationAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private void addBar() {
+        // Spinner title navigation data
+        navSpinner = new ArrayList<SpinnerItem>();
+        navSpinner.add(new SpinnerItem("Airport", R.drawable.airport));
+        navSpinner.add(new SpinnerItem("Atm", R.drawable.atm));
+        navSpinner.add(new SpinnerItem("Bank", R.drawable.bank));
+        navSpinner.add(new SpinnerItem("Bar", R.drawable.bar));
+        navSpinner.add(new SpinnerItem("Cafe", R.drawable.cafe));
+        navSpinner.add(new SpinnerItem("Church", R.drawable.church));
+        navSpinner.add(new SpinnerItem("Food", R.drawable.food));
+        navSpinner.add(new SpinnerItem("Hospital", R.drawable.hospital));
+        navSpinner.add(new SpinnerItem("Hotel", R.drawable.hotel));
+        navSpinner.add(new SpinnerItem("Library", R.drawable.library));
+        navSpinner.add(new SpinnerItem("Police", R.drawable.police));
+        navSpinner.add(new SpinnerItem("Supermarket", R.drawable.supermarket));
+        navSpinner.add(new SpinnerItem("Theatre", R.drawable.ic_movie));
+    }
 }

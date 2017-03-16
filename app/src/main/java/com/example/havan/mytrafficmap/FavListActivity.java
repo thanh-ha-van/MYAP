@@ -53,6 +53,7 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     private static CustomAdapter adapter;
     protected GoogleApiClient mGoogleApiClient;
 
+    String currentId = null;
     int currentPosition = -1;
     public String info;
 
@@ -82,6 +83,7 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
                     int position,
                     long id) {
                 adapter.setCheck(position);
+                currentId = adapter.getItem(position).getPlaceID();
                 currentPosition = position;
             }
         });
@@ -90,36 +92,45 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     @Click(R.id.direct)
     void directClicked() {
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0 /* clientId */, this)
-                .addApi(Places.GEO_DATA_API)
-                .build();
+        if (currentPosition != -1) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, 0 /* clientId */, this)
+                    .addApi(Places.GEO_DATA_API)
+                    .build();
 
 
-        Places.GeoDataApi.getPlaceById(
-                mGoogleApiClient,
-                db.getPlace(currentPosition).getPlaceID()
-        )
-                .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                    @Override
-                    public void onResult(PlaceBuffer places) {
-                        if (
-                                places.getStatus()
-                                        .isSuccess()) {
-                            Intent intent = new Intent();
-                            //intent.putExtra("lat", latLng.latitude);
-                            final Place myPlace = places.get(0);
-                            intent.putExtra("lat", myPlace.getLatLng().latitude);
-                            intent.putExtra("lon", myPlace.getLatLng().longitude);
-                            intent.putExtra("address", myPlace.getName().toString());
+            Places.GeoDataApi.getPlaceById(
+                    mGoogleApiClient,
+                    currentId
+            )
+                    .setResultCallback(new ResultCallback<PlaceBuffer>() {
+                        @Override
+                        public void onResult(PlaceBuffer places) {
+                            if (
+                                    places.getStatus()
+                                            .isSuccess()) {
+                                Intent intent = new Intent();
+                                //intent.putExtra("lat", latLng.latitude);
+                                final Place myPlace = places.get(0);
+                                intent.putExtra("lat", myPlace.getLatLng().latitude);
+                                intent.putExtra("lon", myPlace.getLatLng().longitude);
+                                intent.putExtra("address", myPlace.getName().toString());
 
-                            setResult(RESULT_OK, intent);
-                            finish();
-                            onBackPressed();
+                                setResult(RESULT_OK, intent);
+                                finish();
+                                onBackPressed();
+                            }
+                            places.release();
                         }
-                        places.release();
-                    }
-                });
+                    });
+        }
+        else {
+            Toast.makeText(
+                    FavListActivity.this,
+                    "Please choose a place first!",
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
 
     }
 
@@ -129,33 +140,58 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     void infoClicked() {
 
 
-        info =  "Name: "+ adapter.getItem(currentPosition).getName()
-                + "\nAddress: "
-                + adapter.getItem(currentPosition).getAddress();
+        if (currentPosition != -1) {
 
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setTitle("Information");
-        builder1.setMessage(info);
-        builder1.setCancelable(true);
-        builder1.setNeutralButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+            info =  "Name: "+ adapter.getItem(currentPosition).getName()
+                    + "\nAddress: "
+                    + adapter.getItem(currentPosition).getAddress();
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setTitle("Information");
+            builder1.setMessage(info);
+            builder1.setCancelable(true);
+            builder1.setNeutralButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
 
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
+        } else Toast.makeText(
+                FavListActivity.this,
+                "Please choose a place first!",
+                Toast.LENGTH_SHORT
+        ).show();
+
+
+    }
+
+    @Click (R.id.btn_add_place)
+            void addPlace ()
+    {
+        startActivity(new Intent(FavListActivity.this, SearchActivity_.class));
+        finish();
     }
 
     @Click(R.id.delete)
     void delClicked() {
 
-        AlertDialog.Builder ab = new AlertDialog.Builder(FavListActivity.this);
-        ab.setMessage("Are you sure to delete this place?")
-                .setPositiveButton("YES", dialogClickListener)
-                .setNegativeButton("NO", dialogClickListener).show();
+        if (currentPosition != -1) {
+            AlertDialog.Builder ab = new AlertDialog.Builder(FavListActivity.this);
+            ab.setMessage("Are you sure to delete this place?")
+                    .setPositiveButton("YES", dialogClickListener)
+                    .setNegativeButton("NO", dialogClickListener).show();
+
+
+        } else Toast.makeText(
+                FavListActivity.this,
+                "Please choose a place first!",
+                Toast.LENGTH_SHORT
+        ).show();
+
 
     }
 
@@ -165,15 +201,8 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    if (currentPosition != -1) {
-                        db.deletePlace(adapter.getItem(currentPosition));
-                        afterViews();
-
-                    } else Toast.makeText(
-                            FavListActivity.this,
-                            "Please choose a place first!",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    db.deletePlace(adapter.getItem(currentPosition));
+                    afterViews();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

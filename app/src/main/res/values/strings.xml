@@ -10,7 +10,7 @@
     <string name="share">Share</string>
     <string name="settings">Setting</string>
     <string name="direction">Direction</string>
-    <string name="map_style">CHOOSE MAP STYLE</string>
+    <string name="map_style">MAP STYLE</string>
     <string name="sign_in">LOG IN</string>
     <string name="style_label_retro">Retro</string>
     <string name="style_label_night">night</string>
@@ -30,10 +30,6 @@
     <string name="autocomplete_hint">Enter place name or address</string>
     <string name="selected_place">Place detail:</string>
     <string name="clear_text">Clear Text</string>
-
-    <!-- getString(String, Object...) does not support HTML tags directly, they need to be encoded first.
-    Original string: <b>%1$s</b><br/><i>Place Id: %2$s</i><br/>Address: %3$s<br/>Phone: %4$s<br/>Website: %5$s-->
-    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
 
 
     <!-- items of sliding menu -->
@@ -68,6 +64,7 @@
         <item>supermarket</item>
         <item>theatre</item>
     </string-array>
+
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

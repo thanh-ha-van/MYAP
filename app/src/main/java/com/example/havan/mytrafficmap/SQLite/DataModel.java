@@ -29,7 +29,6 @@ public class DataModel {
         this.address = address;
         this.placeID = placeID;
     }
-
     public boolean isChecked() {
         return isChecked;
     }

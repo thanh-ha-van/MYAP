@@ -19,6 +19,8 @@ import com.example.havan.mytrafficmap.SQLite.DataModel;
 
 import java.util.List;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 
 /**
  * Created by NTT on 3/7/2017.
@@ -43,7 +45,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
         this.mContext = context;
         inflater = LayoutInflater.from(context);
 
-
     }
 
     @Override
@@ -56,7 +57,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
         final View result;
 
         if (convertView == null) {
-
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(
@@ -64,6 +64,7 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
                     parent,
                     false
             );
+
             viewHolder.txtName = (TextView)
                     convertView.findViewById(R.id.name);
             viewHolder.txtAddress = (TextView)
@@ -81,12 +82,9 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
                 dataModel.
                         isChecked() ?
                         Color.parseColor("#5A9B97") :
-                        Color.BLACK);
+                        Color.parseColor("#3F4B53"));
 
-        viewHolder.txtName.setTypeface(null,
-                (dataModel.isChecked() ?
-                        Typeface.BOLD :
-                        Typeface.NORMAL));
+        viewHolder.txtName.setTypeface(null, Typeface.BOLD );
 
         viewHolder.imgChoice.setVisibility(
                 dataModel.isChecked() ?
@@ -106,6 +104,11 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
         }
         getItem(position).setChecked(true);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public DataModel getItem(int position) {
+        return super.getItem(getCount() - position - 1);
     }
 
 }

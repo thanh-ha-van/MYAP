@@ -14,5 +14,4 @@ public class Utils {
 
     public static String sTrSnippet;
 
-
 }

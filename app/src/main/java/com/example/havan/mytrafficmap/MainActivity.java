@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity
 
     private String mActivityTitle;
 
-    private ArrayList<SpinnerItem> navSpinner;
-
-    private String[] value;
 
     private String[] compare;
 
@@ -253,12 +250,9 @@ public class MainActivity extends AppCompatActivity
 
         actionBar = getSupportActionBar();
 
-        value = getValue();
         compare = getValue1();
 
-        addBar();
-
-        adapter = new TitleNavigationAdapter(getApplicationContext(), navSpinner);
+        adapter = new TitleNavigationAdapter(getApplicationContext());
         getSupportActionBar().setListNavigationCallbacks(adapter,
                 new android.support.v7.app.ActionBar.OnNavigationListener() {
                     @Override
@@ -279,33 +273,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-    private String[] getValue() {
-        return getResources().getStringArray(R.array.items);
-    }
-
     private String[] getValue1() {
         return getResources().getStringArray(R.array.compare);
     }
 
-    private void addBar() {
-        // Spinner title navigation data
-
-        navSpinner = new ArrayList<SpinnerItem>();
-        navSpinner.add(new SpinnerItem(value[0], R.drawable.airport));
-        navSpinner.add(new SpinnerItem(value[1], R.drawable.atm));
-        navSpinner.add(new SpinnerItem(value[2], R.drawable.bank));
-        navSpinner.add(new SpinnerItem(value[3], R.drawable.bar));
-        navSpinner.add(new SpinnerItem(value[4], R.drawable.cafe));
-        navSpinner.add(new SpinnerItem(value[5], R.drawable.church));
-        navSpinner.add(new SpinnerItem(value[6], R.drawable.food));
-        navSpinner.add(new SpinnerItem(value[7], R.drawable.hospital));
-        navSpinner.add(new SpinnerItem(value[8], R.drawable.hotel));
-        navSpinner.add(new SpinnerItem(value[9], R.drawable.library));
-        navSpinner.add(new SpinnerItem(value[10], R.drawable.police));
-        navSpinner.add(new SpinnerItem(value[11], R.drawable.supermarket));
-        navSpinner.add(new SpinnerItem(value[12], R.drawable.ic_movie));
-    }
 
     private void loadMap() {
 
@@ -361,7 +332,7 @@ public class MainActivity extends AppCompatActivity
                                 point.longitude
                         ).toString())
                         .position(point)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_red)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_yellow)));
 
                     Utils.sDestination = point;
                     Utils.sTrDestination = marker.getTitle();
@@ -675,7 +646,7 @@ public class MainActivity extends AppCompatActivity
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat1, lon1))
                 .title(address)
-                .snippet("Your current destination")
+                .snippet(address)
                 .icon(BitmapDescriptorFactory
                         .fromResource(R.drawable.pin_yellow)));
 

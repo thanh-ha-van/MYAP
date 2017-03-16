@@ -89,7 +89,7 @@ public class PlaceDirections {
             googleMap.addMarker(new MarkerOptions().position(to)
                     .title(Utils.sTrDestination)
                     .snippet(Utils.sTrSnippet)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_red)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_yellow)));
         }
     }
 
@@ -157,8 +157,8 @@ public class PlaceDirections {
                 }
 
                 polyLineOptions.addAll(points);
-                polyLineOptions.width(5);
-                polyLineOptions.color(Color.BLUE);
+                polyLineOptions.width(6);
+                polyLineOptions.color(Color.parseColor("#26A1C3"));
             }
             if (polyLineOptions == null) {
 

@@ -1,7 +1,9 @@
 package com.example.havan.mytrafficmap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -165,7 +167,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             finish();
             onBackPressed();
         } else {
-            Toast.makeText(this, " NULL "
+            Toast.makeText(this, "Please search for a place first"
                     , Toast.LENGTH_SHORT).show();
         }
     }
@@ -174,12 +176,35 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     void favClicked() {
 
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        if (placeId != null) {
+            DatabaseHandler db = new DatabaseHandler(this);
+            if (db.checkIfExist(placeId)) {
 
-        db.addPlace(new DataModel(placeName, placeAddress, placeId));
-        // Reading all contacts
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setTitle("Whoop!");
+                builder1.setMessage("This place is already exists in your favorite list");
+                builder1.setCancelable(true);
+                builder1.setNeutralButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
 
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            } else {
+                db.addPlace(new DataModel(placeName, placeAddress, placeId));
+                // Reading all contacts
+                Toast.makeText(this,
+                        "Added to your favorite list",
+                        Toast.LENGTH_SHORT).show();
 
+            }
+        }
+        else   Toast.makeText(this,
+                "Please search for a place first",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Click (R.id.btn_phone)

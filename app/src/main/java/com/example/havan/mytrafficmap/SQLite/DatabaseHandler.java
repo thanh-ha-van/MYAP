@@ -69,17 +69,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, dataModel.getName()); // Contact Name
-        values.put(KEY_ADDRESS, dataModel.getAddress()); // Contact Phone
-        values.put(KEY_PLACE_ID, dataModel.getPlaceID()); // Contact Name
+        values.put(KEY_NAME, dataModel.getName()); // Place Name
+        values.put(KEY_ADDRESS, dataModel.getAddress()); // Place Phone
+        values.put(KEY_PLACE_ID, dataModel.getPlaceID()); // Place Name
 
         // Inserting Row
         db.insert(TABLE_FAV, null, values);
         db.close(); // Closing database connection
     }
 
+    public boolean checkIfExist(String placeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                TABLE_FAV,
+                new String[]{KEY_PLACE_ID},
+                KEY_PLACE_ID + "=?",
+                new String[]{String.valueOf(placeId)}, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
+
+    }
+
     // Getting single place
-    public DataModel getPlace(int id) {
+    public DataModel getPlace(String placeId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(
@@ -89,8 +106,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         KEY_NAME,
                         KEY_ADDRESS,
                         KEY_PLACE_ID},
-                KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
+                KEY_PLACE_ID + "=?",
+                new String[]{String.valueOf(placeId)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
@@ -101,6 +118,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 cursor.getString(3)
         );
         // return contact
+        cursor.close();
         return dataModel;
     }
 
@@ -150,6 +168,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete(TABLE_FAV, KEY_ID + " = ?",
                 new String[]{String.valueOf(place.getId())});
         db.close();
+
     }
 
 
