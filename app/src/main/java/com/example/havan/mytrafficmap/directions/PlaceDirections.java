@@ -157,7 +157,7 @@ public class PlaceDirections {
                 }
 
                 polyLineOptions.addAll(points);
-                polyLineOptions.width(10);
+                polyLineOptions.width(5);
                 polyLineOptions.color(Color.BLUE);
             }
             if (polyLineOptions == null) {

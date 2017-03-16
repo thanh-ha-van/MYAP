@@ -43,6 +43,7 @@ import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.SpinnerItem;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 
+import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -135,6 +136,8 @@ public class MainActivity extends AppCompatActivity
     private static String sKeyName = "name";
     //MapView m;
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
+
+    private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
 
     private static String TAG = MainActivity.class.getSimpleName();
 
@@ -575,7 +578,9 @@ public class MainActivity extends AppCompatActivity
             // view option activity
         } else if (id == R.id.fav_place) {
             // list of fav place activity
-            startActivity(new Intent(MainActivity.this, FavListActivity_.class));
+
+            Intent intent = new Intent(this, FavListActivity_.class);
+            startActivityForResult(intent, FAV_LIST_ACTIVITY_RESULT_CODE);
         } else if (id == R.id.share) {
             startActivity(new Intent(MainActivity.this, ShareActivity_.class));
         }
@@ -644,32 +649,44 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         // check that it is the SecondActivity with an OK result
         if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
+                makeDirection(data);
+            }
+        }
+        if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
 
-                lat1 = data.getDoubleExtra("lat", 10);
-                lon1 = data.getDoubleExtra("lon", 10);
-                String address = data.getStringExtra("address");
-
-                // draw destination
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(lat1, lon1))
-                        .title(address)
-                        .snippet("Your current destination")
-                        .icon(BitmapDescriptorFactory
-                                .fromResource(R.drawable.pin_yellow)));
-
-
-                Utils.sDestination =new LatLng(lat1, lon1);
-                LatLng des = Utils.sDestination;
-                byte way = 2;
-                LatLng from = new LatLng(lat, lon);
-                directions = new PlaceDirections(getApplicationContext()
-                        , mMap, from, des, way);
+            if (resultCode== RESULT_OK) {
+                makeDirection(data);
 
             }
         }
+    }
+
+    public void makeDirection (Intent data) {
+
+        lat1 = data.getDoubleExtra("lat", 10);
+        lon1 = data.getDoubleExtra("lon", 10);
+        String address = data.getStringExtra("address");
+
+        // draw destination
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat1, lon1))
+                .title(address)
+                .snippet("Your current destination")
+                .icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.pin_yellow)));
+
+
+        Utils.sDestination =new LatLng(lat1, lon1);
+        LatLng des = Utils.sDestination;
+        byte way = 2;
+        LatLng from = new LatLng(lat, lon);
+        directions = new PlaceDirections(getApplicationContext()
+                , mMap, from, des, way);
+
     }
 
     @Override
