@@ -19,6 +19,7 @@ import com.example.havan.mytrafficmap.SQLite.DatabaseHandler;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.CustomAdapter;
 import com.example.havan.mytrafficmap.SQLite.DataModel;
+import com.example.havan.mytrafficmap.view.YNDialogManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -41,10 +42,12 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_fav_list)
-public class FavListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener  {
+public class FavListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     AlertDialogManager alert = new AlertDialogManager();
+
+    YNDialogManager yesNoAlert = new YNDialogManager();
 
     @ViewById(R.id.show_info)
     ImageButton showInfo;
@@ -127,8 +130,7 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
                             places.release();
                         }
                     });
-        }
-        else {
+        } else {
             Toast.makeText(
                     FavListActivity.this,
                     "Please choose a place first!",
@@ -137,7 +139,6 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
         }
 
     }
-
 
 
     @Click(R.id.show_info)
@@ -151,9 +152,9 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
                     "Information",
                     adapter.getItem(currentPosition).getName()
                             + "\n"
-                    + adapter.getItem(currentPosition).getAddress()
-                    + "\n"
-                    + adapter.getItem(currentPosition).getPlaceID(),
+                            + adapter.getItem(currentPosition).getAddress()
+                            + "\n"
+                            + adapter.getItem(currentPosition).getPlaceID(),
                     3
             );
 
@@ -166,9 +167,8 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
 
     }
 
-    @Click (R.id.btn_add_place)
-            void addPlace ()
-    {
+    @Click(R.id.btn_add_place)
+    void addPlace() {
         startActivity(new Intent(FavListActivity.this, SearchActivity_.class));
         finish();
     }
@@ -177,36 +177,22 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     void delClicked() {
 
         if (currentPosition != -1) {
-            AlertDialog.Builder ab = new AlertDialog.Builder(FavListActivity.this);
-            ab.setMessage("Are you sure to delete this place?")
-                    .setPositiveButton("YES", dialogClickListener)
-                    .setNegativeButton("NO", dialogClickListener).show();
 
-
-        } else Toast.makeText(
-                FavListActivity.this,
-                "Please choose a place first!",
-                Toast.LENGTH_SHORT
-        ).show();
-
-
-    }
-
-
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    db.deletePlace(adapter.getItem(currentPosition));
-                    afterViews();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
+            if (yesNoAlert.showNYDialog(this, "Confirm", "Do you really want to delete this place?")) {
+                db.deletePlace(adapter.getItem(currentPosition));
             }
         }
-    };
+
+    else Toast.makeText(
+    FavListActivity.this,
+            "Please choose a place first!",
+    Toast.LENGTH_SHORT
+    ).
+
+    show();
+
+
+}
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
