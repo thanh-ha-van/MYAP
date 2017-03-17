@@ -180,19 +180,12 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             DatabaseHandler db = new DatabaseHandler(this);
             if (db.checkIfExist(placeId)) {
 
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-                builder1.setTitle("Whoop!");
-                builder1.setMessage("This place is already exists in your favorite list");
-                builder1.setCancelable(true);
-                builder1.setNeutralButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
+                alert.showAlertDialog(
+                        this,
+                        "Whoop!",
+                        "This place is already added to your favorite list",
+                        2
+                );
             } else {
                 db.addPlace(new DataModel(placeName, placeAddress, placeId));
                 // Reading all contacts
@@ -231,7 +224,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             mPlaceDetailsName.setText(place.getName().toString());
 
             mPlaceDetailsPhone.setText("No phone number");
-            if(place.getPhoneNumber()!=null)
+            if(place.getPhoneNumber()!="")
             mPlaceDetailsPhone.setText(place.getPhoneNumber().toString());
 
             mPlaceDetailsSite.setText("No website");
@@ -242,7 +235,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             latLng = place.getLatLng();
             placeName = place.getName().toString();
             placeAddress = place.getAddress().toString();
-
 
             places.release();
         }

@@ -1,36 +1,54 @@
 package com.example.havan.mytrafficmap.view;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.havan.mytrafficmap.R;
 
 public class AlertDialogManager {
 
-    public void showAlertDialog(Context context, String title, String message,
-            Boolean status) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
- 
-        // Setting Dialog Title
-        alertDialog.setTitle(title);
- 
-        // Setting Dialog Message
-        alertDialog.setMessage(message);
- 
-        if (status != null) {
-            // Setting alert dialog icon
-            alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
+    public void showAlertDialog(Activity activity, String title, String message,
+                                int status) {
 
-            // Setting OK Button
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
+        final Dialog alertDialog = new Dialog(activity);
+        alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alertDialog.setCancelable(false);
+        alertDialog.setContentView(R.layout.alert_dialog_layout);
 
-            // Showing Alert Message
-            alertDialog.show();
-        }
+        TextView tvTitle = (TextView) alertDialog.findViewById(R.id.tv_title);
+        tvTitle.setText(title);
+
+        TextView tvContent = (TextView) alertDialog.findViewById(R.id.tv_content);
+        tvContent.setText(message);
+
+        ImageButton titleIcon = (ImageButton) alertDialog.findViewById(R.id.title_icon);
+
+        if (status == 1)
+            titleIcon.setImageResource(R.drawable.success);
+        if (status == 2)
+
+            titleIcon.setImageResource(R.drawable.failed);
+        if (status == 3)
+
+            titleIcon.setImageResource(R.drawable.ic_info);
+
+        ImageButton dialogButton = (ImageButton) alertDialog.findViewById(R.id.btn_ok_dialog);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+
+
     }
-
 }
+

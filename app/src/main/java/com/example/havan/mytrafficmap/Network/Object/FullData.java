@@ -12,6 +12,8 @@ public class FullData {
     @SerializedName("data")
     private ArrayList<Data> data;
 
+    // The Full data that Server send back to client.
+
     public ArrayList<Data> getData() {
         return data;
     }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.Network.Object.Data;
 import com.example.havan.mytrafficmap.SQLite.DatabaseHandler;
+import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.CustomAdapter;
 import com.example.havan.mytrafficmap.SQLite.DataModel;
 import com.google.android.gms.common.ConnectionResult;
@@ -41,6 +42,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_fav_list)
 public class FavListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener  {
+
+
+    AlertDialogManager alert = new AlertDialogManager();
 
     @ViewById(R.id.show_info)
     ImageButton showInfo;
@@ -142,23 +146,16 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
 
         if (currentPosition != -1) {
 
-            info =  "Name: "+ adapter.getItem(currentPosition).getName()
-                    + "\nAddress: "
-                    + adapter.getItem(currentPosition).getAddress();
-
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setTitle("Information");
-            builder1.setMessage(info);
-            builder1.setCancelable(true);
-            builder1.setNeutralButton(android.R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
+            alert.showAlertDialog(
+                    this,
+                    "Information",
+                    adapter.getItem(currentPosition).getName()
+                            + "\n"
+                    + adapter.getItem(currentPosition).getAddress()
+                    + "\n"
+                    + adapter.getItem(currentPosition).getPlaceID(),
+                    3
+            );
 
         } else Toast.makeText(
                 FavListActivity.this,

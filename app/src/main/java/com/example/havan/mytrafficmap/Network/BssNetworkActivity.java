@@ -1,5 +1,7 @@
 package com.example.havan.mytrafficmap.Network;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,8 +42,6 @@ public class BssNetworkActivity extends AppCompatActivity {
     @ViewById(R.id.btn_login)
     Button btnLogin;
 
-    RestService iRestService;
-
     @Bean
     protected DataService dataService;
 
@@ -70,13 +70,31 @@ public class BssNetworkActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Account account) {
                 //uiThread(account);
-                dataServiceLoad.loadData(account.getAccessToken(), new LoadSuccessListener() {
+                dataServiceLoad.loadData(
+                        account.getAccessToken(),
+                        new LoadSuccessListener() {
 
-                    @Override
-                    public void onSuccess(FullData listData) {
-                        uiThread(listData);
-                    }
-                });
+                            @Override
+                            public void onSuccess(FullData listData) {
+
+                                AlertDialog.Builder builder1 = new AlertDialog
+                                        .Builder(BssNetworkActivity.this);
+                                builder1.setTitle("Information");
+                                builder1.setMessage("Login success!");
+                                builder1.setCancelable(true);
+                                builder1.setNeutralButton(android.R.string.ok,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                                uiThread(listData);
+                            }
+
+                        });
             }
         });
     }
@@ -90,9 +108,13 @@ public class BssNetworkActivity extends AppCompatActivity {
                             + "ID: "
                             + data.getId()
                             + "\n"
-                            + "DreatorId:"
+                            + "CreatorId:"
                             + data.getCreatorId()
                             + "\n"
+
+                    // The FullData Object content multiple variables. ID AND CreatorID
+                    // is the 2 first variables.
+                    // Wanna show more? just add more definition to Data and getter and setter.
 
             );
         }

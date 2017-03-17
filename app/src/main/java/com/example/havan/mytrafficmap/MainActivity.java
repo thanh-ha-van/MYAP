@@ -28,7 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 
@@ -40,10 +40,8 @@ import com.example.havan.mytrafficmap.model.MyPlace;
 
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
-import com.example.havan.mytrafficmap.view.SpinnerItem;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 
-import com.google.android.gms.location.places.GeoDataApi;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -67,7 +65,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ActionBar.OnNavigationListener, LocationListener {
+        ActionBar.OnNavigationListener, LocationListener, GoogleMap.OnInfoWindowClickListener {
 
     public PlaceDirections directions;
 
@@ -147,7 +145,7 @@ public class MainActivity extends AppCompatActivity
         editor = pref.edit();
         // check if first run
         if (pref.getBoolean("firstrun", true)) {
-            editor.putBoolean("firstrun",false);
+            editor.putBoolean("firstrun", false);
             editor.putBoolean("show_traffic", true);
             editor.putString("map_style", "normal");
             editor.commit();
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity
         if (!isInternet) {
             // Internet Connection is not present
             alert.showAlertDialog(this, "Internet Connection Error",
-                    "Please connect to working Internet connection", false);
+                    "Please connect to working Internet connection", 2);
             // stop executing code by return
             return;
         }
@@ -186,8 +184,7 @@ public class MainActivity extends AppCompatActivity
             // Can't get user's current location
             alert.showAlertDialog(this, "GPS Status",
                     "Couldn't get location information. Please enable GPS",
-                    false);
-
+                    2);
         }
 
         handleIntent(getIntent());
@@ -215,21 +212,25 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+    @Override
+    public void onInfoWindowClick(Marker marker) {
 
+        alert.showAlertDialog(this, "Information",
+                marker.getTitle() + "\n" + marker.getSnippet(), 3);
+
+    }
     private void initUi() {
 
         mActivityTitle = getTitle().toString();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("Navigation!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(mActivityTitle);
@@ -241,7 +242,6 @@ public class MainActivity extends AppCompatActivity
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        ///////////////////////////////
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -269,7 +269,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-
 
     }
 
@@ -322,24 +321,28 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onMapClick(LatLng point) {
 
-
                 if (marker != null)
                     marker.remove();
 
                 marker = mMap.addMarker(new MarkerOptions()
-                        .title (getCompleteAddressString (
-                                point.latitude,
-                                point.longitude
-                        ).toString())
+                        .title("Your current pin")
+                        .snippet(getCompleteAddressString(point.latitude, point.longitude)
+                        )
                         .position(point)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_yellow)));
-
-                    Utils.sDestination = point;
-                    Utils.sTrDestination = marker.getTitle();
-                    Utils.sTrSnippet = marker.getSnippet();
+                        .icon(
+                                BitmapDescriptorFactory
+                                        .fromResource(
+                                                R.drawable.pin_yellow
+                                        )
+                        )
+                );
+                Utils.sDestination = point;
+                Utils.sTrDestination = marker.getTitle();
+                Utils.sTrSnippet = marker.getSnippet();
 
             }
         });
+        mMap.setOnInfoWindowClickListener(this);
 
     }
 
@@ -347,36 +350,30 @@ public class MainActivity extends AppCompatActivity
         String strAdd = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(
-                    LATITUDE,
-                    LONGITUDE,
-                    1
-            );
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
                 for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress
-                            .append(
-                                    returnedAddress
-                                            .getAddressLine(i)
-                            ).append("; ");
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
                 strAdd = strReturnedAddress.toString();
+            } else {
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return strAdd;
     }
-    public void setViewOption () {
+
+    public void setViewOption() {
 
         mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
         mMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
     }
 
-    public void setMyMapStyle () {
+    public void setMyMapStyle() {
         String mapStyle = pref.getString("map_style", null);
         switch (mapStyle) {
             case "normal":
@@ -419,7 +416,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading Places..."));
+            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading nearby Places..."));
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -510,19 +507,19 @@ public class MainActivity extends AppCompatActivity
                         // Zero results found
                         alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry no places found. Try to change the types of places",
-                                false);
+                                2);
                     } else if (status.equals("UNKNOWN_ERROR")) {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry unknown error occured.",
-                                false);
+                                2);
                     } else if (status.equals("REQUEST_DENIED")) {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry error occured. Request is denied",
-                                false);
+                                2);
                     } else {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry error occured.",
-                                false);
+                                2);
                     }
                 }
             });
@@ -532,7 +529,7 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public boolean onNavigationItemSelected (MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
@@ -554,8 +551,7 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, FAV_LIST_ACTIVITY_RESULT_CODE);
         } else if (id == R.id.share) {
             startActivity(new Intent(MainActivity.this, ShareActivity_.class));
-        }
-        else if (id == R.id.about) {
+        } else if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, About_.class));
         }
 
@@ -600,7 +596,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (des == null) {
                         alert.showAlertDialog(this, "Place empty",
-                                "Please choice destination place", false);
+                                "Please choice destination place", 2);
                     } else {
                         LatLng from = new LatLng(lat, lon);
                         directions = new PlaceDirections(getApplicationContext()
@@ -629,14 +625,14 @@ public class MainActivity extends AppCompatActivity
         }
         if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
 
-            if (resultCode== RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 makeDirection(data);
 
             }
         }
     }
 
-    public void makeDirection (Intent data) {
+    public void makeDirection(Intent data) {
 
         lat1 = data.getDoubleExtra("lat", 10);
         lon1 = data.getDoubleExtra("lon", 10);
@@ -651,7 +647,7 @@ public class MainActivity extends AppCompatActivity
                         .fromResource(R.drawable.pin_yellow)));
 
 
-        Utils.sDestination =new LatLng(lat1, lon1);
+        Utils.sDestination = new LatLng(lat1, lon1);
         LatLng des = Utils.sDestination;
         byte way = 2;
         LatLng from = new LatLng(lat, lon);
