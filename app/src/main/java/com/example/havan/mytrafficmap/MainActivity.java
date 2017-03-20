@@ -125,10 +125,13 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences.Editor editor;
 
-    // main variable
-    private static String sKeyReference = "reference";
 
     private static String sKeyName = "name";
+
+    private static String sKeyId = "placeId";
+
+    private static String sKeySite = "website";
+
     //MapView m;
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
 
@@ -212,6 +215,7 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
     @Override
     public void onInfoWindowClick(Marker marker) {
 
@@ -219,6 +223,7 @@ public class MainActivity extends AppCompatActivity
                 marker.getTitle() + "\n" + marker.getSnippet(), 3);
 
     }
+
     private void initUi() {
 
         mActivityTitle = getTitle().toString();
@@ -406,12 +411,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     class LoadPlaces extends AsyncTask<String, String, String> {
 
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -422,9 +423,6 @@ public class MainActivity extends AppCompatActivity
             pDialog.show();
         }
 
-        /**
-         * getting Places JSON
-         */
         protected String doInBackground(String... args) {
             googlePlaces = new GooglePlaces();
 
@@ -459,12 +457,10 @@ public class MainActivity extends AppCompatActivity
                             for (MyPlace p : listPlace.results) {
                                 HashMap<String, String> map = new HashMap<String, String>();
 
-                                // Place reference won't display in listview - it will be hidden
-                                // Place reference is used to get "place full details"
-                                map.put(sKeyReference, p.reference);
-
                                 // Place name
                                 map.put(sKeyName, p.name);
+                                map.put(sKeyId, p.place_id);
+                                map.put(sKeySite, p.website);
                                 // adding HashMap to ArrayList
                                 placesListItems.add(map);
                             }
@@ -496,27 +492,20 @@ public class MainActivity extends AppCompatActivity
                                 Marker marker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng(latTmp, lonTmp))
                                         .title(place.name)
-                                        .snippet(place.vicinity)
+                                        .snippet(place.vicinity
+                                                + "\n"
+                                                + place.place_id
+                                                + "\n"
+                                                + place.international_phone_number
+                                        )
                                         .icon(BitmapDescriptorFactory
                                                 .fromResource(R.drawable.pin_red)));
 
                                 listMaker.add(marker);
                             }
                         }
-                    } else if (status.equals("ZERO_RESULTS")) {
-                        // Zero results found
-                        alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry no places found. Try to change the types of places",
-                                2);
-                    } else if (status.equals("UNKNOWN_ERROR")) {
-                        alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry unknown error occured.",
-                                2);
-                    } else if (status.equals("REQUEST_DENIED")) {
-                        alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry error occured. Request is denied",
-                                2);
-                    } else {
+                    }
+                    else {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry error occured.",
                                 2);
@@ -526,7 +515,6 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -558,7 +546,6 @@ public class MainActivity extends AppCompatActivity
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -610,7 +597,6 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     // This method is called when the second activity finishes
     @Override
@@ -670,7 +656,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     @Override
     public void onLocationChanged(Location location) {
         // TODO Auto-generated method stub
@@ -691,28 +676,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         loadMap();
-
     }
 
     @Override

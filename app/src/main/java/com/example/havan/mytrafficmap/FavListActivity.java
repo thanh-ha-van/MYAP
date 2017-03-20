@@ -121,10 +121,9 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
                                 final Place myPlace = places.get(0);
                                 intent.putExtra("lat", myPlace.getLatLng().latitude);
                                 intent.putExtra("lon", myPlace.getLatLng().longitude);
-                                intent.putExtra("address", myPlace.getName().toString());
+                                intent.putExtra("address", myPlace.getAddress() + "\n" + myPlace.getId());
 
                                 setResult(RESULT_OK, intent);
-                                finish();
                                 onBackPressed();
                             }
                             places.release();

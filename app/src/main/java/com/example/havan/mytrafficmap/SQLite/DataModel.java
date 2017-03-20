@@ -9,11 +9,15 @@ package com.example.havan.mytrafficmap.SQLite;
 public class DataModel {
 
     private int id;
+
+
     private String name;
     private String address;
     private String placeID;
     private boolean isChecked;
     public DataModel() {
+
+
 
     }
 
@@ -68,4 +72,5 @@ public class DataModel {
     public void setPlaceID(String placeID) {
         this.placeID = placeID;
     }
+
 }

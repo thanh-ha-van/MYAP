@@ -15,14 +15,12 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 
 public class GooglePlaces {
 
+
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
     private static final String API_KEY = "AIzaSyAPir-D44kZWvmsOJEkCK6jtQC4RyQiqDE";
 
     private static final String PLACES_SEARCH_URL
-            = "https://maps.googleapis.com/maps/api/place/search/json?";
-
-    private static final String PLACES_TEXT_SEARCH_URL
             = "https://maps.googleapis.com/maps/api/place/search/json?";
 
     private static final String PLACES_DETAILS_URL
@@ -76,26 +74,6 @@ public class GooglePlaces {
                 request.setParser(parser);
             }
         });
-    }
-    
-    public PlaceDetails getPlaceDetails(String reference) throws Exception {
-        try {
- 
-            HttpRequestFactory httpRequestFactory = createRequestFactory(HTTP_TRANSPORT);
-            HttpRequest request = httpRequestFactory
-                    .buildGetRequest(new GenericUrl(PLACES_DETAILS_URL));
-            request.getUrl().put("key", API_KEY);
-            request.getUrl().put("reference", reference);
-            request.getUrl().put("sensor", "false");
- 
-            PlaceDetails place = request.execute().parseAs(PlaceDetails.class);
-             
-            return place;
- 
-        } catch (HttpResponseException e) {
-            Log.e("Error...", e.getMessage());
-            throw e;
-        }
     }
 
 }

@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/plate_dark"
     android:padding="20dp"
-    android:layout_marginLeft="40dp"
-    android:layout_marginRight="40dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
     android:layout_gravity="center"
     android:orientation="vertical" >
 
@@ -26,7 +26,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/button_selector"
-        app:srcCompat="@drawable/ic_ok"
+        app:srcCompat="@drawable/ic_check_circle_black"
         android:id="@+id/btn_ok_dialog"
         android:layout_below="@+id/tv_content"
         android:layout_centerHorizontal="true"

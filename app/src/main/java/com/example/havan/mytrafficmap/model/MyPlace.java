@@ -12,13 +12,16 @@ import java.io.Serializable;
 public class MyPlace implements Serializable {
 
     @Key
-    public String id;
+    public String website;
+
+    @Key
+    public String place_id;
 
     @Key
     public String name;
 
     @Key
-    public String reference;
+    public String international_phone_number;
 
     @Key
     public String icon;
@@ -29,15 +32,19 @@ public class MyPlace implements Serializable {
     @Key
     public Geometry geometry;
 
-    @Key
-    public String formatted_address;
-
-    @Key
-    public String formatted_phone_number;
-
     @Override
     public String toString() {
-        return name + " - " + id + " - " + reference;
+        return
+                name
+                        + " - "
+                        + place_id
+                        + " - "
+                        + international_phone_number
+                        + " - "
+                        + website
+                        + " - "
+                        + vicinity
+                ;
     }
 
     public static class Geometry implements Serializable {
