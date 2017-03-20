@@ -8,6 +8,6 @@ android:shape="rectangle" >
     android:topRightRadius="5dp" />
 
 <stroke android:width="4px"
-    android:color="#5A9B97" />
+    android:color="@color/green" />
 
 </shape>

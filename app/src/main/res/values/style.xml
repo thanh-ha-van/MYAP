@@ -5,7 +5,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="android:actionBarStyle" tools:ignore="NewApi">@style/MyActionBar</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:actionDropDownStyle">@style/customSpinerStyle</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="fontPath">font/SVN-Aguda Bold.otf</item>
         <item name="android:listSelector">@color/green</item>
@@ -33,12 +33,12 @@
 
     <style name="ToggleSwitchTheme" parent="ThemeOverlay.AppCompat.Light">
 
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
         <!-- active thumb & track color (30% transparency) -->
-        <item name="colorControlActivated">#337D86</item>
+        <item name="colorControlActivated">@color/white</item>
 
         <item name="android:paddingTop">20dp</item>
-        <item name="android:switchMinWidth">80dp</item>
+        <item name="android:switchMinWidth">60dp</item>
         <item name="android:paddingBottom">20dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
@@ -49,4 +49,14 @@
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/colorPrimary</item>
     </style>
+
+    <!-- spinner background -->
+    <style name="customSpinerStyle"
+        parent="AppTheme">
+        <item name="android:background">
+            @drawable/abs_holo_light_selector</item>
+        <item name="android:popupBackground">
+            @color/colorPrimary</item>
+    </style>
+
 </resources>
