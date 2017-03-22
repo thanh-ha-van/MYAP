@@ -31,23 +31,6 @@
     <string name="selected_place">Place detail:</string>
     <string name="clear_text">Clear Text</string>
 
-
-    <string-array name="compare">
-        <item>airport</item>
-        <item>atm</item>
-        <item>bank</item>
-        <item>bar</item>
-        <item>cafe</item>
-        <item>church</item>
-        <item>food</item>
-        <item>hospital</item>
-        <item>hotel</item>
-        <item>library</item>
-        <item>police</item>
-        <item>supermarket</item>
-        <item>theatre</item>
-    </string-array>
-
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

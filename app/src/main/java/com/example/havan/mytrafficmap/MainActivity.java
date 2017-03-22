@@ -83,8 +83,6 @@ public class MainActivity extends AppCompatActivity
     @ViewById(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    private String[] compare;
-
     private TitleNavigationAdapter adapter;
 
     private boolean isInternet = false;
@@ -122,7 +120,6 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences.Editor editor;
 
-
     private static String sKeyName = "name";
 
     private static String sKeyId = "placeId";
@@ -134,10 +131,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
 
-
     @AfterViews
     public void afterViews() {
-
 
         pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = pref.edit();
@@ -148,7 +143,6 @@ public class MainActivity extends AppCompatActivity
             editor.putString("map_style", "normal");
             editor.commit();
         }
-
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
@@ -253,7 +247,7 @@ public class MainActivity extends AppCompatActivity
                     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                         // Action to be taken after selecting a spinner item
                         // dua list marker = rong
-                        if (itemPosition > 0) {
+                        if (itemPosition > -1) {
                             mMap.clear();
                             Utils.sKeyPlace = adapter.getName(itemPosition);
                             new LoadPlaces().execute();
@@ -292,7 +286,7 @@ public class MainActivity extends AppCompatActivity
                 .target(new LatLng(lat, lon))
                 // Sets the center of the map to location user
                 .zoom(15)                   // Sets the zoom
-                .bearing(90)                // Sets to east
+                .bearing(0)                // Sets to east
                 .tilt(40)                   // Sets to 30 degrees
                 .build();                   // Creates a CameraPosition
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -485,7 +479,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     else {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry, cant not complete the action.",
+                                "Sorry, cant not find nearby places. Try to change the type",
                                 2);
                     }
                 }
@@ -624,9 +618,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         // Action to be taken after selecting a spinner item
         // dua list marker = rong
-        if (itemPosition > 0) {
+        if (itemPosition > -1) {
             mMap.clear();
-            Utils.sKeyPlace = compare[itemPosition];
+            Utils.sKeyPlace = adapter.getName(itemPosition);
             new LoadPlaces().execute();
             itemPosition = -1;
         }

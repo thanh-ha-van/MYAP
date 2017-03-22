@@ -48,7 +48,8 @@ public class TitleNavigationAdapter extends BaseAdapter {
     }
 
     public String getName(int position) {
-        return navSpinner.get(position).getTitle();
+        String my_new_str = navSpinner.get(position).getTitle().replaceAll(" ", "_").toLowerCase();
+        return my_new_str;
     }
 
     @Override
@@ -92,18 +93,24 @@ public class TitleNavigationAdapter extends BaseAdapter {
     private void addBar() {
         // Spinner title navigation data
         navSpinner = new ArrayList<SpinnerItem>();
-        navSpinner.add(new SpinnerItem("Airport", R.drawable.airport));
-        navSpinner.add(new SpinnerItem("Atm", R.drawable.atm));
-        navSpinner.add(new SpinnerItem("Bank", R.drawable.bank));
-        navSpinner.add(new SpinnerItem("Bar", R.drawable.bar));
-        navSpinner.add(new SpinnerItem("Cafe", R.drawable.cafe));
-        navSpinner.add(new SpinnerItem("Church", R.drawable.church));
-        navSpinner.add(new SpinnerItem("Food", R.drawable.food));
-        navSpinner.add(new SpinnerItem("Hospital", R.drawable.hospital));
-        navSpinner.add(new SpinnerItem("Hotel", R.drawable.hotel));
-        navSpinner.add(new SpinnerItem("Library", R.drawable.library));
-        navSpinner.add(new SpinnerItem("Police", R.drawable.police));
-        navSpinner.add(new SpinnerItem("Supermarket", R.drawable.supermarket));
-        navSpinner.add(new SpinnerItem("Theatre", R.drawable.ic_movie));
+        navSpinner.add(new SpinnerItem("airport", R.drawable.airport));
+        navSpinner.add(new SpinnerItem("atm", R.drawable.atm));
+        navSpinner.add(new SpinnerItem("aank", R.drawable.bank));
+        navSpinner.add(new SpinnerItem("bar", R.drawable.bar));
+        navSpinner.add(new SpinnerItem("bus stop", R.drawable.bus));
+        navSpinner.add(new SpinnerItem("cafe", R.drawable.cafe));
+        navSpinner.add(new SpinnerItem("car repair",R.drawable.car));
+        navSpinner.add(new SpinnerItem("car wash", R.drawable.car_wash));
+        navSpinner.add(new SpinnerItem("church", R.drawable.church));
+        navSpinner.add(new SpinnerItem("gas station", R.drawable.gas_station));
+        navSpinner.add(new SpinnerItem("hospital", R.drawable.hospital));
+        navSpinner.add(new SpinnerItem("hotel", R.drawable.hotel));
+        navSpinner.add(new SpinnerItem("library", R.drawable.library));
+        navSpinner.add(new SpinnerItem("movie theater", R.drawable.ic_movie));
+        navSpinner.add(new SpinnerItem("parking", R.drawable.parking));
+        navSpinner.add(new SpinnerItem("police", R.drawable.police));
+        navSpinner.add(new SpinnerItem("store", R.drawable.ic_store));
+        navSpinner.add(new SpinnerItem("supermarket", R.drawable.supermarket));
+        navSpinner.add(new SpinnerItem("university", R.drawable.university));
     }
 }
