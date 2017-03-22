@@ -246,8 +246,6 @@ public class MainActivity extends AppCompatActivity
 
         actionBar = getSupportActionBar();
 
-        compare = getValue1();
-
         adapter = new TitleNavigationAdapter(getApplicationContext());
         getSupportActionBar().setListNavigationCallbacks(adapter,
                 new android.support.v7.app.ActionBar.OnNavigationListener() {
@@ -257,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                         // dua list marker = rong
                         if (itemPosition > 0) {
                             mMap.clear();
-                            Utils.sKeyPlace = compare[itemPosition];
+                            Utils.sKeyPlace = adapter.getName(itemPosition);
                             new LoadPlaces().execute();
                             itemPosition = -1;
                         }
@@ -266,11 +264,6 @@ public class MainActivity extends AppCompatActivity
                 });
 
     }
-
-    private String[] getValue1() {
-        return getResources().getStringArray(R.array.compare);
-    }
-
 
     private void loadMap() {
 

@@ -47,6 +47,10 @@ public class TitleNavigationAdapter extends BaseAdapter {
         return position;
     }
 
+    public String getName(int position) {
+        return navSpinner.get(position).getTitle();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
