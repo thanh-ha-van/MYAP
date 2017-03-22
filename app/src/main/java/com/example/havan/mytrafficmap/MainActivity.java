@@ -83,9 +83,6 @@ public class MainActivity extends AppCompatActivity
     @ViewById(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    private String mActivityTitle;
-
-
     private String[] compare;
 
     private TitleNavigationAdapter adapter;
@@ -137,8 +134,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
 
-    private static String TAG = MainActivity.class.getSimpleName();
-
 
     @AfterViews
     public void afterViews() {
@@ -182,7 +177,6 @@ public class MainActivity extends AppCompatActivity
             lat = gps.getLatitude();
             lon = gps.getLongitude();
 
-            new LoadPlaces().execute();
         } else {
             // Can't get user's current location
             alert.showAlertDialog(this, "GPS Status",
@@ -226,19 +220,16 @@ public class MainActivity extends AppCompatActivity
 
     private void initUi() {
 
-        mActivityTitle = getTitle().toString();
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -273,7 +264,6 @@ public class MainActivity extends AppCompatActivity
                         return true;
                     }
                 });
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
     }
 
@@ -303,10 +293,16 @@ public class MainActivity extends AppCompatActivity
 
         // Get the google map object
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.setMyLocationEnabled(true);
         setMyMapStyle();
         setViewOption();
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(lat, lon))
+                // Sets the center of the map to location user
+                .zoom(15)                   // Sets the zoom
+                .bearing(90)                // Sets to east
+                .tilt(40)                   // Sets to 30 degrees
+                .build();                   // Creates a CameraPosition
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         // Need user permisson (above)
         listMaker = new ArrayList<Marker>();
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
@@ -376,6 +372,7 @@ public class MainActivity extends AppCompatActivity
 
         mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
         mMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
+        mMap.setMyLocationEnabled(true);
     }
 
     public void setMyMapStyle() {
@@ -434,7 +431,6 @@ public class MainActivity extends AppCompatActivity
 
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
             return null;
         }
@@ -466,7 +462,6 @@ public class MainActivity extends AppCompatActivity
                             }
                         }
                         loadMap();
-
                         // draw my position
                         mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lon))
@@ -474,14 +469,6 @@ public class MainActivity extends AppCompatActivity
                                 .snippet("Local of me")
                                 .icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.blue_pin)));
-                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(new LatLng(lat, lon))
-                                // Sets the center of the map to location user
-                                .zoom(15)                   // Sets the zoom
-                                .bearing(90)                // Sets to east
-                                .tilt(40)                   // Sets to 30 degrees
-                                .build();                   // Creates a CameraPosition
-                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         if (listPlace.results != null) {
                             // loop through all the places
@@ -493,10 +480,8 @@ public class MainActivity extends AppCompatActivity
                                         .position(new LatLng(latTmp, lonTmp))
                                         .title(place.name)
                                         .snippet(place.vicinity
-                                                + "\n"
+                                                + "\nID: "
                                                 + place.place_id
-                                                + "\n"
-                                                + place.international_phone_number
                                         )
                                         .icon(BitmapDescriptorFactory
                                                 .fromResource(R.drawable.pin_red)));
@@ -507,7 +492,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     else {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry error occured.",
+                                "Sorry, cant not complete the action.",
                                 2);
                     }
                 }

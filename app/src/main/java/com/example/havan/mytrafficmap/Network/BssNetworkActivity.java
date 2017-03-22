@@ -26,6 +26,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 
+import bolts.Continuation;
+import bolts.Task;
+
 @Fullscreen
 @EActivity(R.layout.activity_bss_network)
 public class BssNetworkActivity extends AppCompatActivity {
@@ -54,47 +57,19 @@ public class BssNetworkActivity extends AppCompatActivity {
         final String user = etUser.getText().toString();
         final String pass = etPass.getText().toString();
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(user, pass);
-            }
-        });
-
-
-    }
-
-    @Background
-    protected void login(String user, String pass) {
-        dataService.login("password", user, pass, new LoginSuccessListener() {
-            @Override
-            public void onSuccess(Account account) {
-                //uiThread(account);
-                dataServiceLoad.loadData(
-                        account.getAccessToken(),
-                        new LoadSuccessListener() {
-
-                            @Override
-                            public void onSuccess(FullData listData) {
-
-                                AlertDialog.Builder builder1 = new AlertDialog
-                                        .Builder(BssNetworkActivity.this);
-                                builder1.setTitle("Information");
-                                builder1.setMessage("Login success!");
-                                builder1.setCancelable(true);
-                                builder1.setNeutralButton(android.R.string.ok,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-
-                                AlertDialog alert11 = builder1.create();
-                                alert11.show();
-                                uiThread(listData);
-                            }
-
-                        });
+                dataService
+                        .loadData("password", user, pass)
+                        .continueWith(new Continuation<FullData, Void>() {
+                    @Override
+                    public Void then(Task<FullData> task) throws Exception {
+                        uiThread(task.getResult());
+                        return null;
+                    }
+                });
             }
         });
     }

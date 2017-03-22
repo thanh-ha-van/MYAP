@@ -45,5 +45,13 @@ android:background="@color/black">
         android:paddingTop="20dp"
         android:paddingBottom="20dp" />
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:theme="@style/AppTheme.WhiteAccent"
+        />
+
 </LinearLayout>
 </ScrollView>

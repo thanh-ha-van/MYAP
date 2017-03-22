@@ -19,6 +19,7 @@ public class AlertDialogManager {
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.setContentView(R.layout.alert_dialog_layout);
 
         TextView tvTitle = (TextView) alertDialog.findViewById(R.id.tv_title);

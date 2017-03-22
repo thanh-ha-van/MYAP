@@ -189,6 +189,7 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
                                 )
                         );
                 alertDialog.setCancelable(false);
+                alertDialog.setCanceledOnTouchOutside(true);
                 alertDialog.setContentView(R.layout.yes_no_dialog_layout);
 
                 TextView tvTitle = (TextView) alertDialog.findViewById(R.id.tv_title);
@@ -228,7 +229,6 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
         ).
 
                 show();
-
 
     }
 
