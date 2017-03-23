@@ -80,6 +80,7 @@ dependencies {
     compile 'com.orhanobut:hawk:2.0.1'
     compile 'com.parse.bolts:bolts-tasks:1.4.0'
     compile 'com.parse.bolts:bolts-applinks:1.4.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 
 }
 

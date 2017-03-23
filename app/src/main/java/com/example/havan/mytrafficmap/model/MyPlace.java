@@ -8,7 +8,6 @@ import com.google.api.client.util.Key;
 
 import java.io.Serializable;
 
-
 public class MyPlace implements Serializable {
 
     @Key
@@ -59,4 +58,6 @@ public class MyPlace implements Serializable {
         @Key
         public double lng;
     }
+
+
 }

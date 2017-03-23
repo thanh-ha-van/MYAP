@@ -2,8 +2,6 @@ package com.example.havan.mytrafficmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
@@ -12,8 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.AsyncTask;
@@ -28,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Toast;
 
 
@@ -37,11 +32,9 @@ import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.model.GooglePlaces;
 import com.example.havan.mytrafficmap.model.MyPlaces;
 import com.example.havan.mytrafficmap.model.MyPlace;
-
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -64,8 +57,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @EActivity(R.layout.maps)
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        ActionBar.OnNavigationListener, LocationListener, GoogleMap.OnInfoWindowClickListener {
+        implements
+        NavigationView.OnNavigationItemSelectedListener,
+        ActionBar.OnNavigationListener,
+        LocationListener,
+        GoogleMap.OnInfoWindowClickListener {
 
     public PlaceDirections directions;
 
@@ -126,7 +122,6 @@ public class MainActivity extends AppCompatActivity
 
     private static String sKeySite = "website";
 
-    //MapView m;
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
@@ -232,7 +227,6 @@ public class MainActivity extends AppCompatActivity
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -303,56 +297,8 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-        // Setting a click event handler for the map
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
-            @Override
-            public void onMapClick(LatLng point) {
-
-                if (marker != null)
-                    marker.remove();
-
-                marker = mMap.addMarker(new MarkerOptions()
-                        .title("Your current pin")
-                        .snippet(getCompleteAddressString(point.latitude, point.longitude)
-                        )
-                        .position(point)
-                        .icon(
-                                BitmapDescriptorFactory
-                                        .fromResource(
-                                                R.drawable.pin_yellow
-                                        )
-                        )
-                );
-                Utils.sDestination = point;
-                Utils.sTrDestination = marker.getTitle();
-                Utils.sTrSnippet = marker.getSnippet();
-
-            }
-        });
         mMap.setOnInfoWindowClickListener(this);
-
-    }
-
-    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        String strAdd = "";
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
-                Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                strAdd = strReturnedAddress.toString();
-            } else {
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strAdd;
     }
 
     public void setViewOption() {
@@ -476,8 +422,7 @@ public class MainActivity extends AppCompatActivity
                                 listMaker.add(marker);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         alert.showAlertDialog(MainActivity.this, "ERROR",
                                 "Sorry, cant not find nearby places. Try to change the type",
                                 2);
@@ -616,33 +561,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        // Action to be taken after selecting a spinner item
-        // dua list marker = rong
-        if (itemPosition > -1) {
-            mMap.clear();
-            Utils.sKeyPlace = adapter.getName(itemPosition);
-            new LoadPlaces().execute();
-            itemPosition = -1;
-        }
         return true;
-
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        // TODO Auto-generated method stub
 
-        double latitude = location.getLatitude();
-
-        // Getting longitude of the current location
-        double longitude = location.getLongitude();
-
-        // Creating a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-
+        lat = location.getLatitude();
+        lon = location.getLongitude();
+        LatLng latLng = new LatLng(lat, lon);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 3000, null);
     }
 

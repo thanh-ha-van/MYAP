@@ -3,12 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/plate_dark"
-    android:padding="20dp"
+    android:background="@drawable/rectangle"
+    android:padding="5dp"
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
     android:layout_gravity="center"
     android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:padding="20dp"
+        android:background="@drawable/plate_dark"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
 
     <ImageButton
         android:layout_width="35dp"
@@ -71,4 +78,5 @@
             android:layout_toStartOf="@+id/btn_cancel"
             android:layout_marginEnd="39dp" />
     </RelativeLayout>
+        </RelativeLayout>
 </RelativeLayout>

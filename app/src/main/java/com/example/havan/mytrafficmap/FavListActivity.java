@@ -43,7 +43,7 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     AlertDialogManager alert = new AlertDialogManager();
 
     String title = "Confirm";
-    String message= "Are you sure to delete this place?";
+    String message = "Are you sure to delete this place?";
 
     @ViewById(R.id.show_info)
     ImageButton showInfo;
@@ -149,10 +149,11 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
             alert.showAlertDialog(
                     this,
                     "Information",
-                    adapter.getItem(currentPosition).getName()
-                            + "\n"
+
+                    "Place: " + adapter.getItem(currentPosition).getName()
+                            + "\nAddress: "
                             + adapter.getItem(currentPosition).getAddress()
-                            + "\n"
+                            + "\nID: "
                             + adapter.getItem(currentPosition).getPlaceID(),
                     3
             );
@@ -163,13 +164,14 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
                 Toast.LENGTH_SHORT
         ).show();
 
-
     }
 
     @Click(R.id.btn_add_place)
     void addPlace() {
-        startActivity(new Intent(getApplicationContext(), SearchActivity_.class));
+        onBackPressed();
         finish();
+        startActivity(new Intent(getApplicationContext(), SearchActivity_.class));
+
     }
 
     @Click(R.id.delete)
