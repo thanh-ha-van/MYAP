@@ -27,6 +27,10 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.example.havan.mytrafficmap.Map.Direction;
+import com.example.havan.mytrafficmap.Map.ShowPlace;
+import com.example.havan.mytrafficmap.Style.setMapStyle;
+import com.example.havan.mytrafficmap.UI.InitSideMenu;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.model.GooglePlaces;
@@ -45,7 +49,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.MapStyleOptions;
 
 
 import org.androidannotations.annotations.AfterViews;
@@ -65,9 +68,12 @@ public class MainActivity extends AppCompatActivity
 
     public PlaceDirections directions;
 
+    public Direction direction;
+
     public GoogleMap mMap;
 
-    private Marker marker;
+    public ShowPlace showPlace;
+
     //ui
     public android.support.v7.app.ActionBar actionBar;
 
@@ -83,6 +89,10 @@ public class MainActivity extends AppCompatActivity
 
     private boolean isInternet = false;
 
+    public setMapStyle myStyle;
+
+    public InitSideMenu sideMenu;
+
     private ConnectionDetector detector;
 
     private AlertDialogManager alert = new AlertDialogManager();
@@ -96,10 +106,6 @@ public class MainActivity extends AppCompatActivity
     private double lat;
 
     private double lon;
-
-    private double lat1;
-
-    private double lon1;
 
     private double latTmp;
 
@@ -135,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         if (pref.getBoolean("firstrun", true)) {
             editor.putBoolean("firstrun", false);
             editor.putBoolean("show_traffic", true);
-            editor.putString("map_style", "normal");
+            editor.putInt("style", 1);
             editor.commit();
         }
 
@@ -145,6 +151,7 @@ public class MainActivity extends AppCompatActivity
                 .build()
         );
 
+        loadMap();
         // init UI
         initUi();
 
@@ -194,7 +201,8 @@ public class MainActivity extends AppCompatActivity
             String query = intent.getStringExtra(SearchManager.QUERY);
             mMap.clear();
             Utils.sKeyPlace = query;
-            new LoadPlaces().execute();
+            //new LoadPlaces().execute();
+            showPlace = new ShowPlace(this.getApplicationContext(), MainActivity.this, mMap);
         }
 
     }
@@ -209,23 +217,10 @@ public class MainActivity extends AppCompatActivity
 
     private void initUi() {
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.drawer_open, R.string.drawer_close) {
-
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        navigationView.setNavigationItemSelectedListener(this);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        sideMenu = new InitSideMenu(
+                this,
+                MainActivity.this,
+                mDrawerToggle, navigationView, mDrawerLayout );
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -244,7 +239,7 @@ public class MainActivity extends AppCompatActivity
                         if (itemPosition > -1) {
                             mMap.clear();
                             Utils.sKeyPlace = adapter.getName(itemPosition);
-                            new LoadPlaces().execute();
+                            showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
                             itemPosition = -1;
                         }
                         return true;
@@ -309,129 +304,100 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setMyMapStyle() {
-        String mapStyle = pref.getString("map_style", null);
-        switch (mapStyle) {
-            case "normal":
-                mMap.setMapStyle(null);
-                break;
-            case "night":
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.mapstyle_night));
-                break;
-            case "retro":
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.mapstyle_retro));
-                break;
-
-            case "dark":
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.mapstyle_dark));
-                break;
-            case "silver":
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.mapstyle_silver));
-                break;
-            case "aubergine":
-                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                        this, R.raw.mapstyle_aubergine));
-                break;
-            default:
-                mMap.setMapStyle(null);
-        }
-
+        myStyle = new setMapStyle(this, mMap);
     }
 
-    class LoadPlaces extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading nearby Places..."));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        protected String doInBackground(String... args) {
-            googlePlaces = new GooglePlaces();
-
-            try {
-                String types = Utils.sKeyPlace;
-                double radius = 3000;
-                listPlace = googlePlaces.search(gps.getLatitude(),
-                        gps.getLongitude(), radius, types);
-
-
-            } catch (Exception e) {
-            }
-            return null;
-        }
-
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all products
-            pDialog.dismiss();
-            // updating UI from Background Thread
-            runOnUiThread(new Runnable() {
-                public void run() {
-
-                    // Get json response status
-                    String status = listPlace.status;
-
-                    // Check for all possible status
-                    if (status.equals("OK")) {
-                        // Successfully got places details
-                        if (listPlace.results != null) {
-                            // loop through each place
-                            for (MyPlace p : listPlace.results) {
-                                HashMap<String, String> map = new HashMap<String, String>();
-
-                                // Place name
-                                map.put(sKeyName, p.name);
-                                map.put(sKeyId, p.place_id);
-                                map.put(sKeySite, p.website);
-                                // adding HashMap to ArrayList
-                                placesListItems.add(map);
-                            }
-                        }
-                        loadMap();
-                        // draw my position
-                        mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(lat, lon))
-                                .title("Me")
-                                .snippet("Local of me")
-                                .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.pin_new_blue)));
-
-                        if (listPlace.results != null) {
-                            // loop through all the places
-                            for (MyPlace place : listPlace.results) {
-                                latTmp = place.geometry.location.lat; // latitude
-                                lonTmp = place.geometry.location.lng; // longitude
-
-                                Marker marker = mMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(latTmp, lonTmp))
-                                        .title(place.name)
-                                        .snippet(place.vicinity
-                                                + "\nID: "
-                                                + place.place_id
-                                        )
-                                        .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.pin_new_red)));
-
-                                listMaker.add(marker);
-                            }
-                        }
-                    } else {
-                        alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry, cant not find nearby places. Try to change the type",
-                                2);
-                    }
-                }
-            });
-
-        }
-    }
+//    class LoadPlaces extends AsyncTask<String, String, String> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            pDialog = new ProgressDialog(MainActivity.this);
+//            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading nearby Places..."));
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
+//        }
+//
+//        protected String doInBackground(String... args) {
+//            googlePlaces = new GooglePlaces();
+//
+//            try {
+//                String types = Utils.sKeyPlace;
+//                double radius = 3000;
+//                listPlace = googlePlaces.search(gps.getLatitude(),
+//                        gps.getLongitude(), radius, types);
+//
+//
+//            } catch (Exception e) {
+//            }
+//            return null;
+//        }
+//
+//        protected void onPostExecute(String file_url) {
+//            // dismiss the dialog after getting all products
+//            pDialog.dismiss();
+//            // updating UI from Background Thread
+//            runOnUiThread(new Runnable() {
+//                public void run() {
+//
+//                    // Get json response status
+//                    String status = listPlace.status;
+//
+//                    // Check for all possible status
+//                    if (status.equals("OK")) {
+//                        // Successfully got places details
+//                        if (listPlace.results != null) {
+//                            // loop through each place
+//                            for (MyPlace p : listPlace.results) {
+//                                HashMap<String, String> map = new HashMap<String, String>();
+//
+//                                // Place name
+//                                map.put(sKeyName, p.name);
+//                                map.put(sKeyId, p.place_id);
+//                                map.put(sKeySite, p.website);
+//                                // adding HashMap to ArrayList
+//                                placesListItems.add(map);
+//                            }
+//                        }
+//                        loadMap();
+//                        // draw my position
+//                        mMap.addMarker(new MarkerOptions()
+//                                .position(new LatLng(lat, lon))
+//                                .title("Me")
+//                                .snippet("Local of me")
+//                                .icon(BitmapDescriptorFactory
+//                                        .fromResource(R.drawable.pin_new_blue)));
+//
+//                        if (listPlace.results != null) {
+//                            // loop through all the places
+//                            for (MyPlace place : listPlace.results) {
+//                                latTmp = place.geometry.location.lat; // latitude
+//                                lonTmp = place.geometry.location.lng; // longitude
+//
+//                                Marker marker = mMap.addMarker(new MarkerOptions()
+//                                        .position(new LatLng(latTmp, lonTmp))
+//                                        .title(place.name)
+//                                        .snippet(place.vicinity
+//                                                + "\nID: "
+//                                                + place.place_id
+//                                        )
+//                                        .icon(BitmapDescriptorFactory
+//                                                .fromResource(R.drawable.pin_new_red)));
+//
+//                                listMaker.add(marker);
+//                            }
+//                        }
+//                    } else {
+//                        alert.showAlertDialog(MainActivity.this, "ERROR",
+//                                "Sorry, cant not find nearby places. Try to change the type",
+//                                2);
+//                    }
+//                }
+//            });
+//
+//        }
+//    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -519,40 +485,15 @@ public class MainActivity extends AppCompatActivity
         // check that it is the SecondActivity with an OK result
         if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
-                makeDirection(data);
+                direction = new Direction(this, mMap, data, lat, lon);
             }
         }
         if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
 
             if (resultCode == RESULT_OK) {
-                makeDirection(data);
-
+                direction = new Direction(this, mMap, data, lat, lon);
             }
         }
-    }
-
-    public void makeDirection(Intent data) {
-
-        lat1 = data.getDoubleExtra("lat", 10);
-        lon1 = data.getDoubleExtra("lon", 10);
-        String address = data.getStringExtra("address");
-
-        // draw destination
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat1, lon1))
-                .title(address)
-                .snippet(address)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_new_green)));
-
-
-        Utils.sDestination = new LatLng(lat1, lon1);
-        LatLng des = Utils.sDestination;
-        byte way = 2;
-        LatLng from = new LatLng(lat, lon);
-        directions = new PlaceDirections(getApplicationContext()
-                , mMap, from, des, way);
-
     }
 
     @Override
@@ -604,7 +545,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
     }
 
     @Override

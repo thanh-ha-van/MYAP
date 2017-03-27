@@ -90,6 +90,7 @@ public class PlaceDirections {
                     .title(Utils.sTrDestination)
                     .snippet(Utils.sTrSnippet)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
+
         }
     }
 
