@@ -21,11 +21,10 @@
             android:id="@+id/pointsText"
             android:background="@drawable/plate"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_above="@+id/offers_list"
-            android:paddingBottom="10dp"
             android:text="@string/choose_style"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
@@ -35,7 +34,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="20dp"></LinearLayout>
+            android:layout_height="20dp">
+        </LinearLayout>
 
         <GridView
 

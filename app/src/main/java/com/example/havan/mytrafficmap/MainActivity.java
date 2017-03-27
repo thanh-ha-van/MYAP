@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity
                                 .title("Me")
                                 .snippet("Local of me")
                                 .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.blue_pin)));
+                                        .fromResource(R.drawable.pin_new_blue)));
 
                         if (listPlace.results != null) {
                             // loop through all the places
@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity
                                                 + place.place_id
                                         )
                                         .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.pin_red)));
+                                                .fromResource(R.drawable.pin_new_red)));
 
                                 listMaker.add(marker);
                             }
@@ -438,11 +438,7 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
-        if (id == R.id.nav_sign_in) {
-            // sign in activity
-            Intent intent = new Intent(this, LoginActivity_.class);
-            startActivity(intent);
-        } else if (id == R.id.map_style) {
+      if (id == R.id.map_style) {
             Intent i = new Intent(MainActivity.this, MapStyle_.class);
             startActivity(i);
             // choose map style
@@ -547,7 +543,7 @@ public class MainActivity extends AppCompatActivity
                 .title(address)
                 .snippet(address)
                 .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_yellow)));
+                        .fromResource(R.drawable.pin_new_green)));
 
 
         Utils.sDestination = new LatLng(lat1, lon1);

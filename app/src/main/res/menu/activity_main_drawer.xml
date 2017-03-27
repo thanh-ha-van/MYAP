@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_sign_in"
-            android:icon="@drawable/ic_person"
-            android:title="@string/sign_in"
-            />
-        </group>
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_1"
+        android:checkableBehavior="single"
+        >
         <item
             android:id="@+id/map_style"
             android:icon="@drawable/ic_style"
             android:title="@string/map_style" />
+        </group>
+    <group
+        android:id="@+id/menu_2"
+        android:checkableBehavior="single"
+        >
         <item
             android:id="@+id/fav_place"
             android:icon="@drawable/ic_star"
             android:title="@string/fav_place" />
+        </group>
+    <group
+        android:id="@+id/menu_3"
+        android:checkableBehavior="single"
+        >
         <item
             android:id="@+id/view_option"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/view_option" />
+        </group>
+    <group
+        android:id="@+id/menu_4"
+        android:checkableBehavior="single"
+        >
         <item
             android:id="@+id/share"
             android:icon="@drawable/ic_menu_share"
             android:title="@string/share_app" />
+        </group>
+    <group
+        android:id="@+id/menu_5"
+        android:checkableBehavior="single"
+        >
         <item
             android:id="@+id/about"
             android:icon="@drawable/ic_info"

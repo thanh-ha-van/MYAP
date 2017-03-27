@@ -55,8 +55,7 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchResultsActivity" />
         </activity>
-        <activity android:name=".LoginActivity_" />
-        <activity
+          <activity
             android:name=".MapStyle_"
             android:label="Map style"
             android:theme="@style/AppTheme">
