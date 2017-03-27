@@ -41,7 +41,7 @@ public class Direction {
         String address = intent.getStringExtra("address");
 
         // draw destination
-        mMap.addMarker(new MarkerOptions()
+        googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat1, lon1))
                 .title(address)
                 .snippet(address)

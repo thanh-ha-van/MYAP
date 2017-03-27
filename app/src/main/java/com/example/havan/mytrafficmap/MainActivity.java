@@ -1,10 +1,6 @@
 package com.example.havan.mytrafficmap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,44 +8,33 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationListener;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-
 import com.example.havan.mytrafficmap.Map.Direction;
+import com.example.havan.mytrafficmap.Map.ReadyMap;
 import com.example.havan.mytrafficmap.Map.ShowPlace;
+import com.example.havan.mytrafficmap.Map.setView;
 import com.example.havan.mytrafficmap.Style.setMapStyle;
 import com.example.havan.mytrafficmap.UI.InitSideMenu;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
-import com.example.havan.mytrafficmap.model.GooglePlaces;
-import com.example.havan.mytrafficmap.model.MyPlaces;
-import com.example.havan.mytrafficmap.model.MyPlace;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -86,22 +71,14 @@ public class MainActivity extends AppCompatActivity
 
     private TitleNavigationAdapter adapter;
 
-    private boolean isInternet = false;
-
-    public setMapStyle myStyle;
 
     public InitSideMenu sideMenu;
 
-    private ConnectionDetector detector;
-
     private AlertDialogManager alert = new AlertDialogManager();
-
-    private GPSTracker gps;
 
     private double lat;
 
     private double lon;
-
 
     private SharedPreferences pref;
 
@@ -110,6 +87,12 @@ public class MainActivity extends AppCompatActivity
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
+
+    private boolean isInternet = false;
+
+    private ConnectionDetector detector;
+
+    private GPSTracker gps;
 
     @AfterViews
     public void afterViews() {
@@ -129,18 +112,15 @@ public class MainActivity extends AppCompatActivity
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-
-        loadMap();
-        // init UI
-        initUi();
-
         // check internet
-        detector = new ConnectionDetector(this.getApplicationContext());
+        detector = new ConnectionDetector(this);
         isInternet = detector.isConnectingToInternet();
         if (!isInternet) {
             // Internet Connection is not present
-            alert.showAlertDialog(this, "Internet Connection Error",
-                    "Please connect to working Internet connection", 2);
+            alert.showAlertDialog(this,
+                    "Internet Connection Error",
+                    "Please connect to working Internet connection",
+                    2);
             // stop executing code by return
             return;
         }
@@ -154,10 +134,13 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             // Can't get user's current location
-            alert.showAlertDialog(this, "GPS Status",
+            alert.showAlertDialog( this, "GPS Status",
                     "Couldn't get location information. Please enable GPS",
                     2);
         }
+        loadMap();
+        // init UI
+        initUi();
 
         handleIntent(getIntent());
     }
@@ -181,11 +164,10 @@ public class MainActivity extends AppCompatActivity
             mMap.clear();
             Utils.sKeyPlace = query;
             //new LoadPlaces().execute();
-            new ShowPlace(MainActivity.this, mMap);
+            showPlace = new ShowPlace(MainActivity.this, mMap, alert);
         }
 
     }
-
 
     private void initUi() {
 
@@ -213,7 +195,7 @@ public class MainActivity extends AppCompatActivity
                         if (itemPosition > -1) {
                             mMap.clear();
                             Utils.sKeyPlace = adapter.getName(itemPosition);
-                            new ShowPlace( MainActivity.this, mMap);
+                            showPlace = new ShowPlace(MainActivity.this, mMap, alert);
                             itemPosition = -1;
                         }
                         return true;
@@ -224,7 +206,7 @@ public class MainActivity extends AppCompatActivity
 
     private void loadMap() {
 
-        SupportMapFragment mapFragment
+        final SupportMapFragment mapFragment
                 = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
 
@@ -233,34 +215,13 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                onMyMapReady(googleMap);
+                mMap = googleMap;
+                new ReadyMap(getApplicationContext(), mMap , lat, lon);
+                new setView (getApplicationContext(), mMap);
+                new setMapStyle(getApplicationContext(), mMap);
             }
         });
 
-    }
-
-    private void onMyMapReady(GoogleMap googleMap) {
-
-        // Get the google map object
-        mMap = googleMap;
-        myStyle = new setMapStyle(this, mMap);
-        setViewOption();
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(lat, lon))
-                // Sets the center of the map to location user
-                .zoom(15)                   // Sets the zoom
-                .bearing(0)                // Sets to east
-                .tilt(40)                   // Sets to 30 degrees
-                .build();                   // Creates a CameraPosition
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-    }
-
-    public void setViewOption() {
-
-        mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
-        mMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
-        mMap.setMyLocationEnabled(true);
     }
 
     @Override

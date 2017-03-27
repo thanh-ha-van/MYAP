@@ -2,6 +2,7 @@ package com.example.havan.mytrafficmap.view;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.Window;
@@ -12,10 +13,10 @@ import com.example.havan.mytrafficmap.R;
 
 public class AlertDialogManager {
 
-    public void showAlertDialog(Activity activity, String title, String message,
+    public void showAlertDialog(Context context, String title, String message,
                                 int status) {
 
-        final Dialog alertDialog = new Dialog(activity);
+        final Dialog alertDialog = new Dialog(context);
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alertDialog.setCancelable(false);

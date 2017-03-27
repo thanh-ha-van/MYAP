@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.text.Html;
 
 
+import com.example.havan.mytrafficmap.MainActivity;
 import com.example.havan.mytrafficmap.R;
 import com.example.havan.mytrafficmap.Utils;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -14,6 +15,7 @@ import com.example.havan.mytrafficmap.model.GooglePlaces;
 import com.example.havan.mytrafficmap.model.MyPlace;
 import com.example.havan.mytrafficmap.model.MyPlaces;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
+import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,13 +35,15 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
 
     public MyPlaces listPlace;
 
-    public GPSTracker gps;
+    private AlertDialogManager alert1;
 
-    public AlertDialogManager alert;
+    public GPSTracker gps;
 
     public GoogleMap mMap;
 
     public Activity activity;
+
+    public Context context;
 
     private double lat;
 
@@ -48,6 +52,8 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
     private double lon;
 
     private double lonTmp;
+
+    private ConnectionDetector detector;
 
     private static String sKeyName = "name";
 
@@ -60,14 +66,8 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
     private ArrayList<HashMap<String, String>> placesListItems
             = new ArrayList<HashMap<String, String>>();
 
-    public ShowPlace (Activity activity, GoogleMap googleMap) {
-        this.mMap = googleMap;
-        this.activity = activity;
+    public ShowPlace (Activity activity, GoogleMap googleMap, AlertDialogManager alert) {
 
-        new LoadPlaces().execute();
-
-        // check able of gps
-        gps = new GPSTracker(activity.getApplicationContext());
         if (gps.canGetLocation()) {
 
             lat = gps.getLatitude();
@@ -75,13 +75,22 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
 
         } else {
             // Can't get user's current location
-            alert.showAlertDialog( activity, "GPS Status",
+            alert.showAlertDialog( getActivity(), "GPS Status",
                     "Couldn't get location information. Please enable GPS",
                     2);
         }
 
+        this.mMap = googleMap;
+        this.mMap.clear();
+        this.activity = activity;
+        this.context = getActivity().getApplicationContext();
+        this.alert1 = alert;
+
+        LoadPlaces loadPlaces = new LoadPlaces();
+        loadPlaces.execute();
+        googleMap = mMap;
         listMaker = new ArrayList<Marker>();
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+       googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
             @Override
             public boolean onMarkerClick(Marker arg0) {
@@ -93,13 +102,13 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
             }
         });
 
-        mMap.setOnInfoWindowClickListener(this);
+        googleMap.setOnInfoWindowClickListener(this);
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
 
-        alert.showAlertDialog(getActivity(), "Information",
+        alert1.showAlertDialog(getActivity(), "Information",
                 marker.getTitle() + "\n" + marker.getSnippet(), 3);
 
     }
@@ -124,7 +133,6 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
                 double radius = 3000;
                 listPlace = googlePlaces.search(gps.getLatitude(),
                         gps.getLongitude(), radius, types);
-
 
             } catch (Exception e) {
             }
@@ -158,7 +166,7 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
                             }
                         }
                         // draw my position
-                        mMap.addMarker(new MarkerOptions()
+                       mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lon))
                                 .title("Me")
                                 .snippet("Local of me")
@@ -185,7 +193,7 @@ public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
                             }
                         }
                     } else {
-                        alert.showAlertDialog( activity, "ERROR",
+                        alert1.showAlertDialog(getActivity(), "ERROR",
                                 "Sorry, cant not find nearby places. Try to change the type",
                                 2);
                     }

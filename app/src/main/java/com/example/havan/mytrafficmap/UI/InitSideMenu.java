@@ -28,7 +28,7 @@ public class InitSideMenu {
     ActionBarDrawerToggle mDrawerToggle;
     NavigationView mView;
     DrawerLayout mDrawerLayout;
-    Activity activity;
+    Activity mactivity;
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
 
     public InitSideMenu (Context context,
@@ -40,10 +40,10 @@ public class InitSideMenu {
         this.context = context;
         this.mDrawerLayout = drawerLayout;
         this.mView = view;
-        this.activity = activity;
+        this.mactivity = activity;
         this.mDrawerToggle = drawerToggle;
         final  Activity activity1 = activity;
-        mDrawerToggle = new ActionBarDrawerToggle(activity, mDrawerLayout,
+        drawerToggle = new ActionBarDrawerToggle(activity, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
 
             public void onDrawerOpened(View drawerView) {
@@ -57,8 +57,8 @@ public class InitSideMenu {
             }
         };
 
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(mDrawerToggle);
 
 
     }

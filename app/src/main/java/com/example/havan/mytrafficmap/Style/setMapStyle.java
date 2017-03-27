@@ -21,9 +21,7 @@ public class setMapStyle {
     private SharedPreferences pref;
 
 
-    public setMapStyle (Context context, GoogleMap googleMap)
-    {
-
+    public setMapStyle (Context context, GoogleMap googleMap) {
         this.context = context;
         pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
 
