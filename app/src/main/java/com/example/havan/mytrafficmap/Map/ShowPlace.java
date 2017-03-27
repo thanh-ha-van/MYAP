@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Html;
 
-import com.example.havan.mytrafficmap.MainActivity;
+
 import com.example.havan.mytrafficmap.R;
 import com.example.havan.mytrafficmap.Utils;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -23,26 +23,32 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by NTT on 3/27/2017.
- */
 
-public class ShowPlace {
 
-    ProgressDialog pDialog;
+public class ShowPlace implements GoogleMap.OnInfoWindowClickListener {
 
-    GooglePlaces googlePlaces;
-    MyPlaces listPlace;
-    GPSTracker gps;
-    AlertDialogManager alert;
-    GoogleMap mMap;
+    public ProgressDialog pDialog;
 
-    Context context;
+    public GooglePlaces googlePlaces;
 
-    Activity activity;
+    public MyPlaces listPlace;
 
-    double lat, latTmp;
-    double lon, lonTmp;
+    public GPSTracker gps;
+
+    public AlertDialogManager alert;
+
+    public GoogleMap mMap;
+
+    public Activity activity;
+
+    private double lat;
+
+    private double latTmp;
+
+    private double lon;
+
+    private double lonTmp;
+
     private static String sKeyName = "name";
 
     private static String sKeyId = "placeId";
@@ -54,20 +60,56 @@ public class ShowPlace {
     private ArrayList<HashMap<String, String>> placesListItems
             = new ArrayList<HashMap<String, String>>();
 
-    public ShowPlace (Context context, Activity activity, GoogleMap googleMap) {
-        this.context = context;
+    public ShowPlace (Activity activity, GoogleMap googleMap) {
         this.mMap = googleMap;
         this.activity = activity;
+
         new LoadPlaces().execute();
+
+        // check able of gps
+        gps = new GPSTracker(activity.getApplicationContext());
+        if (gps.canGetLocation()) {
+
+            lat = gps.getLatitude();
+            lon = gps.getLongitude();
+
+        } else {
+            // Can't get user's current location
+            alert.showAlertDialog( activity, "GPS Status",
+                    "Couldn't get location information. Please enable GPS",
+                    2);
+        }
+
+        listMaker = new ArrayList<Marker>();
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(Marker arg0) {
+                // TODO Auto-generated method stub
+                Utils.sDestination = arg0.getPosition();
+                Utils.sTrDestination = arg0.getTitle();
+                Utils.sTrSnippet = arg0.getSnippet();
+                return false;
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(this);
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+        alert.showAlertDialog(getActivity(), "Information",
+                marker.getTitle() + "\n" + marker.getSnippet(), 3);
+
     }
 
     class LoadPlaces extends AsyncTask<String, String, String> {
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(activity);
+            pDialog = new ProgressDialog(getActivity());
             pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading nearby Places..."));
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
@@ -93,7 +135,7 @@ public class ShowPlace {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
             // updating UI from Background Thread
-            activity.runOnUiThread(new Runnable() {
+            getActivity().runOnUiThread(new Runnable() {
                 public void run() {
 
                     // Get json response status
@@ -143,7 +185,7 @@ public class ShowPlace {
                             }
                         }
                     } else {
-                        alert.showAlertDialog(activity, "ERROR",
+                        alert.showAlertDialog( activity, "ERROR",
                                 "Sorry, cant not find nearby places. Try to change the type",
                                 2);
                     }
@@ -151,5 +193,9 @@ public class ShowPlace {
             });
 
         }
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }
