@@ -21,7 +21,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_map_style)
-public class MapStyle extends AppCompatActivity {
+public class MapStyle extends AppCompatActivity  {
 
     @ViewById(R.id.grid)
     GridView gridView;
@@ -36,20 +36,17 @@ public class MapStyle extends AppCompatActivity {
             "Retro",
             "Dracula",
             "Night",
-            "Aubergine",
-            "grey_blue",
-            "assassin"
+            "Aubergine"
 
-    };
+    } ;
     private int[] imageId = {
             R.drawable.normal,
             R.drawable.silver,
             R.drawable.retro,
-            R.drawable.dracula,
+            R.drawable.nigh,
             R.drawable.dark,
-            R.drawable.nigh2,
-            R.drawable.grey,
-            R.drawable.assassin
+            R.drawable.nigh2
+
     };
 
     @AfterViews
@@ -73,35 +70,23 @@ public class MapStyle extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Toast.makeText(MapStyle.this, "Activated style "
-                        + web[+position], Toast.LENGTH_SHORT).show();
+                        + web[+ position], Toast.LENGTH_SHORT).show();
 
-                switch (position) {
-                    case 0:
-                        editor.putInt("style", 1);
-                        break;
-                    case 1:
-                        editor.putInt("style", 2);
-                        break;
-                    case 2:
-                        editor.putInt("style", 3);
-                        break;
-                    case 3:
-                        editor.putInt("map_style", 4);
-                        break;
-                    case 4:
-                        editor.putInt("map_style", 5);
-                        break;
-                    case 5:
-                        editor.putInt("map_style", 6);
-                        break;
-                    case 6:
-                        editor.putInt("map_style", 7);
-                        break;
-                    case 7:
-                        editor.putInt("map_style", 8);
-                        break;
-                    default:
-                }
+             switch (position) {
+                 case 0: editor.putString("map_style", "normal");
+                     break;
+                 case 1: editor.putString("map_style","silver");
+                     break;
+                 case 2: editor.putString("map_style","retro");
+                     break;
+                 case 3: editor.putString("map_style","night");
+                     break;
+                 case 4: editor.putString("map_style","dark");
+                     break;
+                 case 5: editor.putString("map_style","aubergine");
+                     break;
+                 default:
+             }
                 editor.commit();
                 onBackPressed();
             }
@@ -111,7 +96,7 @@ public class MapStyle extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        super.onBackPressed();
+            super.onBackPressed();
 
     }
 

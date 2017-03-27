@@ -38,10 +38,11 @@
         </LinearLayout>
 
         <GridView
+
             android:background="@drawable/plate"
             android:id="@+id/grid"
             android:layout_width="match_parent"
-            android:layout_height="520dp"
+            android:layout_height="500dp"
             android:layout_below="@+id/pointsText"
             android:columnWidth="150dp"
             android:gravity="center_horizontal"
