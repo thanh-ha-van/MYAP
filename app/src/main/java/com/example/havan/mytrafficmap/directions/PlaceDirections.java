@@ -6,10 +6,12 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,7 +27,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 public class PlaceDirections {
 
-    AlertDialogManager alert = new AlertDialogManager();
 
     private String url;
 
@@ -39,16 +40,19 @@ public class PlaceDirections {
 
     private LatLng to;
 
-    private byte typeWay;
+    private Activity activity;
 
-    public PlaceDirections(Context context,
-                           GoogleMap googleMap, LatLng from, LatLng to, byte typeWay) {
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public PlaceDirections(Context context, Activity activity,
+                           GoogleMap googleMap, LatLng from, LatLng to) {
         this.context = context;
         this.googleMap = googleMap;
         this.from = from;
         this.to = to;
-        this.typeWay = typeWay;
-
+        this.activity =activity;
         pDialog = new ProgressDialog(context);
         url = getMapsApiDirectionsUrl();
         this.googleMap.clear();
@@ -95,6 +99,19 @@ public class PlaceDirections {
 
     private class LoadDirections extends AsyncTask<String, Void, String> {
 
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage(Html.fromHtml("<b>Processing</b><br/>Loading your route way..."));
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
         @Override
         protected String doInBackground(String... url) {
             String data = "";
@@ -109,6 +126,7 @@ public class PlaceDirections {
 
         @Override
         protected void onPostExecute(String result) {
+            pDialog.dismiss();
             super.onPostExecute(result);
             addMarkers();
             new ParserTask().execute(result);
