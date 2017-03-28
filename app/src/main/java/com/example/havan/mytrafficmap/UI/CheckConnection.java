@@ -1,6 +1,7 @@
 package com.example.havan.mytrafficmap.UI;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
@@ -17,20 +18,24 @@ public class CheckConnection {
     private boolean isInternet = false;
     private ConnectionDetector detector;
     private GPSTracker gps;
+    private double lat;
+    private double lon;
 
     public CheckConnection (Context context, double lat, double lon) {
+
+        this.lat = lat;
+        this.lon = lon;
 
         // check internet
         detector = new ConnectionDetector(context);
         isInternet = detector.isConnectingToInternet();
         if (!isInternet) {
             // Internet Connection is not present
-            alert.showAlertDialog(context,
-                    "Internet Connection Error",
-                    "Please connect to working Internet connection",
-                    2);
-            // stop executing code by return
-            return;
+            Toast.makeText(
+                    context,
+                    "Error, No internet connection",
+                    Toast.LENGTH_SHORT
+            ).show();
         }
 
         // check able of gps
@@ -42,9 +47,11 @@ public class CheckConnection {
 
         } else {
             // Can't get user's current location
-            alert.showAlertDialog( context, "GPS Status",
-                    "Couldn't get location information. Please enable GPS",
-                    2);
+            Toast.makeText(
+                    context,
+                    "Error, Can't get the location",
+                    Toast.LENGTH_SHORT
+            ).show();
         }
     }
 

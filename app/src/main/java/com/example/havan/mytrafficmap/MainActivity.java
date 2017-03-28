@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.collect.Sets;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -83,10 +84,18 @@ public class MainActivity extends AppCompatActivity
 
     private TitleNavigationAdapter adapter;
 
+
     private AlertDialogManager alert = new AlertDialogManager();
 
     private double lat;
     private double lon;
+
+
+    CheckConnection check;
+    CheckFirstRun checkFirstRun;
+    ReadyMap readyMap;
+    setMapStyle setMapStyle;
+    setView setView;
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -107,14 +116,10 @@ public class MainActivity extends AppCompatActivity
         pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = pref.edit();
 
-        new CheckFirstRun(this); // check first run settings
-        new CheckConnection(this, lat, lon);  // check connections
-
-        loadMap();
-
+        checkFirstRun = new CheckFirstRun(this); // check first run settings
         // init UI
         initUi();
-
+        loadMap();
         handleIntent(getIntent());
     }
 
@@ -127,6 +132,8 @@ public class MainActivity extends AppCompatActivity
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+
+
             // testing
             Toast.makeText(
                     this,
@@ -138,56 +145,6 @@ public class MainActivity extends AppCompatActivity
             Utils.sKeyPlace = query;
             //new LoadPlaces().execute();
             showPlace = new ShowPlace(getApplicationContext(),MainActivity.this, mMap);
-            showPlace.setOnActionListener(new ShowPlace.OnActionListener() {
-                @Override
-                public void onPreExecute() {
-
-                    pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading nearby Places..."));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-                }
-
-                @Override
-                public void onPostExecute(MyPlaces listPlace) {
-
-                    // draw my position
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(lat, lon))
-                            .title("Me")
-                            .snippet("Local of me")
-                            .icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.pin_new_blue)));
-
-
-                    if (listPlace.results != null) {
-                        // loop through all the places
-                        for (MyPlace place : listPlace.results) {
-                            latTmp = place.geometry.location.lat; // latitude
-                            lonTmp = place.geometry.location.lng; // longitude
-
-                            Marker marker = mMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(latTmp, lonTmp))
-                                    .title(place.name)
-                                    .snippet(place.vicinity
-                                            + "\nID: "
-                                            + place.place_id
-                                    )
-                                    .icon(BitmapDescriptorFactory
-                                            .fromResource(R.drawable.pin_new_red)));
-
-                            listMaker.add(marker);
-                        }
-                    } else {
-                        alert.showAlertDialog(MainActivity.this, "ERROR",
-                                "Sorry, cant not find nearby places. Try to change the type",
-                                2);
-                    }
-                }
-            });
-
         }
     }
 
@@ -200,7 +157,31 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        new InitActionbar(getApplicationContext(), MainActivity.this, mMap, actionBar, adapter);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_LIST);
+
+        actionBar = getSupportActionBar();
+
+        adapter = new TitleNavigationAdapter(getApplicationContext());
+
+        getSupportActionBar().setListNavigationCallbacks(adapter,
+                new android.support.v7.app.ActionBar.OnNavigationListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+
+                        if (itemPosition > -1) {
+                            mMap.clear();
+                            Utils.sKeyPlace = adapter.getName(itemPosition);
+                            showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
+                            itemPosition = -1;
+                        }
+                        return true;
+                    }
+                });
+
+
 
     }
 
@@ -216,9 +197,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                new ReadyMap(getApplicationContext(), mMap , lat, lon);
-                new setView (getApplicationContext(), mMap);
-                new setMapStyle(getApplicationContext(), mMap);
+                readyMap = new ReadyMap(getApplicationContext(), mMap , lat, lon);
+                setView = new setView (getApplicationContext(), mMap);
+                setMapStyle = new setMapStyle(getApplicationContext(), mMap);
             }
         });
 

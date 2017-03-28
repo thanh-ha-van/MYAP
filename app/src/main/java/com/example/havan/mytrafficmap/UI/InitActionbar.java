@@ -40,6 +40,7 @@ public class InitActionbar  extends AppCompatActivity {
         this.activity = activity;
         this.mActionBar = actionBar;
         this.mAdapter = adapter;
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

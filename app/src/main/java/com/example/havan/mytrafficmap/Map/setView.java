@@ -10,20 +10,16 @@ import com.google.android.gms.maps.GoogleMap;
  */
 public class setView {
 
-    private Context context;
-    private GoogleMap mMap;
     private SharedPreferences pref;
-
 
     public setView (Context context, GoogleMap googleMap) {
 
         pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
 
-        this.context = context;
-        this.mMap = googleMap;
-
         googleMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
+
         googleMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
+
         googleMap.setMyLocationEnabled(true);
     }
 }
