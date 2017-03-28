@@ -2,15 +2,11 @@ package com.example.havan.mytrafficmap.Style;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.design.widget.BottomNavigationView;
 
 import com.example.havan.mytrafficmap.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
-/**
- * Created by NTT on 3/27/2017.
- */
 
 public class setMapStyle {
 

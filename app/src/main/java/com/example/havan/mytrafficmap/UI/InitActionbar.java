@@ -2,6 +2,7 @@ package com.example.havan.mytrafficmap.UI;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
@@ -19,18 +20,24 @@ public class InitActionbar  extends AppCompatActivity {
 
     Context context;
 
+    Activity activity;
+
     GoogleMap mMap;
 
     ActionBar mActionBar;
 
     TitleNavigationAdapter mAdapter;
 
+    ShowPlace showPlace;
+
     public InitActionbar (Context context,
+                          final Activity activity,
                           GoogleMap googleMap,
                           ActionBar actionBar,
                           TitleNavigationAdapter adapter) {
         this.context = context;
         this.mMap = googleMap;
+        this.activity = activity;
         this.mActionBar = actionBar;
         this.mAdapter = adapter;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,13 +54,11 @@ public class InitActionbar  extends AppCompatActivity {
                 new android.support.v7.app.ActionBar.OnNavigationListener() {
                     @Override
                     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                        // Action to be taken after selecting a spinner item
-                        // dua list marker = rong
 
                         if (itemPosition > -1) {
                             mMap.clear();
                             Utils.sKeyPlace = adapter1.getName(itemPosition);
-                            //showPlace = new ShowPlace(context, mMap);
+                            showPlace = new ShowPlace(getApplicationContext(),activity, mMap);
                             itemPosition = -1;
                         }
                         return true;

@@ -12,7 +12,7 @@ public class setView {
 
     private Context context;
     private GoogleMap mMap;
-    SharedPreferences pref;
+    private SharedPreferences pref;
 
 
     public setView (Context context, GoogleMap googleMap) {
@@ -21,6 +21,7 @@ public class setView {
 
         this.context = context;
         this.mMap = googleMap;
+
         googleMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
         googleMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
         googleMap.setMyLocationEnabled(true);

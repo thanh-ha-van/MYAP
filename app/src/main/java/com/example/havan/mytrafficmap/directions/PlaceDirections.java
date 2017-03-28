@@ -57,7 +57,6 @@ public class PlaceDirections {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(from,
                 14));
 
-
     }
 
 

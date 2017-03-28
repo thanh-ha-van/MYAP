@@ -1,6 +1,7 @@
 package com.example.havan.mytrafficmap;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,21 +26,29 @@ import com.example.havan.mytrafficmap.Map.ReadyMap;
 import com.example.havan.mytrafficmap.Map.ShowPlace;
 import com.example.havan.mytrafficmap.Map.setView;
 import com.example.havan.mytrafficmap.Style.setMapStyle;
+import com.example.havan.mytrafficmap.UI.CheckConnection;
+import com.example.havan.mytrafficmap.UI.CheckFirstRun;
+import com.example.havan.mytrafficmap.UI.InitActionbar;
 import com.example.havan.mytrafficmap.UI.InitSideMenu;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
-import com.example.havan.mytrafficmap.model.GPSTracker;
+import com.example.havan.mytrafficmap.model.MyPlace;
+import com.example.havan.mytrafficmap.model.MyPlaces;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
-import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -51,16 +61,18 @@ public class MainActivity extends AppCompatActivity
         LocationListener {
 
     public PlaceDirections directions;
-
     public Direction direction;
 
     public GoogleMap mMap;
-
     public ShowPlace showPlace;
+    public ProgressDialog pDialog;
+
+    double latTmp;
+    double lonTmp;
+    private ArrayList<Marker> listMaker;
 
     //ui
     public android.support.v7.app.ActionBar actionBar;
-
     private ActionBarDrawerToggle mDrawerToggle;
 
     @ViewById(R.id.nav_view)
@@ -71,74 +83,35 @@ public class MainActivity extends AppCompatActivity
 
     private TitleNavigationAdapter adapter;
 
-
-    public InitSideMenu sideMenu;
-
     private AlertDialogManager alert = new AlertDialogManager();
 
     private double lat;
-
     private double lon;
 
     private SharedPreferences pref;
-
     private SharedPreferences.Editor editor;
 
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
-
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
 
-    private boolean isInternet = false;
-
-    private ConnectionDetector detector;
-
-    private GPSTracker gps;
 
     @AfterViews
     public void afterViews() {
-
-        pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        editor = pref.edit();
-        // check if first run
-        if (pref.getBoolean("firstrun", true)) {
-            editor.putBoolean("firstrun", false);
-            editor.putBoolean("show_traffic", true);
-            editor.putInt("style", 1);
-            editor.commit();
-        }
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-        // check internet
-        detector = new ConnectionDetector(this);
-        isInternet = detector.isConnectingToInternet();
-        if (!isInternet) {
-            // Internet Connection is not present
-            alert.showAlertDialog(this,
-                    "Internet Connection Error",
-                    "Please connect to working Internet connection",
-                    2);
-            // stop executing code by return
-            return;
-        }
 
-        // check able of gps
-        gps = new GPSTracker(this);
-        if (gps.canGetLocation()) {
+        pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = pref.edit();
 
-            lat = gps.getLatitude();
-            lon = gps.getLongitude();
+        new CheckFirstRun(this); // check first run settings
+        new CheckConnection(this, lat, lon);  // check connections
 
-        } else {
-            // Can't get user's current location
-            alert.showAlertDialog( this, "GPS Status",
-                    "Couldn't get location information. Please enable GPS",
-                    2);
-        }
         loadMap();
+
         // init UI
         initUi();
 
@@ -164,43 +137,70 @@ public class MainActivity extends AppCompatActivity
             mMap.clear();
             Utils.sKeyPlace = query;
             //new LoadPlaces().execute();
-            showPlace = new ShowPlace(MainActivity.this, mMap, alert);
-        }
+            showPlace = new ShowPlace(getApplicationContext(),MainActivity.this, mMap);
+            showPlace.setOnActionListener(new ShowPlace.OnActionListener() {
+                @Override
+                public void onPreExecute() {
 
+                    pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage(Html.fromHtml("<b>Search</b><br/>Loading nearby Places..."));
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+                }
+
+                @Override
+                public void onPostExecute(MyPlaces listPlace) {
+
+                    // draw my position
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(lat, lon))
+                            .title("Me")
+                            .snippet("Local of me")
+                            .icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.pin_new_blue)));
+
+
+                    if (listPlace.results != null) {
+                        // loop through all the places
+                        for (MyPlace place : listPlace.results) {
+                            latTmp = place.geometry.location.lat; // latitude
+                            lonTmp = place.geometry.location.lng; // longitude
+
+                            Marker marker = mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(latTmp, lonTmp))
+                                    .title(place.name)
+                                    .snippet(place.vicinity
+                                            + "\nID: "
+                                            + place.place_id
+                                    )
+                                    .icon(BitmapDescriptorFactory
+                                            .fromResource(R.drawable.pin_new_red)));
+
+                            listMaker.add(marker);
+                        }
+                    } else {
+                        alert.showAlertDialog(MainActivity.this, "ERROR",
+                                "Sorry, cant not find nearby places. Try to change the type",
+                                2);
+                    }
+                }
+            });
+
+        }
     }
 
     private void initUi() {
 
-        sideMenu = new InitSideMenu(
+        new InitSideMenu(
                 this.getApplicationContext(),
                 MainActivity.this,
                 mDrawerToggle, navigationView, mDrawerLayout );
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
-        actionBar = getSupportActionBar();
-
-        adapter = new TitleNavigationAdapter(getApplicationContext());
-        getSupportActionBar().setListNavigationCallbacks(adapter,
-                new android.support.v7.app.ActionBar.OnNavigationListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                        // Action to be taken after selecting a spinner item
-                        // dua list marker = rong
-                        if (itemPosition > -1) {
-                            mMap.clear();
-                            Utils.sKeyPlace = adapter.getName(itemPosition);
-                            showPlace = new ShowPlace(MainActivity.this, mMap, alert);
-                            itemPosition = -1;
-                        }
-                        return true;
-                    }
-                });
+        new InitActionbar(getApplicationContext(), MainActivity.this, mMap, actionBar, adapter);
 
     }
 
