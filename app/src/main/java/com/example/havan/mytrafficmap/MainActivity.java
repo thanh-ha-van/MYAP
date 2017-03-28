@@ -20,7 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-
+import com.example.havan.mytrafficmap.ShowOnMap.Movecamera;
+import com.example.havan.mytrafficmap.ShowOnMap.OptionView;
 import com.example.havan.mytrafficmap.ShowOnMap.ShowPlace;
 import com.example.havan.mytrafficmap.StyleMap.SetStyle;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
@@ -38,8 +39,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.MapStyleOptions;
-
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences.Editor editor;
 
-
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
@@ -106,23 +104,20 @@ public class MainActivity extends AppCompatActivity
 
         pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = pref.edit();
-        // check if first run
+
         if (pref.getBoolean("firstrun", true)) {
             editor.putBoolean("firstrun", false);
             editor.putBoolean("show_traffic", true);
             editor.putString("map_style", "normal");
             editor.commit();
         }
-
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-
         // init UI
         initUi();
-
         // check internet
         detector = new ConnectionDetector(this.getApplicationContext());
         isInternet = detector.isConnectingToInternet();
@@ -133,7 +128,6 @@ public class MainActivity extends AppCompatActivity
             // stop executing code by return
             return;
         }
-
         // check able of gps
         gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
@@ -169,9 +163,8 @@ public class MainActivity extends AppCompatActivity
             String query = intent.getStringExtra(SearchManager.QUERY);
             mMap.clear();
             Utils.sKeyPlace = query;
-            showPlace = new ShowPlace(getApplicationContext(),MainActivity.this, mMap);
+            showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
         }
-
     }
 
     @Override
@@ -179,7 +172,6 @@ public class MainActivity extends AppCompatActivity
 
         alert.showAlertDialog(this, "Information",
                 marker.getTitle() + "\n" + marker.getSnippet(), 3);
-
     }
 
     private void initUi() {
@@ -219,13 +211,12 @@ public class MainActivity extends AppCompatActivity
                         if (itemPosition > -1) {
                             mMap.clear();
                             Utils.sKeyPlace = adapter.getName(itemPosition);
-                            showPlace = new ShowPlace(getApplicationContext(),MainActivity.this, mMap);
+                            showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
                             itemPosition = -1;
                         }
                         return true;
                     }
                 });
-
     }
 
     private void loadMap() {
@@ -242,25 +233,15 @@ public class MainActivity extends AppCompatActivity
                 onMyMapReady(googleMap);
             }
         });
-
     }
 
     private void onMyMapReady(GoogleMap googleMap) {
 
         // Get the google map object
         mMap = googleMap;
-        mapStyle = new SetStyle( this, mMap);
-        setViewOption();
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(lat, lon))
-                // Sets the center of the map to location user
-                .zoom(15)                   // Sets the zoom
-                .bearing(0)                // Sets to east
-                .tilt(40)                   // Sets to 30 degrees
-                .build();                   // Creates a CameraPosition
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        // Need user permisson (above)
-
+        mapStyle = new SetStyle(this, mMap);
+        new OptionView(mMap, this );
+        new Movecamera(mMap, lat, lon);
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
@@ -276,19 +257,12 @@ public class MainActivity extends AppCompatActivity
         mMap.setOnInfoWindowClickListener(this);
     }
 
-    public void setViewOption() {
-
-        mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
-        mMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
-        mMap.setMyLocationEnabled(true);
-    }
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
-      if (id == R.id.map_style) {
+        if (id == R.id.map_style) {
             Intent i = new Intent(MainActivity.this, MapStyle_.class);
             startActivity(i);
             // choose map style
@@ -316,7 +290,6 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.option_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -350,11 +323,7 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         LatLng from = new LatLng(lat, lon);
                         directions = new PlaceDirections(
-                                getApplicationContext(),
-                                MainActivity.this,
-                                mMap,
-                                from,
-                                des);
+                                getApplicationContext(), MainActivity.this, mMap, from, des);
                     }
                 }
                 return true;
@@ -365,7 +334,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // This method is called when the second activity finishes
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -396,20 +364,14 @@ public class MainActivity extends AppCompatActivity
                 .position(new LatLng(lat1, lon1))
                 .title(address)
                 .snippet(address)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_new_green)));
-
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_green)));
 
         Utils.sDestination = new LatLng(lat1, lon1);
         LatLng des = Utils.sDestination;
         LatLng from = new LatLng(lat, lon);
 
         directions = new PlaceDirections(
-                getApplicationContext(),
-                MainActivity.this,
-                mMap,
-                from,
-                des);
+                getApplicationContext(), MainActivity.this, mMap, from, des);
     }
 
     @Override
@@ -429,17 +391,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override

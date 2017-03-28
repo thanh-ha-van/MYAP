@@ -65,7 +65,7 @@ public class GPSTracker extends Service implements LocationListener {
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                   // Log.d("Network", "Network Enabled");
+                    // Log.d("Network", "Network Enabled");
                     if (locationManager != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -121,39 +121,39 @@ public class GPSTracker extends Service implements LocationListener {
             locationManager.removeUpdates(GPSTracker.this);
         }
     }
-    
+
     public double getLatitude() {
         if (location != null) {
             latitude = location.getLatitude();
         }
- 
+
         // return latitude
         return latitude;
     }
-    
+
     public double getLongitude() {
         if (location != null) {
             longitude = location.getLongitude();
         }
- 
+
         // return longitude
         return longitude;
     }
-    
+
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
-    
+
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
- 
+
         // Setting Dialog Title
         alertDialog.setTitle("GPS is settings");
- 
+
         // Setting Dialog Message
         alertDialog
                 .setMessage("GPS is not enabled. Do you want to go to settings menu?");
- 
+
         // On pressing Settings button
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
@@ -163,7 +163,7 @@ public class GPSTracker extends Service implements LocationListener {
                         mContext.startActivity(intent);
                     }
                 });
- 
+
         // on pressing cancel button
         alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -171,7 +171,7 @@ public class GPSTracker extends Service implements LocationListener {
                         dialog.cancel();
                     }
                 });
- 
+
         // Showing Alert Message
         alertDialog.show();
     }
@@ -179,22 +179,22 @@ public class GPSTracker extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         // TODO Auto-generated method stub
-        }
+    }
 
     @Override
     public void onProviderDisabled(String provider) {
         // TODO Auto-generated method stub
-        }
+    }
 
     @Override
     public void onProviderEnabled(String provider) {
         // TODO Auto-generated method stub
-        }
+    }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
-        }
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
