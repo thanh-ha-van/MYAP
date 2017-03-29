@@ -20,16 +20,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "favListManager";
+    private static final String DATABASE_NAME = "favListplaceManager";
 
     //table name
-    private static final String TABLE_FAV = "favlist";
+    private static final String TABLE_FAV_PLACE = "favplaceslist";
 
     //Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_ADDRESS = "address";
     private static final String KEY_PLACE_ID = "placeid";
+    private static final String KEY_PLACE_LAT = "placelat";
+    private static final String KEY_PLACE_LON = "placelon";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,12 +43,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_CONTACTS_TABLE =
                 "CREATE TABLE "
-                        + TABLE_FAV + "("
-                        + KEY_ID
-                        + " INTEGER PRIMARY KEY,"
+                        + TABLE_FAV_PLACE + "("
+                        + KEY_ID + " INTEGER PRIMARY KEY,"
                         + KEY_NAME + " TEXT,"
                         + KEY_ADDRESS + " TEXT,"
-                        + KEY_PLACE_ID + " TEXT" + ")";
+                        + KEY_PLACE_ID + " TEXT,"
+                        + KEY_PLACE_LAT + " TEXT,"
+                        + KEY_PLACE_LON + " TEXT " + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -54,7 +57,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAV);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAV_PLACE);
 
         // Create tables again
         onCreate(db);
@@ -72,9 +75,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, dataModel.getName()); // Place Name
         values.put(KEY_ADDRESS, dataModel.getAddress()); // Place Phone
         values.put(KEY_PLACE_ID, dataModel.getPlaceID()); // Place Name
+        values.put(KEY_PLACE_LAT, String.valueOf(dataModel.getPlaceLat())); // Place latitude
+        values.put(KEY_PLACE_LON, String.valueOf(dataModel.getPlaceLon())); // Place longitude
 
         // Inserting Row
-        db.insert(TABLE_FAV, null, values);
+        db.insert(TABLE_FAV_PLACE, null, values);
         db.close(); // Closing database connection
     }
 
@@ -82,7 +87,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(
-                TABLE_FAV,
+                TABLE_FAV_PLACE,
                 new String[]{KEY_PLACE_ID},
                 KEY_PLACE_ID + "=?",
                 new String[]{String.valueOf(placeId)}, null, null, null, null);
@@ -100,12 +105,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(
-                TABLE_FAV,
+                TABLE_FAV_PLACE,
                 new String[]{
                         KEY_ID,
                         KEY_NAME,
                         KEY_ADDRESS,
-                        KEY_PLACE_ID},
+                        KEY_PLACE_ID,
+                        KEY_PLACE_LAT,
+                        KEY_PLACE_LON
+                },
                 KEY_PLACE_ID + "=?",
                 new String[]{String.valueOf(placeId)}, null, null, null, null);
         if (cursor != null)
@@ -115,7 +123,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Integer.parseInt(cursor.getString(0)),
                 cursor.getString(1),
                 cursor.getString(2),
-                cursor.getString(3)
+                cursor.getString(3),
+                Double.valueOf(cursor.getString(4)),
+                Double.valueOf(cursor.getString(5))
+
         );
         // return contact
         cursor.close();
@@ -126,7 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<DataModel> getAllPLaces() {
         List<DataModel> contactList = new ArrayList<DataModel>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_FAV;
+        String selectQuery = "SELECT  * FROM " + TABLE_FAV_PLACE;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -139,42 +150,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 contact.setName(cursor.getString(1));
                 contact.setAddress(cursor.getString(2));
                 contact.setPlaceID(cursor.getString(3));
+                contact.setPlaceLat(Double.valueOf(cursor.getString(4)));
+                contact.setPlaceLon(Double.valueOf(cursor.getString(5)));
                 // Adding place to list
                 contactList.add(contact);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         // return place list
         return contactList;
-    }
-
-    // Updating single place
-    public int updatePlaces(DataModel place) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, place.getName());
-        values.put(KEY_ADDRESS, place.getAddress());
-        values.put(KEY_PLACE_ID, place.getPlaceID());
-
-        // updating row
-        return db.update(TABLE_FAV, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(place.getId())});
     }
 
     // Deleting single place
     public void deletePlace(DataModel place) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_FAV, KEY_ID + " = ?",
+        db.delete(TABLE_FAV_PLACE, KEY_ID + " = ?",
                 new String[]{String.valueOf(place.getId())});
         db.close();
 
     }
 
-
     // Getting place Count
     public int getPlaceCout() {
-        String countQuery = "SELECT  * FROM " + TABLE_FAV;
+        String countQuery = "SELECT  * FROM " + TABLE_FAV_PLACE;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();

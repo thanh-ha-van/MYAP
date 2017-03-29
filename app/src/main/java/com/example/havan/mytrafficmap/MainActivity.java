@@ -21,21 +21,22 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.ShowOnMap.Movecamera;
-import com.example.havan.mytrafficmap.ShowOnMap.OptionView;
+import com.example.havan.mytrafficmap.ShowOnMap.SetOptionView;
+import com.example.havan.mytrafficmap.ShowOnMap.ShowFavorite;
 import com.example.havan.mytrafficmap.ShowOnMap.ShowPlace;
+import com.example.havan.mytrafficmap.StyleMap.CheckFirstRun;
 import com.example.havan.mytrafficmap.StyleMap.SetStyle;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
+import com.example.havan.mytrafficmap.model.MyPlace;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -105,12 +106,8 @@ public class MainActivity extends AppCompatActivity
         pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = pref.edit();
 
-        if (pref.getBoolean("firstrun", true)) {
-            editor.putBoolean("firstrun", false);
-            editor.putBoolean("show_traffic", true);
-            editor.putString("map_style", "normal");
-            editor.commit();
-        }
+        new CheckFirstRun(this);
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
@@ -162,6 +159,7 @@ public class MainActivity extends AppCompatActivity
             ).show();
             String query = intent.getStringExtra(SearchManager.QUERY);
             mMap.clear();
+            new ShowFavorite(this, mMap, pref.getBoolean("show_fav_place", false));
             Utils.sKeyPlace = query;
             showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
         }
@@ -171,7 +169,12 @@ public class MainActivity extends AppCompatActivity
     public void onInfoWindowClick(Marker marker) {
 
         alert.showAlertDialog(this, "Information",
-                marker.getTitle() + "\n" + marker.getSnippet(), 3);
+                marker.getTitle()
+                        + "\n\n"
+                        + marker.getSnippet()
+                        + "\n\n"
+                        + ""
+                , 3);
     }
 
     private void initUi() {
@@ -210,8 +213,15 @@ public class MainActivity extends AppCompatActivity
                         // dua list marker = rong
                         if (itemPosition > -1) {
                             mMap.clear();
+
+                            new ShowFavorite(getApplicationContext(),
+                                    mMap,
+                                    pref.getBoolean("show_fav_place", false));
+
                             Utils.sKeyPlace = adapter.getName(itemPosition);
-                            showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
+                            showPlace = new ShowPlace(getApplicationContext(),
+                                    MainActivity.this,
+                                    mMap);
                             itemPosition = -1;
                         }
                         return true;
@@ -224,7 +234,6 @@ public class MainActivity extends AppCompatActivity
         SupportMapFragment mapFragment
                 = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
-
         // Set the event that map is ready
         mapFragment.getMapAsync(new OnMapReadyCallback() {
 
@@ -240,7 +249,7 @@ public class MainActivity extends AppCompatActivity
         // Get the google map object
         mMap = googleMap;
         mapStyle = new SetStyle(this, mMap);
-        new OptionView(mMap, this );
+        new SetOptionView(mMap, this);
         new Movecamera(mMap, lat, lon);
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -358,13 +367,14 @@ public class MainActivity extends AppCompatActivity
         lat1 = data.getDoubleExtra("lat", 10);
         lon1 = data.getDoubleExtra("lon", 10);
         String address = data.getStringExtra("address");
+        String name = data.getStringExtra("name");
 
         // draw destination
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat1, lon1))
-                .title(address)
+                .title(name)
                 .snippet(address)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_green)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
 
         Utils.sDestination = new LatLng(lat1, lon1);
         LatLng des = Utils.sDestination;
@@ -384,9 +394,7 @@ public class MainActivity extends AppCompatActivity
 
         lat = location.getLatitude();
         lon = location.getLongitude();
-        LatLng latLng = new LatLng(lat, lon);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 3000, null);
+        new Movecamera(mMap, lat, lon);
     }
 
     @Override

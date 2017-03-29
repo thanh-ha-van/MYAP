@@ -97,7 +97,6 @@ public class ShowPlace {
             ).show();
         }
         this.mMap = googleMap;
-        this.mMap.clear();
         this.activity = activity;
         this.context = getActivity().getApplicationContext();
 
@@ -117,7 +116,6 @@ public class ShowPlace {
                 return false;
             }
         });
-
 
     }
 

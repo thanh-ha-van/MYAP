@@ -36,7 +36,6 @@
             android:layout_gravity="center"
             android:layout_height="match_parent"
             android:text="@string/about_app"
-            android:textAlignment="center"
             android:textSize="15dp"
             android:paddingTop="20dp"
             android:paddingBottom="20dp" />

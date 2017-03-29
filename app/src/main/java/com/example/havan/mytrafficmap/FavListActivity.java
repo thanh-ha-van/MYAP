@@ -37,7 +37,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_fav_list)
-public class FavListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class FavListActivity extends AppCompatActivity {
 
 
     AlertDialogManager alert = new AlertDialogManager();
@@ -54,7 +54,6 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     DatabaseHandler db;
     ListView listView;
     private static CustomAdapter adapter;
-    protected GoogleApiClient mGoogleApiClient;
 
     String currentId = null;
     int currentPosition = -1;
@@ -72,7 +71,6 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
         listView = (ListView) findViewById(R.id.list);
 
         db = new DatabaseHandler(this);
-
         final List<DataModel> favPlaces = db.getAllPLaces();
 
         adapter = new CustomAdapter(favPlaces, getApplicationContext());
@@ -96,48 +94,27 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
     void directClicked() {
 
         if (currentPosition != -1) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .enableAutoManage(this, 0 /* clientId */, this)
-                    .addApi(Places.GEO_DATA_API)
-                    .build();
 
+            Intent intent = new Intent();
+            intent.putExtra("lat", adapter.getItem(currentPosition).getPlaceLat());
+            intent.putExtra("lon", adapter.getItem(currentPosition).getPlaceLon());
+            intent.putExtra("address", adapter.getItem(currentPosition).getAddress());
+            intent.putExtra("name", adapter.getItem(currentPosition).getName());
 
-            Places.GeoDataApi.getPlaceById(
-                    mGoogleApiClient,
-                    currentId
-            )
-                    .setResultCallback(new ResultCallback<PlaceBuffer>() {
-                        @Override
-                        public void onResult(PlaceBuffer places) {
-                            if (
-                                    places.getStatus()
-                                            .isSuccess()) {
-                                Intent intent = new Intent();
-                                //intent.putExtra("lat", latLng.latitude);
-                                final Place myPlace = places.get(0);
-                                intent.putExtra("lat", myPlace.getLatLng().latitude);
-                                intent.putExtra("lon", myPlace.getLatLng().longitude);
-                                intent.putExtra("address",
-                                        myPlace.getAddress()
-                                                + "\n"
-                                                + myPlace.getId()
-                                );
-
-                                setResult(RESULT_OK, intent);
-                                finish();
-                            }
-                            places.release();
-                        }
-                    });
-        } else {
-            Toast.makeText(
-                    FavListActivity.this,
-                    "Please choose a place first!",
-                    Toast.LENGTH_SHORT
-            ).show();
+            setResult(RESULT_OK, intent);
+            finish();
         }
+    else
 
+    {
+        Toast.makeText(
+                FavListActivity.this,
+                "Please choose a place first!",
+                Toast.LENGTH_SHORT
+        ).show();
     }
+
+}
 
 
     @Click(R.id.show_info)
@@ -232,14 +209,6 @@ public class FavListActivity extends AppCompatActivity implements GoogleApiClien
 
                 show();
 
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        Toast.makeText(this,
-                "Could not connect to Google API Client: " + connectionResult.getErrorCode(),
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override

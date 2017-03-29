@@ -43,6 +43,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.WindowFeature;
 
 import java.util.ArrayList;
+import java.util.function.DoubleToIntFunction;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -70,6 +71,9 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     private TextView mPlaceDetailsPhone;
     private TextView mPlaceDetailsSite;
 
+    private Double lat;
+    private Double lng;
+
     private SharedPreferences pref;
 
     private SharedPreferences.Editor editor;
@@ -77,10 +81,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
 
-
-    ArrayList<DataModel> dataModels;
-    ListView listView;
-    private static CustomAdapter adapter;
 
     @AfterViews
     public void afterViews() {
@@ -91,7 +91,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                 .build()
 
         );
-
 
         pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = pref.edit();
@@ -142,7 +141,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
               */
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
@@ -157,12 +155,12 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
         if (latLng != null) {
 
-
             // put the String to pass back into an Intent and close this activity
             Intent intent = new Intent();
             intent.putExtra("lat", latLng.latitude);
             intent.putExtra("lon", latLng.longitude);
-            intent.putExtra("address", placeName);
+            intent.putExtra("address", placeAddress);
+            intent.putExtra("name", placeName);
             setResult(RESULT_OK, intent);
             finish();
             onBackPressed();
@@ -187,7 +185,8 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                         2
                 );
             } else {
-                db.addPlace(new DataModel(placeName, placeAddress, placeId));
+                //db.addPlace(new DataModel(placeName, placeAddress, placeId, lat, lng));
+                db.addPlace(new DataModel(placeName, placeAddress, placeId, lat, lng));
                 // Reading all contacts
                 Toast.makeText(this,
                         "Added to your favorite list",
@@ -235,7 +234,8 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             latLng = place.getLatLng();
             placeName = place.getName().toString();
             placeAddress = place.getAddress().toString();
-
+            lat = place.getLatLng().latitude;
+            lng = place.getLatLng().longitude;
             places.release();
         }
     };

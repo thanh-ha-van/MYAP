@@ -54,8 +54,8 @@ public class ShareActivity extends AppCompatActivity {
                 ShareLinkContent shareLinkContent = new ShareLinkContent.Builder()
                         .setContentTitle("My Traffic Map")
                         .setContentDescription("Demo sharing with facebook API")
-                        .setContentUrl(Uri.parse("https://www.facebook.com/riki.here.lul"))
-                        .setImageUrl(Uri.parse("https://scontent-hkg3-1.xx.fbcdn.net/v/t1.0-9/15822761_1042140759264414_7663752904987555473_n.jpg?oh=7866fe72405d815aa25b385b69939e83&oe=59265743"))
+                        .setContentUrl(Uri.parse("http://hd.wallpaperswide.com/thumbs/ha_long_bay_vietnam-t2.jpg"))
+                        .setImageUrl(Uri.parse("http://hd.wallpaperswide.com/thumbs/ha_long_bay_vietnam-t2.jpg"))
                         .build();
                 ShareDialog.show(ShareActivity.this,shareLinkContent);
                 onBackPressed();
