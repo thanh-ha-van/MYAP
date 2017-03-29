@@ -26,6 +26,7 @@ import com.example.havan.mytrafficmap.ShowOnMap.ShowFavorite;
 import com.example.havan.mytrafficmap.ShowOnMap.ShowPlace;
 import com.example.havan.mytrafficmap.StyleMap.CheckFirstRun;
 import com.example.havan.mytrafficmap.StyleMap.SetStyle;
+import com.example.havan.mytrafficmap.directions.GetDistance;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.model.MyPlace;
@@ -168,12 +169,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onInfoWindowClick(Marker marker) {
 
+        double mlat = marker.getPosition().latitude;
+        double mlon = marker.getPosition().longitude;
+        String dis = "unknow";
+        GetDistance getDistance = new GetDistance(lat, lon, mlat, mlon);
+        dis = getDistance.getTheDistance();
         alert.showAlertDialog(this, "Information",
-                marker.getTitle()
-                        + "\n\n"
-                        + marker.getSnippet()
-                        + "\n\n"
-                        + ""
+                "Name: " + marker.getTitle()
+                        + "\n\nAddress: " + marker.getSnippet()
+                        + "\n\nDistance to your location : "
+                        + dis
                 , 3);
     }
 

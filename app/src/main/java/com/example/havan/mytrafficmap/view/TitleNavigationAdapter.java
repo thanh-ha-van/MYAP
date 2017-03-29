@@ -102,7 +102,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
         navSpinner.add(new SpinnerItem("car repair",R.drawable.car));
         navSpinner.add(new SpinnerItem("car wash", R.drawable.car_wash));
         navSpinner.add(new SpinnerItem("church", R.drawable.church));
-        navSpinner.add(new SpinnerItem("gas station", R.drawable.gas_station));
+        navSpinner.add(new SpinnerItem("gas station", R.drawable.ic_local_gas_station));
         navSpinner.add(new SpinnerItem("hospital", R.drawable.hospital));
         navSpinner.add(new SpinnerItem("hotel", R.drawable.hotel));
         navSpinner.add(new SpinnerItem("library", R.drawable.library));

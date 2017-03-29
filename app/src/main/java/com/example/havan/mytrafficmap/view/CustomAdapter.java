@@ -77,7 +77,6 @@ public class CustomAdapter extends ArrayAdapter<DataModel> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
         viewHolder.txtName.setTextColor(
                 dataModel.
                         isChecked() ?

@@ -190,10 +190,7 @@ public class ShowPlace {
                                 Marker marker = mMap.addMarker(new MarkerOptions()
                                         .position(new LatLng(latTmp, lonTmp))
                                         .title(place.name)
-                                        .snippet(place.vicinity
-                                                + "\nID: "
-                                                + place.place_id
-                                        )
+                                        .snippet(place.vicinity)
                                         .icon(BitmapDescriptorFactory
                                                 .fromResource(R.drawable.pin_new_red)));
 

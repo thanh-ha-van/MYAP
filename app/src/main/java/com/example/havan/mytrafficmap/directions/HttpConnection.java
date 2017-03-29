@@ -22,14 +22,13 @@ public class HttpConnection {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     iStream));
             StringBuffer sb = new StringBuffer();
-            String line = "";
+            String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
             data = sb.toString();
             br.close();
         } catch (Exception e) {
-            Log.d("Exception while reading url", e.toString());
         } finally {
             iStream.close();
             urlConnection.disconnect();
