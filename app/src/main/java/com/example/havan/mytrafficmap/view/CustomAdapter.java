@@ -19,13 +19,6 @@ import com.example.havan.mytrafficmap.SQLite.DataModel;
 
 import java.util.List;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
-
-/**
- * Created by NTT on 3/7/2017.
- */
-
 public class CustomAdapter extends ArrayAdapter<DataModel> {
 
     private LayoutInflater inflater;

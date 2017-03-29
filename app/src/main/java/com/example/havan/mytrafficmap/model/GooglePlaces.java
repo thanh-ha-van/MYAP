@@ -31,24 +31,6 @@ public class GooglePlaces {
     public double longitude;
 
     public double radius;
-
-    public static PlaceDetails getPlaceDetails (double latitude, double longitude) throws Exception {
-        try {
-            String put = latitude + "," + longitude;
-            HttpRequestFactory httpRequestFactory = createRequestFactory(HTTP_TRANSPORT);
-            HttpRequest request = httpRequestFactory
-                    .buildGetRequest(new GenericUrl(PLACES_DETAILS_URL));
-            request.getUrl().put("key", API_KEY);
-            request.getUrl().put("latlng", put);
-            request.getUrl().put("sensor", "false");
-            PlaceDetails place = request.execute().parseAs(PlaceDetails.class);
-            return place;
-
-        } catch (HttpResponseException e) {
-            Log.e("Error...", e.getMessage());
-            throw e;
-        }
-    }
     
     public MyPlaces search(double latitude, double longitude, double radius, String types)
             throws Exception {
@@ -92,26 +74,6 @@ public class GooglePlaces {
                 request.setParser(parser);
             }
         });
-    }
-
-    public static PlaceDetails getPlaceDetail(String placeid) throws Exception {
-        try {
-
-            HttpRequestFactory httpRequestFactory = createRequestFactory(HTTP_TRANSPORT);
-            HttpRequest request = httpRequestFactory
-                    .buildGetRequest(new GenericUrl(PLACES_DETAILS_URL));
-            request.getUrl().put("key", API_KEY);
-            request.getUrl().put("placeid", placeid);
-            request.getUrl().put("sensor", "false");
-
-            PlaceDetails place = request.execute().parseAs(PlaceDetails.class);
-
-            return place;
-
-        } catch (HttpResponseException e) {
-            Log.e("Error...", e.getMessage());
-            throw e;
-        }
     }
 
 

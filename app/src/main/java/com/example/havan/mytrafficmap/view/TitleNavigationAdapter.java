@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,10 @@ public class TitleNavigationAdapter extends BaseAdapter {
 
         imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
         txtTitle = (TextView) convertView.findViewById(R.id.txtTitle);
+
+        Typeface tf = Typeface.createFromAsset(context.getAssets(),
+                "font/SVN-Aguda Bold.otf");
+        txtTitle.setTypeface(tf);
 
         imgIcon.setImageResource(spinnerNavItem.get(position).getIcon());
         imgIcon.setVisibility(View.VISIBLE);

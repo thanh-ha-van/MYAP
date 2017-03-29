@@ -29,7 +29,6 @@ import com.example.havan.mytrafficmap.StyleMap.SetStyle;
 import com.example.havan.mytrafficmap.directions.GetDistance;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
-import com.example.havan.mytrafficmap.model.MyPlace;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
@@ -375,11 +374,11 @@ public class MainActivity extends AppCompatActivity
         String name = data.getStringExtra("name");
 
         // draw destination
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat1, lon1))
-                .title(name)
-                .snippet(address)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
+//        mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(lat1, lon1))
+//                .title(name)
+//                .snippet(address)
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
 
         Utils.sDestination = new LatLng(lat1, lon1);
         LatLng des = Utils.sDestination;

@@ -10,7 +10,6 @@ public class DataModel {
 
     private int id;
 
-
     private String name;
     private String address;
     private String placeID;
@@ -18,11 +17,7 @@ public class DataModel {
     private double placeLon;
     private boolean isChecked;
 
-
     public DataModel() {
-
-
-
     }
 
     public DataModel(String name, String address, String placeID, double placeLat, double placeLon) {
