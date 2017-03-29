@@ -70,10 +70,10 @@ public class ViewOption extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
 
-                if(isChecked){
+                if(isChecked) {
                     editor.putBoolean("show_fav_place", true);
 
-                }else{
+                }else {
 
                     editor.putBoolean("show_fav_place", false);
                 }
@@ -90,10 +90,10 @@ public class ViewOption extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
 
-                if(isChecked){
+                if(isChecked) {
                     editor.putBoolean("show_traffic", true);
 
-                }else{
+                }else {
 
                     editor.putBoolean("show_traffic", false);
                 }
@@ -109,10 +109,10 @@ public class ViewOption extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
 
-                if(isChecked){
+                if(isChecked) {
                     editor.putBoolean("zoom", true);
 
-                }else{
+                }else {
 
                     editor.putBoolean("zoom", false);
                 }
@@ -122,7 +122,6 @@ public class ViewOption extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public void onBackPressed() {

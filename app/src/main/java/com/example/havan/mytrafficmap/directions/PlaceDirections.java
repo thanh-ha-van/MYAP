@@ -52,7 +52,7 @@ public class PlaceDirections {
         this.googleMap = googleMap;
         this.from = from;
         this.to = to;
-        this.activity =activity;
+        this.activity = activity;
         pDialog = new ProgressDialog(context);
         url = getMapsApiDirectionsUrl();
         this.googleMap.clear();
@@ -87,9 +87,10 @@ public class PlaceDirections {
     private void addMarkers() {
         if (googleMap != null) {
             googleMap.addMarker(new MarkerOptions().position(from)
-                    .title("Me")
-                    .snippet("Local of me")
+                    .title("You are here!")
+                    .snippet("This is your current location")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_blue)));
+
             googleMap.addMarker(new MarkerOptions().position(to)
                     .title(Utils.sTrDestination)
                     .snippet(Utils.sTrSnippet)

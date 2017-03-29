@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.text.Html;
 import android.widget.Toast;
 
-
 import com.example.havan.mytrafficmap.R;
 import com.example.havan.mytrafficmap.Utils;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -23,8 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
 
 public class ShowPlace {
 

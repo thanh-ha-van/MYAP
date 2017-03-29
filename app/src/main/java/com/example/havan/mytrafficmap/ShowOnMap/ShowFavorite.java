@@ -16,13 +16,14 @@ import java.util.List;
  * Created by NTT on 3/28/2017.
  */
 
-public class ShowFavorite  {
+public class ShowFavorite {
 
     private GoogleMap mMap;
     private Context mContext;
 
     DatabaseHandler db;
-    public ShowFavorite (Context context, GoogleMap googleMap, boolean isShow) {
+
+    public ShowFavorite(Context context, GoogleMap googleMap, boolean isShow) {
 
         this.mContext = context;
         this.mMap = googleMap;
@@ -39,9 +40,7 @@ public class ShowFavorite  {
                         .snippet(datamodel.getAddress())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_fav)));
             }
-        }
-        else
-        {
+        } else {
             mMap.clear();
         }
     }

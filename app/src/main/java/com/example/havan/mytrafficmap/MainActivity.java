@@ -373,15 +373,16 @@ public class MainActivity extends AppCompatActivity
         String address = data.getStringExtra("address");
         String name = data.getStringExtra("name");
 
-        // draw destination
-//        mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(lat1, lon1))
-//                .title(name)
-//                .snippet(address)
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat1, lon1))
+                .title(name)
+                .snippet(address)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
 
         Utils.sDestination = new LatLng(lat1, lon1);
         LatLng des = Utils.sDestination;
+        Utils.sTrDestination = name;
+        Utils.sTrSnippet = address;
         LatLng from = new LatLng(lat, lon);
 
         directions = new PlaceDirections(

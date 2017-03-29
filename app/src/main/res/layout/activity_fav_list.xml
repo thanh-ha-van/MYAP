@@ -59,7 +59,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/direct"
-                android:src="@drawable/ic_directions_black"
+                android:src="@drawable/compas_ic"
                 android:background="@drawable/button_selector"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@+id/show_info"

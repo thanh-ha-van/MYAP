@@ -10,11 +10,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class GetDistance {
 
-    LatLng loc1 ;
-    LatLng loc2 ;
+    LatLng loc1;
+    LatLng loc2;
 
-    public GetDistance ( double lat1, double lon1, double lat2, double lon2)
-    {
+    public GetDistance(double lat1, double lon1, double lat2, double lon2) {
 
         loc1 = new LatLng(lat1, lon1);
         loc2 = new LatLng(lat2, lon2);
@@ -36,13 +35,12 @@ public class GetDistance {
         if (distance > 1000.0f) {
             double roundOff = Math.round(distance * 10.0) / 10000.0;
 
-            dist =  roundOffTo2DecPlaces(roundOff) + " KM";
+            dist = roundOffTo2DecPlaces(roundOff) + " KM";
         }
         return dist;
     }
 
-    String roundOffTo2DecPlaces(double val)
-    {
+    String roundOffTo2DecPlaces(double val) {
         return String.format("%.2f", val);
     }
 }

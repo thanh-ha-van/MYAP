@@ -12,6 +12,7 @@ public class SpinnerItem {
     }
 
     public String getTitle() {
+
         return this.title;
     }
 

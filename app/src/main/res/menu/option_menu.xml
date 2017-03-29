@@ -5,13 +5,13 @@
 
     <item android:id="@+id/search"
         android:title="@string/search_title"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/search"
         app:showAsAction="always"
         android:actionViewClass="android.widget.SearchView" />
 
     <item   android:id="@+id/direc"
         android:title="@string/direction"
-        android:icon="@drawable/ic_directions"
+        android:icon="@drawable/compass"
         app:showAsAction="always" />
 
 </menu>

@@ -100,7 +100,7 @@ public class TitleNavigationAdapter extends BaseAdapter {
         navSpinner = new ArrayList<SpinnerItem>();
         navSpinner.add(new SpinnerItem("airport", R.drawable.airport));
         navSpinner.add(new SpinnerItem("atm", R.drawable.atm));
-        navSpinner.add(new SpinnerItem("aank", R.drawable.bank));
+        navSpinner.add(new SpinnerItem("bank", R.drawable.bank));
         navSpinner.add(new SpinnerItem("bar", R.drawable.bar));
         navSpinner.add(new SpinnerItem("bus stop", R.drawable.bus));
         navSpinner.add(new SpinnerItem("cafe", R.drawable.cafe));

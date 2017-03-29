@@ -7,7 +7,7 @@
         >
         <item
             android:id="@+id/map_style"
-            android:icon="@drawable/ic_style"
+            android:icon="@drawable/drops"
             android:title="@string/map_style" />
         </group>
     <group
@@ -16,7 +16,7 @@
         >
         <item
             android:id="@+id/fav_place"
-            android:icon="@drawable/ic_star"
+            android:icon="@drawable/star"
             android:title="@string/fav_place" />
         </group>
     <group
@@ -25,7 +25,7 @@
         >
         <item
             android:id="@+id/view_option"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/options"
             android:title="@string/view_option" />
         </group>
     <group
@@ -34,7 +34,7 @@
         >
         <item
             android:id="@+id/share"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/share_ic"
             android:title="@string/share_app" />
         </group>
     <group
@@ -43,7 +43,7 @@
         >
         <item
             android:id="@+id/about"
-            android:icon="@drawable/ic_info"
+            android:icon="@drawable/info"
             android:title="@string/about" />
 
     </group>

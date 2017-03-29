@@ -1,9 +1,12 @@
 package com.example.havan.mytrafficmap.ShowOnMap;
 
+import com.example.havan.mytrafficmap.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by NTT on 3/28/2017.
@@ -19,5 +22,12 @@ public class Movecamera {
                 .build();                   // Creates a CameraPosition
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         // Need user permisson (above)
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .title("You are here!")
+                .snippet("This is your current location")
+                .icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.pin_new_blue)));
     }
 }
