@@ -2,7 +2,11 @@ package com.example.havan.mytrafficmap.view;
 
 import android.app.Activity;
 import android.app.Dialog;
+<<<<<<< HEAD
 import android.content.Context;
+=======
+import android.graphics.Typeface;
+>>>>>>> Course_New
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +29,7 @@ public class AlertDialogManager {
         alertDialog.setContentView(R.layout.alert_dialog_layout);
 
         TextView tvTitle = (TextView) alertDialog.findViewById(R.id.tv_title);
+        tvTitle.setTypeface(null, Typeface.BOLD);
         tvTitle.setText(title);
 
         TextView tvContent = (TextView) alertDialog.findViewById(R.id.tv_content);

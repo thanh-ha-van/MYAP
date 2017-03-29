@@ -1,5 +1,4 @@
 package com.example.havan.mytrafficmap;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -86,6 +85,7 @@ public class MapStyle extends AppCompatActivity {
                         editor.putInt("style", 3);
                         break;
                     case 3:
+<<<<<<< HEAD
                         editor.putInt("map_style", 4);
                         break;
                     case 4:
@@ -99,6 +99,21 @@ public class MapStyle extends AppCompatActivity {
                         break;
                     case 7:
                         editor.putInt("map_style", 8);
+=======
+                        editor.putInt("style", 4);
+                        break;
+                    case 4:
+                        editor.putInt("style", 5);
+                        break;
+                    case 5:
+                        editor.putInt("style", 6);
+                        break;
+                    case 6:
+                        editor.putInt("style", 7);
+                        break;
+                    case 7:
+                        editor.putInt("style", 8);
+>>>>>>> Course_New
                         break;
                     default:
                 }

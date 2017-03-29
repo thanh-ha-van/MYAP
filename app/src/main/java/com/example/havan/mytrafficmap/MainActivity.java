@@ -1,7 +1,6 @@
 package com.example.havan.mytrafficmap;
 
 import android.app.ActionBar;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +14,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.example.havan.mytrafficmap.Map.Direction;
 import com.example.havan.mytrafficmap.Map.ReadyMap;
 import com.example.havan.mytrafficmap.Map.ShowPlace;
@@ -31,11 +30,20 @@ import com.example.havan.mytrafficmap.UI.CheckFirstRun;
 import com.example.havan.mytrafficmap.UI.InitActionbar;
 import com.example.havan.mytrafficmap.UI.InitSideMenu;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
+=======
+import com.example.havan.mytrafficmap.ShowOnMap.Movecamera;
+import com.example.havan.mytrafficmap.ShowOnMap.SetOptionView;
+import com.example.havan.mytrafficmap.ShowOnMap.ShowFavorite;
+import com.example.havan.mytrafficmap.ShowOnMap.ShowPlace;
+import com.example.havan.mytrafficmap.StyleMap.CheckFirstRun;
+import com.example.havan.mytrafficmap.StyleMap.SetStyle;
+import com.example.havan.mytrafficmap.directions.PlaceDirections;
+import com.example.havan.mytrafficmap.model.GPSTracker;
+>>>>>>> Course_New
 import com.example.havan.mytrafficmap.model.MyPlace;
 import com.example.havan.mytrafficmap.model.MyPlaces;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -43,7 +51,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+<<<<<<< HEAD
 import com.google.common.collect.Sets;
+=======
+>>>>>>> Course_New
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -72,6 +83,10 @@ public class MainActivity extends AppCompatActivity
     double lonTmp;
     private ArrayList<Marker> listMaker;
 
+<<<<<<< HEAD
+=======
+    public SetStyle mapStyle;
+>>>>>>> Course_New
     //ui
     public android.support.v7.app.ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -87,16 +102,26 @@ public class MainActivity extends AppCompatActivity
 
     private AlertDialogManager alert = new AlertDialogManager();
 
+<<<<<<< HEAD
+=======
+    private GPSTracker gps;
+
+    public ShowPlace showPlace;
+
+>>>>>>> Course_New
     private double lat;
     private double lon;
 
 
+<<<<<<< HEAD
     CheckConnection check;
     CheckFirstRun checkFirstRun;
     ReadyMap readyMap;
     setMapStyle setMapStyle;
     setView setView;
 
+=======
+>>>>>>> Course_New
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -107,11 +132,20 @@ public class MainActivity extends AppCompatActivity
     @AfterViews
     public void afterViews() {
 
+<<<<<<< HEAD
+=======
+        pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        editor = pref.edit();
+
+        new CheckFirstRun(this);
+
+>>>>>>> Course_New
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("font/SVN-Aguda Bold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+<<<<<<< HEAD
 
         pref = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         editor = pref.edit();
@@ -120,6 +154,34 @@ public class MainActivity extends AppCompatActivity
         // init UI
         initUi();
         loadMap();
+=======
+        // init UI
+        initUi();
+        // check internet
+        detector = new ConnectionDetector(this.getApplicationContext());
+        isInternet = detector.isConnectingToInternet();
+        if (!isInternet) {
+            // Internet Connection is not present
+            alert.showAlertDialog(this, "Internet Connection Error",
+                    "Please connect to working Internet connection", 2);
+            // stop executing code by return
+            return;
+        }
+        // check able of gps
+        gps = new GPSTracker(this);
+        if (gps.canGetLocation()) {
+
+            lat = gps.getLatitude();
+            lon = gps.getLongitude();
+
+        } else {
+            // Can't get user's current location
+            alert.showAlertDialog(this, "GPS Status",
+                    "Couldn't get location information. Please enable GPS",
+                    2);
+        }
+
+>>>>>>> Course_New
         handleIntent(getIntent());
     }
 
@@ -142,10 +204,28 @@ public class MainActivity extends AppCompatActivity
             ).show();
             String query = intent.getStringExtra(SearchManager.QUERY);
             mMap.clear();
+            new ShowFavorite(this, mMap, pref.getBoolean("show_fav_place", false));
             Utils.sKeyPlace = query;
+<<<<<<< HEAD
             //new LoadPlaces().execute();
             showPlace = new ShowPlace(getApplicationContext(),MainActivity.this, mMap);
         }
+=======
+            showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
+        }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+        alert.showAlertDialog(this, "Information",
+                marker.getTitle()
+                        + "\n\n"
+                        + marker.getSnippet()
+                        + "\n\n"
+                        + ""
+                , 3);
+>>>>>>> Course_New
     }
 
     private void initUi() {
@@ -173,16 +253,30 @@ public class MainActivity extends AppCompatActivity
 
                         if (itemPosition > -1) {
                             mMap.clear();
+
+                            new ShowFavorite(getApplicationContext(),
+                                    mMap,
+                                    pref.getBoolean("show_fav_place", false));
+
                             Utils.sKeyPlace = adapter.getName(itemPosition);
+<<<<<<< HEAD
                             showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
+=======
+                            showPlace = new ShowPlace(getApplicationContext(),
+                                    MainActivity.this,
+                                    mMap);
+>>>>>>> Course_New
                             itemPosition = -1;
                         }
                         return true;
                     }
                 });
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> Course_New
     }
 
     private void loadMap() {
@@ -190,12 +284,12 @@ public class MainActivity extends AppCompatActivity
         final SupportMapFragment mapFragment
                 = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
-
         // Set the event that map is ready
         mapFragment.getMapAsync(new OnMapReadyCallback() {
 
             @Override
             public void onMapReady(GoogleMap googleMap) {
+<<<<<<< HEAD
                 mMap = googleMap;
                 readyMap = new ReadyMap(getApplicationContext(), mMap , lat, lon);
                 setView = new setView (getApplicationContext(), mMap);
@@ -203,6 +297,33 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+=======
+                onMyMapReady(googleMap);
+            }
+        });
+    }
+
+    private void onMyMapReady(GoogleMap googleMap) {
+
+        // Get the google map object
+        mMap = googleMap;
+        mapStyle = new SetStyle(this, mMap);
+        new SetOptionView(mMap, this);
+        new Movecamera(mMap, lat, lon);
+        mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+
+            @Override
+            public boolean onMarkerClick(Marker arg0) {
+                // TODO Auto-generated method stub
+                Utils.sDestination = arg0.getPosition();
+                Utils.sTrDestination = arg0.getTitle();
+                Utils.sTrSnippet = arg0.getSnippet();
+                return false;
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(this);
+>>>>>>> Course_New
     }
 
     @Override
@@ -210,7 +331,7 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
-      if (id == R.id.map_style) {
+        if (id == R.id.map_style) {
             Intent i = new Intent(MainActivity.this, MapStyle_.class);
             startActivity(i);
             // choose map style
@@ -238,7 +359,6 @@ public class MainActivity extends AppCompatActivity
         inflater.inflate(R.menu.option_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -268,8 +388,8 @@ public class MainActivity extends AppCompatActivity
                                 "Please choice destination place", 2);
                     } else {
                         LatLng from = new LatLng(lat, lon);
-                        directions = new PlaceDirections(getApplicationContext()
-                                , mMap, from, des, way);
+                        directions = new PlaceDirections(
+                                getApplicationContext(), MainActivity.this, mMap, from, des);
                     }
                 }
                 return true;
@@ -280,7 +400,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // This method is called when the second activity finishes
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -299,6 +418,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void makeDirection(Intent data) {
+
+        lat1 = data.getDoubleExtra("lat", 10);
+        lon1 = data.getDoubleExtra("lon", 10);
+        String address = data.getStringExtra("address");
+        String name = data.getStringExtra("name");
+
+        // draw destination
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat1, lon1))
+                .title(name)
+                .snippet(address)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
+
+        Utils.sDestination = new LatLng(lat1, lon1);
+        LatLng des = Utils.sDestination;
+        LatLng from = new LatLng(lat, lon);
+
+        directions = new PlaceDirections(
+                getApplicationContext(), MainActivity.this, mMap, from, des);
+    }
+
+>>>>>>> Course_New
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         return true;
@@ -309,24 +453,19 @@ public class MainActivity extends AppCompatActivity
 
         lat = location.getLatitude();
         lon = location.getLongitude();
-        LatLng latLng = new LatLng(lat, lon);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 3000, null);
+        new Movecamera(mMap, lat, lon);
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
