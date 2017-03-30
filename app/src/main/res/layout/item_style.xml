@@ -11,7 +11,7 @@
         android:layout_height="85dp"
         android:elevation="12dp"
         android:id="@+id/view2"
-        app:cardCornerRadius="40dp"
+        app:cardCornerRadius="43dp"
         android:layout_centerHorizontal="true"
         android:innerRadius="0dp"
         android:shape="ring"

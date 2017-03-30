@@ -11,7 +11,7 @@
 
     <item   android:id="@+id/direc"
         android:title="@string/direction"
-        android:icon="@drawable/compass"
+        android:icon="@drawable/compass_new"
         app:showAsAction="always" />
 
 </menu>

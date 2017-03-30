@@ -100,38 +100,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    // Getting single place
-    public DataModel getPlace(String placeId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                TABLE_FAV_PLACE,
-                new String[]{
-                        KEY_ID,
-                        KEY_NAME,
-                        KEY_ADDRESS,
-                        KEY_PLACE_ID,
-                        KEY_PLACE_LAT,
-                        KEY_PLACE_LON
-                },
-                KEY_PLACE_ID + "=?",
-                new String[]{String.valueOf(placeId)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        DataModel dataModel = new DataModel(
-                Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1),
-                cursor.getString(2),
-                cursor.getString(3),
-                Double.valueOf(cursor.getString(4)),
-                Double.valueOf(cursor.getString(5))
-
-        );
-        // return contact
-        cursor.close();
-        return dataModel;
-    }
 
     // Getting All places
     public List<DataModel> getAllPLaces() {
@@ -170,14 +138,4 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    // Getting place Count
-    public int getPlaceCout() {
-        String countQuery = "SELECT  * FROM " + TABLE_FAV_PLACE;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-
-        // return count
-        return cursor.getCount();
-    }
 }

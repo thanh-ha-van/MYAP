@@ -173,8 +173,8 @@ public class ShowPlace {
                         // draw my position
                         mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lon))
-                                .title("Me")
-                                .snippet("Local of me")
+                                .title("You are")
+                                .snippet("This is your current location")
                                 .icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.pin_new_blue)));
 

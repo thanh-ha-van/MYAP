@@ -169,7 +169,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/button_selector"
-                    app:srcCompat="@drawable/ic_directions_black"
+                    app:srcCompat="@drawable/compass_new_black"
                     android:id="@+id/btn_direct"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true" />

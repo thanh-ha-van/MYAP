@@ -28,14 +28,6 @@ public class DataModel {
         this.placeLon = placeLon;
     }
 
-    public DataModel(int id, String name, String address, String placeID, double placeLat, double placeLon) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.placeID = placeID;
-        this.placeLat = placeLat;
-        this.placeLon = placeLon;
-    }
     public boolean isChecked() {
         return isChecked;
     }
