@@ -1,5 +1,8 @@
 # Assignment
-##INTRODUCTION
+# UPDATE: The defaul branch is the lastest update code. If your are going to download please choose the defaul - the Course_new branch.
+
+##INTRODUCTION <br/>
+
 __Full name__: Hà Văn Thành <br/>
 
 __Project name__: Google Traffic Maps
