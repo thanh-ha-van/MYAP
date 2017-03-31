@@ -9,7 +9,7 @@ __Project name__: Google Traffic Maps
 
 ## UPDATE: If you install this app from IDE please give permission before start. If not it will crash and i did not fix it yet.
 ##DECRIPTION:<br/> 
-- This is a simple app (assignment) in last Android course. Show real-time traffic information using Google Maps API and some native buttons. I built this app with  [Nguyen Hai Thanh](https://github.com/thanhnh1)
+- This is a simple app (assignment) in last Android course. Show real-time traffic information using Google Maps API and some native buttons.
 [GitHub](http://github.com) <br/>
 - Technologies: Google Maps API, Java,...<br/>
 <br/>
