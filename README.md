@@ -1,5 +1,5 @@
 # Assignment
-# UPDATE: The defaul branch is the lastest update code. If your are going to download please choose the defaul - the Course_new branch.
+# UPDATE: The default branch is the lastest update code. If your are going to download please choose the default - the Course_new branch which has every courses commited.
 
 ##INTRODUCTION <br/>
 
