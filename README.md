@@ -27,7 +27,7 @@ Here a sweet potato: :sweet_potato: <br/>
 __Screen shoot at Feb 11:__ 
 ![alt text](https://github.com/thanhahvan1/Assignment/blob/course1/Screenshot_2017-02-11-17-31-32-51.png "Screen shoot at Feb 11")
  <br/>
-__Screen shoot at lastest code:
+__Screen shoot at lastest code__:
  <br/>
 ![alt text](https://github.com/thanhahvan1/Assignment/blob/Course_New/screen/1.png "now")  <br/>
 ![alt text](https://github.com/thanhahvan1/Assignment/blob/Course_New/screen/2.png "now")  <br/>
