@@ -1,7 +1,7 @@
 package com.example.havan.mytrafficmap;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +17,7 @@ import com.example.havan.mytrafficmap.SQLite.DatabaseHandler;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
 import com.example.havan.mytrafficmap.view.CustomAdapter;
 import com.example.havan.mytrafficmap.SQLite.DataModel;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
+
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

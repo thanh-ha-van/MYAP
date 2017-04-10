@@ -20,10 +20,10 @@ public class SetOptionView {
     public SetOptionView(GoogleMap mMap, Context context) {
 
 
-        //mMap.addTileOverlay(new TileOverlayOptions()
-        // .tileProvider(new CustomMapTileProvider(context
-        // .getResources()
-        // .getAssets())));
+        mMap.addTileOverlay(new TileOverlayOptions()
+         .tileProvider(new CustomMapTileProvider(context
+         .getResources()
+         .getAssets())));
         pref = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         mMap.setTrafficEnabled(pref.getBoolean("show_traffic", false));
         mMap.getUiSettings().setZoomControlsEnabled(pref.getBoolean("zoom", false));
