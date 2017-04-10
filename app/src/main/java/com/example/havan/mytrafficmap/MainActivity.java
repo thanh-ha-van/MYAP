@@ -116,16 +116,16 @@ public class MainActivity extends AppCompatActivity
         );
         // init UI
         initUi();
-        // check internet
-        detector = new ConnectionDetector(this.getApplicationContext());
-        isInternet = detector.isConnectingToInternet();
-        if (!isInternet) {
-            // Internet Connection is not present
-            alert.showAlertDialog(this, "Internet Connection Error",
-                    "Please connect to working Internet connection", 2);
-            // stop executing code by return
-            return;
-        }
+//        // check internet
+//        detector = new ConnectionDetector(this.getApplicationContext());
+//        isInternet = detector.isConnectingToInternet();
+//        if (!isInternet) {
+//            // Internet Connection is not present
+//            alert.showAlertDialog(this, "Internet Connection Error",
+//                    "Please connect to working Internet connection", 2);
+//            // stop executing code by return
+//            return;
+//        }
         // check able of gps
         gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
