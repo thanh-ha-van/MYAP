@@ -24,11 +24,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
 public class PlaceDirections {
 
 
     private String url;
+
+    String json;
 
     private Context context;
 
@@ -63,7 +66,6 @@ public class PlaceDirections {
 
 
     }
-
 
     private String getMapsApiDirectionsUrl() {
 
@@ -142,7 +144,13 @@ public class PlaceDirections {
                 String... jsonData) {
 
             JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
+            List<
+                    List<
+                            HashMap<
+                                    String, String
+                                    >
+                            >
+                    > routes = null;
 
             try {
                 jObject = new JSONObject(jsonData[0]);
@@ -177,7 +185,14 @@ public class PlaceDirections {
 
                 polyLineOptions.addAll(points);
                 polyLineOptions.width(6);
+                polyLineOptions.clickable(true);
                 polyLineOptions.color(Color.parseColor("#26A1C3"));
+
+                ///////////////////
+
+                json = new Gson().toJson(points);
+                Utils.sRoute = json;
+
             }
             if (polyLineOptions == null) {
 

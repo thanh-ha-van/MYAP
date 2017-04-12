@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.ShowOnMap.Movecamera;
@@ -41,6 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -265,8 +265,22 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-
         mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+            @Override
+            public void onPolylineClick(Polyline polyline) {
+
+               myPolylineClicked();
+            }
+        });
+    }
+
+    public void myPolylineClicked() {
+        Toast.makeText(
+                this,
+                Utils.sRoute,
+                Toast.LENGTH_LONG
+        ).show();
     }
 
     @Override

@@ -40,6 +40,6 @@
 
     <string name="facebook_app_id">450643215276020</string>
 
-        <string name="about_app">My Map, an application that help your find nearby place with types.\nThis Show you the direction to a particular place spot.\nYou can change your map style to make it look cool with many magnificent style.\nYou can also search for place and manage your favorite places list.\nWill be write more later.</string>
+    <string name="about_app">My Map, an application that help your find nearby place with types.\nThis Show you the direction to a particular place spot.\nYou can change your map style to make it look cool with many magnificent style.\nYou can also search for place and manage your favorite places list.\nWill be write more later.</string>
 
 </resources>

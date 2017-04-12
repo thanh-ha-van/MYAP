@@ -14,4 +14,6 @@ public class Utils {
 
     public static String sTrSnippet;
 
+    public static String sRoute;
+
 }

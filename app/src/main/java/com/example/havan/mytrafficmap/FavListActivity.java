@@ -99,17 +99,15 @@ public class FavListActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
             finish();
         }
-    else
+        else {
+            Toast.makeText(
+                    FavListActivity.this,
+                    "Please choose a place first!",
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
 
-    {
-        Toast.makeText(
-                FavListActivity.this,
-                "Please choose a place first!",
-                Toast.LENGTH_SHORT
-        ).show();
     }
-
-}
 
 
     @Click(R.id.show_info)
