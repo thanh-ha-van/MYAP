@@ -43,13 +43,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_CONTACTS_TABLE =
                 "CREATE TABLE "
-                        + TABLE_FAV_PLACE + "("
+                        + TABLE_FAV_PLACE
+                        + "("
                         + KEY_ID + " INTEGER PRIMARY KEY,"
                         + KEY_NAME + " TEXT,"
                         + KEY_ADDRESS + " TEXT,"
                         + KEY_PLACE_ID + " TEXT,"
                         + KEY_PLACE_LAT + " TEXT,"
-                        + KEY_PLACE_LON + " TEXT " + ")";
+                        + KEY_PLACE_LON + " TEXT "
+                        + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 

@@ -24,7 +24,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ROUTESDATA";
 
     //table name
-    private static final String TABLE_FAV_PLACE = "ROUTESTABLE";
+    private static final String ROUTES_TABLE = "ROUTESTABLE";
 
     //Table Columns names
     private static final String KEY_ID = "id";
@@ -45,13 +45,15 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_CONTACTS_TABLE =
                 "CREATE TABLE "
-                        + TABLE_FAV_PLACE + "("
+                        + ROUTES_TABLE
+                        + "("
                         + KEY_ID + " INTEGER PRIMARY KEY,"
                         + KEY_NAME + " TEXT,"
                         + KEY_ADDRESS + " TEXT,"
                         + KEY_PLACE_LAT + " TEXT,"
-                        + KEY_PLACE_LON + " TEXT, "
-                        + KEY_VALUE + " TEXT " + ")";
+                        + KEY_PLACE_LON + " TEXT,"
+                        + KEY_VALUE + " TEXT "
+                        + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -59,14 +61,14 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAV_PLACE);
+        db.execSQL("DROP TABLE IF EXISTS " + ROUTES_TABLE);
 
         // Create tables again
         onCreate(db);
     }
 
     // Adding new place
-    public void Addroute(RouteModel routeModel) {
+    public void addRoute(RouteModel routeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -77,7 +79,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_VALUE, routeModel.getValue()); // Place Name
 
         // Inserting Row
-        db.insert(TABLE_FAV_PLACE, null, values);
+        db.insert(ROUTES_TABLE, null, values);
         db.close(); // Closing database connection
     }
 
@@ -85,7 +87,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(
-                TABLE_FAV_PLACE,
+                ROUTES_TABLE,
                 new String[]{KEY_NAME},
                 KEY_NAME + "=?",
                 new String[]{String.valueOf(placename)}, null, null, null, null);
@@ -103,7 +105,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
     public List<RouteModel> getAllRoute() {
         List<RouteModel> routeModels = new ArrayList<RouteModel>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_FAV_PLACE;
+        String selectQuery = "SELECT  * FROM " + ROUTES_TABLE;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -130,7 +132,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
     // Deleting single place
     public void deleteRoute(RouteModel routeModel) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_FAV_PLACE, KEY_ID + " = ?",
+        db.delete(ROUTES_TABLE, KEY_ID + " = ?",
                 new String[]{String.valueOf(routeModel.getId())});
         db.close();
 

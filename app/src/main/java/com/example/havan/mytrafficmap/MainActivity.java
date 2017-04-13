@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.havan.mytrafficmap.Route.RouteDatabaseHandler;
-import com.example.havan.mytrafficmap.Route.RouteListActivity;
 import com.example.havan.mytrafficmap.Route.RouteListActivity_;
 import com.example.havan.mytrafficmap.Route.RouteModel;
 import com.example.havan.mytrafficmap.ShowOnMap.Movecamera;
@@ -295,7 +294,7 @@ public class MainActivity extends AppCompatActivity
             );
         } else {
 
-            db.Addroute(new RouteModel(Utils.sTrDestination, Utils.sTrSnippet, lat, lon, Utils.sRoute));
+            db.addRoute(new RouteModel(Utils.sTrDestination, Utils.sTrSnippet, lat, lon, Utils.sRoute));
             // Reading all contacts
             Toast.makeText(this,
                     "Saved to your route list",
