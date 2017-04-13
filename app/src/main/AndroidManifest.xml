@@ -79,7 +79,7 @@
                 android:authorities="com.facebook.app.FacebookContentProvider450643215276020"
                 android:exported="true" />
         </activity>
-        <activity android:name=".Route.RouteListActivity"></activity>
+        <activity android:name=".Route.RouteListActivity_"></activity>
     </application>
 
 </manifest>

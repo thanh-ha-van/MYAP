@@ -16,4 +16,6 @@ public class Utils {
 
     public static String sRoute;
 
+    public static String sPlaceId;
+
 }

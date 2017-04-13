@@ -20,6 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.havan.mytrafficmap.Route.RouteDatabaseHandler;
+import com.example.havan.mytrafficmap.Route.RouteListActivity;
+import com.example.havan.mytrafficmap.Route.RouteListActivity_;
+import com.example.havan.mytrafficmap.Route.RouteModel;
 import com.example.havan.mytrafficmap.ShowOnMap.Movecamera;
 import com.example.havan.mytrafficmap.ShowOnMap.SetOptionView;
 import com.example.havan.mytrafficmap.ShowOnMap.ShowFavorite;
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
 
+    private static final int ROUTE_ACTIVITY_RESULT_CODE = 0;
+
     @AfterViews
     public void afterViews() {
 
@@ -175,7 +181,7 @@ public class MainActivity extends AppCompatActivity
         alert.showAlertDialog(this, "Information",
                 "Name: " + marker.getTitle()
                         + "\n\nAddress: " + marker.getSnippet()
-                        + "\n\nDistance to your location : "
+                        + "\n\nDistance: "
                         + dis
                 , 3);
     }
@@ -254,6 +260,7 @@ public class MainActivity extends AppCompatActivity
         mapStyle = new SetStyle(this, mMap);
         new SetOptionView(mMap, this);
         new Movecamera(mMap, lat, lon);
+
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
@@ -270,17 +277,31 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPolylineClick(Polyline polyline) {
 
-               myPolylineClicked();
+                myPolylineClicked();
             }
         });
     }
 
     public void myPolylineClicked() {
-        Toast.makeText(
-                this,
-                Utils.sRoute,
-                Toast.LENGTH_LONG
-        ).show();
+
+        RouteDatabaseHandler db = new RouteDatabaseHandler(this.getApplicationContext());
+        if (db.checkIfExist(Utils.sTrDestination)) {
+
+            alert.showAlertDialog(
+                    this,
+                    "Whoop!",
+                    "This route is already added to your favorite list",
+                    2
+            );
+        } else {
+
+            db.Addroute(new RouteModel(Utils.sTrDestination, Utils.sTrSnippet, lat, lon, Utils.sRoute));
+            // Reading all contacts
+            Toast.makeText(this,
+                    "Saved to your route list",
+                    Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override
@@ -294,6 +315,10 @@ public class MainActivity extends AppCompatActivity
             // choose map style
         } else if (id == R.id.view_option) {
             startActivity(new Intent(MainActivity.this, ViewOption_.class));
+            // view option activity
+
+        } else if (id == R.id.route_fav) {
+            startActivity(new Intent(MainActivity.this, RouteListActivity_.class));
             // view option activity
         } else if (id == R.id.fav_place) {
             // list of fav place activity

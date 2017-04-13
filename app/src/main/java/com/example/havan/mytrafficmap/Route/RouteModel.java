@@ -5,30 +5,33 @@ package com.example.havan.mytrafficmap.Route;
  */
 public class RouteModel {
 
-    String value;
-    String name;
-    int id;
+    private int id;
 
-    public RouteModel(String value, String name) {
-        this.value = value;
-        this.name = name;
-    }
+    private String name;
+    private String address;
+    private String value;
+    private double placeLat;
+    private double placeLon;
+
+    private boolean isChecked;
 
     public RouteModel() {
     }
 
-    public RouteModel(String value, String name, int id) {
-        this.value = value;
+    public RouteModel(String name, String address,  double placeLat, double placeLon, String value) {
         this.name = name;
-        this.id = id;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
+        this.address = address;
         this.value = value;
+        this.placeLat = placeLat;
+        this.placeLon = placeLon;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,11 +42,43 @@ public class RouteModel {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getAddress() {
+        return address;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public double getPlaceLat() {
+        return placeLat;
+    }
+
+    public void setPlaceLat(double placeLat) {
+        this.placeLat = placeLat;
+    }
+
+    public double getPlaceLon() {
+        return placeLon;
+    }
+
+    public void setPlaceLon(double placeLon) {
+        this.placeLon = placeLon;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

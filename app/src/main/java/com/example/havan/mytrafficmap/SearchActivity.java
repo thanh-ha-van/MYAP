@@ -193,19 +193,19 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                         Toast.LENGTH_SHORT).show();
 
             }
-        }
-        else   Toast.makeText(this,
+        } else Toast.makeText(this,
                 "Please search for a place first",
                 Toast.LENGTH_SHORT).show();
     }
 
-    @Click (R.id.btn_phone)
-    void phoneClicked () {
+    @Click(R.id.btn_phone)
+    void phoneClicked() {
     }
 
-    @Click (R.id.btn_site)
-    void siteClicked(){
+    @Click(R.id.btn_site)
+    void siteClicked() {
     }
+
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
         @Override
@@ -223,12 +223,12 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             mPlaceDetailsName.setText(place.getName().toString());
 
             mPlaceDetailsPhone.setText("No phone number");
-            if(place.getPhoneNumber()!="")
-            mPlaceDetailsPhone.setText(place.getPhoneNumber().toString());
+            if (place.getPhoneNumber() != "")
+                mPlaceDetailsPhone.setText(place.getPhoneNumber().toString());
 
             mPlaceDetailsSite.setText("No website");
             if (place.getWebsiteUri() != null)
-            mPlaceDetailsSite.setText(place.getWebsiteUri().toString());
+                mPlaceDetailsSite.setText(place.getWebsiteUri().toString());
 
             placeId = place.getId();
             latLng = place.getLatLng();
@@ -239,7 +239,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             places.release();
         }
     };
-
 
 
     @Override
