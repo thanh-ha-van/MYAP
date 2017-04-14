@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.havan.mytrafficmap.Route.DrawRouteOffline;
 import com.example.havan.mytrafficmap.Route.RouteDatabaseHandler;
 import com.example.havan.mytrafficmap.Route.RouteListActivity_;
 import com.example.havan.mytrafficmap.Route.RouteModel;
@@ -317,15 +318,19 @@ public class MainActivity extends AppCompatActivity
             // view option activity
 
         } else if (id == R.id.route_fav) {
-            startActivity(new Intent(MainActivity.this, RouteListActivity_.class));
-            // view option activity
+
+            Intent intent = new Intent(this, RouteListActivity_.class);
+            startActivityForResult(intent, ROUTE_ACTIVITY_RESULT_CODE);
+
         } else if (id == R.id.fav_place) {
-            // list of fav place activity
+
 
             Intent intent = new Intent(this, FavListActivity_.class);
             startActivityForResult(intent, FAV_LIST_ACTIVITY_RESULT_CODE);
+
         } else if (id == R.id.share) {
             startActivity(new Intent(MainActivity.this, ShareActivity_.class));
+
         } else if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, About_.class));
         }
@@ -387,19 +392,28 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // check that it is the SecondActivity with an OK result
-        if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
-            if (resultCode == RESULT_OK) {
-                makeDirection(data);
-            }
-        }
-        if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
+//        // check that it is the SecondActivity with an OK result
+//        if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
+//            if (resultCode == RESULT_OK) {
+//                makeDirection(data);
+//            }
+//        }
+//        if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
+//
+//            if (resultCode == RESULT_OK) {
+//                makeDirection(data);
+//
+//            }
+//        }
+        if (requestCode == ROUTE_ACTIVITY_RESULT_CODE) {
 
             if (resultCode == RESULT_OK) {
-                makeDirection(data);
+
+              new DrawRouteOffline(this, mMap, data);
 
             }
         }
+
     }
 
     public void makeDirection(Intent data) {

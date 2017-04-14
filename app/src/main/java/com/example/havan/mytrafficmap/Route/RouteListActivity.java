@@ -60,7 +60,7 @@ public class RouteListActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.list);
 
-        db = new RouteDatabaseHandler(this.getApplicationContext());
+        db = new RouteDatabaseHandler(this);
         final List<RouteModel> favRoute = db.getAllRoute();
 
         adapter = new CustomRouteAdapter(favRoute, getApplicationContext());
@@ -86,8 +86,9 @@ public class RouteListActivity extends AppCompatActivity {
         if (currentPosition != -1) {
 
             Intent intent = new Intent();
-            intent.putExtra("address", adapter.getItem(currentPosition).getAddress());
+
             intent.putExtra("name", adapter.getItem(currentPosition).getName());
+            intent.putExtra("address", adapter.getItem(currentPosition).getAddress());
             intent.putExtra("lat", adapter.getItem(currentPosition).getPlaceLat());
             intent.putExtra("lon", adapter.getItem(currentPosition).getPlaceLon());
             intent.putExtra("value", adapter.getItem(currentPosition).getValue());

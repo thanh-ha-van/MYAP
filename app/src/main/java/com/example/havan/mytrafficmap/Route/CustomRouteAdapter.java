@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.havan.mytrafficmap.R;
-import com.example.havan.mytrafficmap.Route.RouteModel;
 
 
 import java.util.List;
@@ -43,8 +42,10 @@ public class CustomRouteAdapter extends ArrayAdapter<RouteModel> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         // Get the data item for this position
         RouteModel routeModel = getItem(position);
+
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 

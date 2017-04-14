@@ -21,10 +21,10 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "ROUTESDATA";
+    private static final String DATABASE_NAME = "route_database";
 
     //table name
-    private static final String ROUTES_TABLE = "ROUTESTABLE";
+    private static final String ROUTES_TABLE = "routes_table_data";
 
     //Table Columns names
     private static final String KEY_ID = "id";
@@ -43,7 +43,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_CONTACTS_TABLE =
+        String CREATE_ROUTES_TABLE =
                 "CREATE TABLE "
                         + ROUTES_TABLE
                         + "("
@@ -54,7 +54,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
                         + KEY_PLACE_LON + " TEXT,"
                         + KEY_VALUE + " TEXT "
                         + ")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_ROUTES_TABLE);
     }
 
     // Upgrading database
@@ -69,6 +69,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
 
     // Adding new place
     public void addRoute(RouteModel routeModel) {
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -85,6 +86,7 @@ public class RouteDatabaseHandler extends SQLiteOpenHelper {
 
     public boolean checkIfExist(String placename) {
         SQLiteDatabase db = this.getReadableDatabase();
+
 
         Cursor cursor = db.query(
                 ROUTES_TABLE,
