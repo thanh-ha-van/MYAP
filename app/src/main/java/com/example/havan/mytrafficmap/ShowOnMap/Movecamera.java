@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Movecamera {
     public Movecamera (GoogleMap googleMap, double lat, double lon) {
+
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(lat, lon))
                 .zoom(15)                   // Sets the zoom

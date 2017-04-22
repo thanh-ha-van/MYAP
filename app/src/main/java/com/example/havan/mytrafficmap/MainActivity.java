@@ -101,11 +101,11 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences.Editor editor;
 
-    private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
+    private static final int SECOND_ACTIVITY_RESULT_CODE = 000;
 
-    private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
+    private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 111;
 
-    private static final int ROUTE_ACTIVITY_RESULT_CODE = 0;
+    private static final int ROUTE_ACTIVITY_RESULT_CODE = 222;
 
     @AfterViews
     public void afterViews() {
@@ -122,27 +122,7 @@ public class MainActivity extends AppCompatActivity
         );
         // init UI
         initUi();
-        // check internet
-        detector = new ConnectionDetector(this.getApplicationContext());
-        isInternet = detector.isConnectingToInternet();
-        if (!isInternet) {
-            // Internet Connection is not present
-            alert.showAlertDialog(this, "No Internet",
-                    "Please connect to working Internet connection", 2);
-        }
-        // check able of gps
-        gps = new GPSTracker(this);
-        if (gps.canGetLocation()) {
-
-            lat = gps.getLatitude();
-            lon = gps.getLongitude();
-
-        } else {
-            // Can't get user's current location
-            alert.showAlertDialog(this, "GPS Status",
-                    "Couldn't get location information. Please enable GPS",
-                    2);
-        }
+        haveIntGps();
 
         handleIntent(getIntent());
     }
@@ -168,6 +148,37 @@ public class MainActivity extends AppCompatActivity
             Utils.sKeyPlace = query;
             showPlace = new ShowPlace(getApplicationContext(), MainActivity.this, mMap);
         }
+    }
+
+    public boolean haveIntGps() {
+
+        // check able of gps
+        gps = new GPSTracker(this);
+        if (gps.canGetLocation()) {
+
+            lat = gps.getLatitude();
+            lon = gps.getLongitude();
+
+        } else {
+            // Can't get user's current location
+            alert.showAlertDialog(this, "GPS Error",
+                    "Couldn't get location information. Please enable GPS or fix your GPS settings.",
+                    2);
+            return false;
+        }
+
+        // check internet
+        detector = new ConnectionDetector(this.getApplicationContext());
+        isInternet = detector.isConnectingToInternet();
+        if (!isInternet) {
+            // Internet Connection is not present
+            alert.showAlertDialog(this, "No Internet",
+                    "Please connect to working Internet connection", 2);
+            return false;
+
+        }
+
+        return true;
     }
 
     @Override
@@ -310,8 +321,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId(); // Handle navigation view item clicks here.
 
         if (id == R.id.map_style) {
-            Intent i = new Intent(MainActivity.this, MapStyle_.class);
-            startActivity(i);
+            Intent i1 = new Intent(MainActivity.this, MapStyle_.class);
+            startActivity(i1);
             // choose map style
         } else if (id == R.id.view_option) {
             startActivity(new Intent(MainActivity.this, ViewOption_.class));
@@ -319,14 +330,14 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.route_fav) {
 
-            Intent intent = new Intent(this, RouteListActivity_.class);
-            startActivityForResult(intent, ROUTE_ACTIVITY_RESULT_CODE);
+            Intent i2 = new Intent(this, RouteListActivity_.class);
+            startActivityForResult(i2, ROUTE_ACTIVITY_RESULT_CODE);
 
         } else if (id == R.id.fav_place) {
 
 
-            Intent intent = new Intent(this, FavListActivity_.class);
-            startActivityForResult(intent, FAV_LIST_ACTIVITY_RESULT_CODE);
+            Intent i3 = new Intent(this, FavListActivity_.class);
+            startActivityForResult(i3, FAV_LIST_ACTIVITY_RESULT_CODE);
 
         } else if (id == R.id.share) {
             startActivity(new Intent(MainActivity.this, ShareActivity_.class));
@@ -392,32 +403,35 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        // check that it is the SecondActivity with an OK result
-//        if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                makeDirection(data);
-//            }
-//        }
-//        if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
-//
-//            if (resultCode == RESULT_OK) {
-//                makeDirection(data);
-//
-//            }
-//        }
-        if (requestCode == ROUTE_ACTIVITY_RESULT_CODE) {
 
-            if (resultCode == RESULT_OK) {
+        switch (requestCode) {
+            case SECOND_ACTIVITY_RESULT_CODE:
+                if (resultCode == RESULT_OK) {
+                    makeDirection(data);
+                }
 
-              new DrawRouteOffline(this, mMap, data);
+                break;
+            case FAV_LIST_ACTIVITY_RESULT_CODE:
+                if (resultCode == RESULT_OK) {
+                    makeDirection(data);
 
-            }
+                }
+
+                break;
+            case ROUTE_ACTIVITY_RESULT_CODE:
+                if (resultCode == RESULT_OK) {
+
+                    new DrawRouteOffline(this, mMap, data);
+
+                }
+                break;
         }
 
     }
 
     public void makeDirection(Intent data) {
 
+        if (haveIntGps()) return;
         lat1 = data.getDoubleExtra("lat", 10);
         lon1 = data.getDoubleExtra("lon", 10);
         String address = data.getStringExtra("address");
