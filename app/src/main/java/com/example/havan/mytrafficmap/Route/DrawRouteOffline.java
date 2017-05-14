@@ -61,6 +61,6 @@ public class DrawRouteOffline {
                     "Got error drawing your route", Toast.LENGTH_SHORT);
             toast.show();
         }
-        else googleMap.addPolyline(polyLineOptions);
+        else mGoogleMap.addPolyline(polyLineOptions);
     }
 }
