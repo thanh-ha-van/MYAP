@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity
 
     private static final int SECOND_ACTIVITY_RESULT_CODE = 0;
 
-    private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 0;
+    private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 1;
 
-    private static final int ROUTE_ACTIVITY_RESULT_CODE = 0;
+    private static final int ROUTE_ACTIVITY_RESULT_CODE = 2;
 
     @AfterViews
     public void afterViews() {
@@ -392,19 +392,19 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        // check that it is the SecondActivity with an OK result
-//        if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                makeDirection(data);
-//            }
-//        }
-//        if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
-//
-//            if (resultCode == RESULT_OK) {
-//                makeDirection(data);
-//
-//            }
-//        }
+        // check that it is the SecondActivity with an OK result
+        if (requestCode == SECOND_ACTIVITY_RESULT_CODE) {
+            if (resultCode == RESULT_OK) {
+                makeDirection(data);
+            }
+        }
+        if (requestCode == FAV_LIST_ACTIVITY_RESULT_CODE) {
+
+            if (resultCode == RESULT_OK) {
+                makeDirection(data);
+
+            }
+        }
         if (requestCode == ROUTE_ACTIVITY_RESULT_CODE) {
 
             if (resultCode == RESULT_OK) {
