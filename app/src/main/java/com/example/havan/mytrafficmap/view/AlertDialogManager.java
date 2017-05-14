@@ -13,6 +13,9 @@ import com.example.havan.mytrafficmap.R;
 
 public class AlertDialogManager {
 
+
+
+
     public void showAlertDialog(Activity activity, String title, String message,
                                 int status) {
 
@@ -50,7 +53,6 @@ public class AlertDialogManager {
         });
 
         alertDialog.show();
-
 
     }
 }

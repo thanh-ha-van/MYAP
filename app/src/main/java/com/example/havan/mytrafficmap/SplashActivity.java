@@ -14,9 +14,6 @@ import org.androidannotations.annotations.WindowFeature;
 
 import java.lang.ref.WeakReference;
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
 @WindowFeature(Window.FEATURE_NO_TITLE)
 @EActivity(R.layout.activity_splash)
 public class SplashActivity extends Activity {
@@ -33,11 +30,6 @@ public class SplashActivity extends Activity {
     @AfterViews
     public void afterViews() {
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("font/SVN-Aguda Bold.otf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
         mStartTime = SystemClock.uptimeMillis();
         mHandler = new InternalHandler(this);
 
@@ -81,10 +73,5 @@ public class SplashActivity extends Activity {
                     break;
             }
         }
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

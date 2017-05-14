@@ -26,7 +26,7 @@
         <item
             android:id="@+id/route_fav"
             android:icon="@drawable/compass_new_black"
-            android:title="YOUR ROUTES" />
+            android:title="FAVORITE ROUTES" />
     </group>
     <group
         android:id="@+id/menu_3"

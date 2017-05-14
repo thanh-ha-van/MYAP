@@ -3,11 +3,11 @@
     <color name="colorPrimary">#3F4B53</color>
     <color name="colorPrimaryDark">#525D64</color>
     <color name="dra">#525D64</color>
-    <color name="dra2">#747D83</color>
+    <color name="dra2">#EAE4DF</color>
     <color name="colorAccent">#EEEEEE</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="white">#FFFFFF</color>
-    <color name="black">#D5D8D9</color>
+    <color name="black">#030407</color>
     <color name="green">#5A9B97</color>
     <color name="blue">#26A1C3</color>
 </resources>

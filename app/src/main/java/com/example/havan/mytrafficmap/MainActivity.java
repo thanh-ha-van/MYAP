@@ -30,6 +30,7 @@ import com.example.havan.mytrafficmap.ShowOnMap.ShowFavorite;
 import com.example.havan.mytrafficmap.ShowOnMap.ShowPlace;
 import com.example.havan.mytrafficmap.StyleMap.CheckFirstRun;
 import com.example.havan.mytrafficmap.StyleMap.SetStyle;
+import com.example.havan.mytrafficmap.bus.BusDirectionInfo;
 import com.example.havan.mytrafficmap.directions.GetDistance;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.model.GPSTracker;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences.Editor editor;
 
-    private static final int SECOND_ACTIVITY_RESULT_CODE = 000;
+    private static final int SEARCH_ACTIVITY_RESULT_CODE = 000;
 
     private static final int FAV_LIST_ACTIVITY_RESULT_CODE = 111;
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity
         );
         // init UI
         initUi();
-        haveIntGps();
+        haveGps();
 
         handleIntent(getIntent());
     }
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public boolean haveIntGps() {
+    public boolean haveGps() {
 
         // check able of gps
         gps = new GPSTracker(this);
@@ -166,18 +167,6 @@ public class MainActivity extends AppCompatActivity
                     2);
             return false;
         }
-
-        // check internet
-        detector = new ConnectionDetector(this.getApplicationContext());
-        isInternet = detector.isConnectingToInternet();
-        if (!isInternet) {
-            // Internet Connection is not present
-            alert.showAlertDialog(this, "No Internet",
-                    "Please connect to working Internet connection", 2);
-            return false;
-
-        }
-
         return true;
     }
 
@@ -339,9 +328,6 @@ public class MainActivity extends AppCompatActivity
             Intent i3 = new Intent(this, FavListActivity_.class);
             startActivityForResult(i3, FAV_LIST_ACTIVITY_RESULT_CODE);
 
-        } else if (id == R.id.share) {
-            startActivity(new Intent(MainActivity.this, ShareActivity_.class));
-
         } else if (id == R.id.about) {
             startActivity(new Intent(MainActivity.this, About_.class));
         }
@@ -372,7 +358,9 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.search:
                 Intent intent = new Intent(this, SearchActivity_.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_RESULT_CODE);
+                intent.putExtra("lat", lat);
+                intent.putExtra("lon", lon);
+                startActivityForResult(intent, SEARCH_ACTIVITY_RESULT_CODE);
                 return true;
 
             case R.id.direc: {
@@ -405,9 +393,13 @@ public class MainActivity extends AppCompatActivity
 
 
         switch (requestCode) {
-            case SECOND_ACTIVITY_RESULT_CODE:
+            case SEARCH_ACTIVITY_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
                     makeDirection(data);
+                }
+                if (resultCode == 123) {
+                 // do somethings with re extra with have the busdirection.
+                    new BusDirectionInfo(this, mMap, data);
                 }
 
                 break;
@@ -431,7 +423,7 @@ public class MainActivity extends AppCompatActivity
 
     public void makeDirection(Intent data) {
 
-        if (haveIntGps()) return;
+        if (!haveGps()) return;
         lat1 = data.getDoubleExtra("lat", 10);
         lon1 = data.getDoubleExtra("lon", 10);
         String address = data.getStringExtra("address");
