@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,9 +35,9 @@ import com.example.havan.mytrafficmap.StyleMap.SetStyle;
 import com.example.havan.mytrafficmap.bus.BusDirectionInfo;
 import com.example.havan.mytrafficmap.directions.GetDistance;
 import com.example.havan.mytrafficmap.directions.PlaceDirections;
+import com.example.havan.mytrafficmap.fragments.MyBottomSheetDialogFragment;
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
-import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -46,10 +48,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -78,11 +87,9 @@ public class MainActivity extends AppCompatActivity
     @ViewById(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
+
+
     private TitleNavigationAdapter adapter;
-
-    private boolean isInternet = false;
-
-    private ConnectionDetector detector;
 
     private AlertDialogManager alert = new AlertDialogManager();
 
@@ -101,6 +108,8 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences pref;
 
     private SharedPreferences.Editor editor;
+
+    private BottomSheetDialogFragment myBottomSheet = null;
 
     private static final int SEARCH_ACTIVITY_RESULT_CODE = 000;
 
@@ -121,12 +130,22 @@ public class MainActivity extends AppCompatActivity
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        myBottomSheet = MyBottomSheetDialogFragment.newInstance("Modal Bottom Sheet");
         // init UI
         initUi();
         haveGps();
 
         handleIntent(getIntent());
     }
+
+
+    @Click(R.id.direct_bus)
+    void busInfoClicked() {
+
+        myBottomSheet.show(getSupportFragmentManager(), myBottomSheet.getTag());
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -186,6 +205,8 @@ public class MainActivity extends AppCompatActivity
                 , 3);
     }
 
+
+
     private void initUi() {
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -203,6 +224,7 @@ public class MainActivity extends AppCompatActivity
         };
 
         navigationView.setNavigationItemSelectedListener(this);
+
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
@@ -324,7 +346,6 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.fav_place) {
 
-
             Intent i3 = new Intent(this, FavListActivity_.class);
             startActivityForResult(i3, FAV_LIST_ACTIVITY_RESULT_CODE);
 
@@ -372,7 +393,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (des == null) {
                         alert.showAlertDialog(this, "Place empty",
-                                "Please choice destination place", 2);
+                                "Please choose destination first", 2);
                     } else {
                         LatLng from = new LatLng(lat, lon);
                         directions = new PlaceDirections(
@@ -399,7 +420,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 if (resultCode == 123) {
                  // do somethings with re extra with have the busdirection.
-                    new BusDirectionInfo(this, mMap, data);
+                    new BusDirectionInfo(getApplicationContext(), mMap, data);
                 }
 
                 break;
@@ -413,7 +434,7 @@ public class MainActivity extends AppCompatActivity
             case ROUTE_ACTIVITY_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
 
-                    new DrawRouteOffline(this, mMap, data);
+                    new DrawRouteOffline(getApplicationContext(), mMap, data);
 
                 }
                 break;
@@ -433,7 +454,7 @@ public class MainActivity extends AppCompatActivity
                 .position(new LatLng(lat1, lon1))
                 .title(name)
                 .snippet(address)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_flag_red)));
 
         Utils.sDestination = new LatLng(lat1, lon1);
         LatLng des = Utils.sDestination;
@@ -497,5 +518,4 @@ public class MainActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 }

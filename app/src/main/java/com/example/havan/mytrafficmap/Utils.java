@@ -18,4 +18,6 @@ public class Utils {
 
     public static String sPlaceId;
 
+    public static String sInfo ="No information to show yet";
+
 }

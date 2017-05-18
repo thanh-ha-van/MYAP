@@ -19,14 +19,10 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-
-/**
- * Created by HaVan on 4/12/2017.
- */
 public class DrawRouteOffline {
 
     Context mContext;
-    GoogleMap mGoogleMap;
+
     Intent mIntent;
     Double lat;
     Double lon;
@@ -39,7 +35,6 @@ public class DrawRouteOffline {
     public DrawRouteOffline(Context context, GoogleMap googleMap, Intent data) {
 
         this.mContext = context;
-        this.mGoogleMap = googleMap;
         this.mIntent = data;
         this.name = data.getStringExtra("name");
         this.address = data.getStringExtra("address");
@@ -52,8 +47,7 @@ public class DrawRouteOffline {
                 .title(name)
                 .snippet(address)
                 .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_new_red)));
-
+                        .fromResource(R.drawable.pin_flag_red)));
 
 
         polyLineOptions = new PolylineOptions();
@@ -81,7 +75,10 @@ public class DrawRouteOffline {
                 .title("Start")
                 .snippet("This is your start place of the route")
                 .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_new_blue)));
+                        .fromResource(R.drawable.steppin)));
+        Toast toast = Toast.makeText(context,
+                "Complete the action", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }

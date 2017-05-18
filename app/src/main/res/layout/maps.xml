@@ -9,14 +9,33 @@
 	app:itemTextColor="@color/colorPrimary"
 	tools:context="com.example.havan.mytrafficmap.MainActivity">
 
-
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 	<fragment android:name="com.example.havan.mytrafficmap.MainActivity"
         android:id="@+id/map"
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.google.android.gms.maps.SupportMapFragment" />
+        class="com.google.android.gms.maps.SupportMapFragment" >
+		</fragment>
+
+
+		<ImageButton
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:id="@+id/direct_bus"
+			android:src="@drawable/info_big"
+			android:background="@color/transparent"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+			/>
+
+	</RelativeLayout>
 
 	<android.support.design.widget.NavigationView
 		android:id="@+id/nav_view"
@@ -29,6 +48,7 @@
 		android:fitsSystemWindows="true"
 		app:headerLayout="@layout/nav_header_main"
 		app:menu="@menu/activity_main_drawer" />
+
 
 
 </android.support.v4.widget.DrawerLayout>

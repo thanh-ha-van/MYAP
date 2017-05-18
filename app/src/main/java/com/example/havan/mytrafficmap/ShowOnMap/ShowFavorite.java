@@ -38,7 +38,7 @@ public class ShowFavorite {
                         .position(new LatLng(datamodel.getPlaceLat(), datamodel.getPlaceLon()))
                         .title(datamodel.getName())
                         .snippet(datamodel.getAddress())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_fav)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_flag_yellow)));
             }
         } else {
             mMap.clear();

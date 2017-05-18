@@ -19,16 +19,16 @@ public class Movecamera {
                 .target(new LatLng(lat, lon))
                 .zoom(15)                   // Sets the zoom
                 .bearing(0)                // Sets to east
-                .tilt(30)                   // Sets to 30 degrees
+                .tilt(0)                   // Sets to 30 degrees
                 .build();                   // Creates a CameraPosition
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         // Need user permisson (above)
 
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
-                .title("You are here!")
+                .title("You!")
                 .snippet("This is your current location")
                 .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_new_blue)));
+                        .fromResource(R.drawable.pin_flag_yellow)));
     }
 }

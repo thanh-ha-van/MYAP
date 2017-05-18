@@ -6,16 +6,7 @@
     android:padding="10dp"
     android:gravity="center">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="85dp"
-        android:layout_height="85dp"
-        android:elevation="12dp"
-        android:id="@+id/view2"
-        app:cardCornerRadius="43dp"
-        android:layout_centerHorizontal="true"
-        android:innerRadius="0dp"
-        android:shape="ring"
-        android:thicknessRatio="1.9">
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -23,7 +14,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true">
         </ImageView>
-    </android.support.v7.widget.CardView>
+
     <TextView
         android:id="@+id/grid_text"
         android:textColor="@color/colorPrimary"

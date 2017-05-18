@@ -64,7 +64,6 @@ public class PlaceDirections {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(from,
                 14));
 
-
     }
 
     private String getMapsApiDirectionsUrl() {
@@ -91,12 +90,12 @@ public class PlaceDirections {
             googleMap.addMarker(new MarkerOptions().position(from)
                     .title("You are here!")
                     .snippet("This is your current location")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_blue)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.steppin)));
 
             googleMap.addMarker(new MarkerOptions().position(to)
                     .title(Utils.sTrDestination)
                     .snippet(Utils.sTrSnippet)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_new_red)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_flag_red)));
         }
     }
 

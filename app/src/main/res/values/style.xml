@@ -30,10 +30,8 @@
         <item name="colorAccent">@color/colorPrimary</item> <!-- Whatever color you want-->
     </style>
 
-    <!-- Style for the navigation drawer icon -->
-    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
-        <item name="color">@color/cardview_light_background</item>
+    <style name="AppTheme.Waiting">
+        <item name="colorAccent">@color/white</item> <!-- Whatever color you want-->
     </style>
 
     <style name="ToggleSwitchTheme" parent="ThemeOverlay.AppCompat.Light">

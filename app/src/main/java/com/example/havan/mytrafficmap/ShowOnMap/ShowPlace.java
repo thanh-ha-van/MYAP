@@ -173,10 +173,10 @@ public class ShowPlace {
                         // draw my position
                         mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lon))
-                                .title("You are")
+                                .title("You")
                                 .snippet("This is your current location")
                                 .icon(BitmapDescriptorFactory
-                                        .fromResource(R.drawable.pin_new_blue)));
+                                        .fromResource(R.drawable.pin_flag_yellow)));
 
                         if (listPlace.results != null) {
                             // loop through all the places
@@ -189,7 +189,7 @@ public class ShowPlace {
                                         .title(place.name)
                                         .snippet(place.vicinity)
                                         .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.pin_new_red)));
+                                                .fromResource(R.drawable.pin_flag_black)));
 
                                 listMaker.add(marker);
                             }
