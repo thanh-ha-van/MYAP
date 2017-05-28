@@ -131,11 +131,12 @@ public class MainActivity extends AppCompatActivity
                 .build()
         );
 
+
         myBottomSheet = MyBottomSheetDialogFragment.newInstance("Modal Bottom Sheet");
         // init UI
         initUi();
         haveGps();
-
+        loadMap();
         handleIntent(getIntent());
     }
 
@@ -243,7 +244,6 @@ public class MainActivity extends AppCompatActivity
                         // Action to be taken after selecting a spinner item
                         // dua list marker = rong
                         if (itemPosition > -1) {
-                            mMap.clear();
 
                             new ShowFavorite(getApplicationContext(),
                                     mMap,
@@ -494,7 +494,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        loadMap();
     }
 
     @Override
