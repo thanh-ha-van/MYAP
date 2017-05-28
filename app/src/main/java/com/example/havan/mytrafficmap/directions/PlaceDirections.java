@@ -166,6 +166,7 @@ public class PlaceDirections {
             ArrayList<LatLng> points = null;
             PolylineOptions polyLineOptions = null;
 
+            if (routes == null) return;
             // traversing through route
             for (int i = 0; i < routes.size(); i++) {
                 points = new ArrayList<LatLng>();

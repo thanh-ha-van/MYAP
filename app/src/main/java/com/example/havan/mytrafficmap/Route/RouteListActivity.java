@@ -92,7 +92,6 @@ public class RouteListActivity extends AppCompatActivity {
             intent.putExtra("lat", adapter.getItem(currentPosition).getPlaceLat());
             intent.putExtra("lon", adapter.getItem(currentPosition).getPlaceLon());
             intent.putExtra("value", adapter.getItem(currentPosition).getValue());
-
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -123,7 +122,7 @@ public class RouteListActivity extends AppCompatActivity {
 
         } else Toast.makeText(
                 RouteListActivity.this,
-                "Please choose a route first by tap on the list!",
+                "Please choose a route first by tap on it in the list!",
                 Toast.LENGTH_SHORT
         ).show();
 

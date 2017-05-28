@@ -38,6 +38,7 @@ import com.example.havan.mytrafficmap.directions.PlaceDirections;
 import com.example.havan.mytrafficmap.fragments.MyBottomSheetDialogFragment;
 import com.example.havan.mytrafficmap.model.GPSTracker;
 import com.example.havan.mytrafficmap.view.AlertDialogManager;
+import com.example.havan.mytrafficmap.view.ConnectionDetector;
 import com.example.havan.mytrafficmap.view.TitleNavigationAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -189,6 +190,14 @@ public class MainActivity extends AppCompatActivity
         }
         return true;
     }
+    private void haveInternet() {
+        ConnectionDetector connectionDetector = new ConnectionDetector(this);
+        if (!connectionDetector.isConnectingToInternet()) {
+            alert.showAlertDialog(this, "No internet",
+                    "The is no internet connection. Can not complete the action!", 2);
+            return;
+        }
+    }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
@@ -205,8 +214,6 @@ public class MainActivity extends AppCompatActivity
                         + dis
                 , 3);
     }
-
-
 
     private void initUi() {
 
@@ -395,6 +402,7 @@ public class MainActivity extends AppCompatActivity
                         alert.showAlertDialog(this, "Place empty",
                                 "Please choose destination first", 2);
                     } else {
+                        haveInternet();
                         LatLng from = new LatLng(lat, lon);
                         directions = new PlaceDirections(
                                 getApplicationContext(), MainActivity.this, mMap, from, des);
@@ -412,10 +420,10 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         switch (requestCode) {
             case SEARCH_ACTIVITY_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
+                    haveInternet();
                     makeDirection(data);
                 }
                 if (resultCode == 123) {
@@ -426,6 +434,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case FAV_LIST_ACTIVITY_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
+                    haveInternet();
                     makeDirection(data);
 
                 }
@@ -493,7 +502,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+
         super.onResume();
+        ConnectionDetector connectionDetector = new ConnectionDetector(this);
+        if (!connectionDetector.isConnectingToInternet()) {
+            Toast.makeText(this,
+                    "Saved to your route list",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     @Override

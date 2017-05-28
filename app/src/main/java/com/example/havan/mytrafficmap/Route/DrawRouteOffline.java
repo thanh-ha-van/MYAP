@@ -42,14 +42,7 @@ public class DrawRouteOffline {
         this.lon = data.getDoubleExtra("lon", 10);
         this.jsonback = data.getStringExtra("value");
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lon))
-                .title(name)
-                .snippet(address)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.pin_flag_red)));
-
-
+        googleMap.clear();
         polyLineOptions = new PolylineOptions();
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<LatLng>>() {
@@ -79,6 +72,14 @@ public class DrawRouteOffline {
         Toast toast = Toast.makeText(context,
                 "Complete the action", Toast.LENGTH_SHORT);
         toast.show();
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(routesList.get(routesList.size()-1))
+                .title(name)
+                .snippet(address)
+                .icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.pin_flag_red)));
+
     }
 
 }
